@@ -1,9 +1,5 @@
 {
-  "extends": [
-    "next/core-web-vitals",
-    "google",
-    "prettier"
-  ],
+  "extends": ["next/core-web-vitals", "google", "prettier"],
   "plugins": ["prettier"],
   "rules": {
     "require-jsdoc": "off",
