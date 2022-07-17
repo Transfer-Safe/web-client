@@ -6,14 +6,21 @@ import { Provider } from 'react-redux';
 
 import { DAPP_CONFIG } from '../config';
 import store from '../store';
+import React from 'react';
+import Head from 'next/head';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <Provider store={store}>
-      <DAppProvider config={DAPP_CONFIG}>
-        <Component {...pageProps} />
-      </DAppProvider>
-    </Provider>
+    <React.Fragment>
+      <Head>
+        <meta name="viewport" content="initial-scale=1, width=device-width" />
+      </Head>
+      <Provider store={store}>
+        <DAppProvider config={DAPP_CONFIG}>
+          <Component {...pageProps} />
+        </DAppProvider>
+      </Provider>
+    </React.Fragment>
   );
 }
 

@@ -1,4 +1,4 @@
-import { Button } from '@mui/material';
+import { Button } from '@nextui-org/react';
 import { useEtherBalance, useEthers } from '@usedapp/core';
 import { utils } from 'ethers';
 import React, { useCallback } from 'react';
