@@ -1,11 +1,13 @@
+import { Button } from '@nextui-org/react';
 import type { NextPage } from 'next';
-
-import { SignIn } from '../components/signin';
+import Link from 'next/link';
 
 const Home: NextPage = () => {
   return (
     <div>
-      <SignIn />
+      <Link href="invoices/new">
+        <Button>Create invoice</Button>
+      </Link>
     </div>
   );
 };
