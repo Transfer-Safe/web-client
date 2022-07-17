@@ -1,13 +1,13 @@
 import '../styles/globals.css';
 
-import type { AppProps } from 'next/app';
 import { DAppProvider } from '@usedapp/core';
+import type { AppProps } from 'next/app';
+import Head from 'next/head';
+import React from 'react';
 import { Provider } from 'react-redux';
 
 import { DAPP_CONFIG } from '../config';
 import store from '../store';
-import React from 'react';
-import Head from 'next/head';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
