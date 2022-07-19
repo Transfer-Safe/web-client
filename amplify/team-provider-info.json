@@ -1,0 +1,23 @@
+{
+    "dev": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-transfersafe-dev-203849-authRole",
+            "UnauthRoleArn": "arn:aws:iam::610564667252:role/amplify-transfersafe-dev-203849-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::610564667252:role/amplify-transfersafe-dev-203849-authRole",
+            "Region": "us-east-2",
+            "DeploymentBucketName": "amplify-transfersafe-dev-203849-deployment",
+            "UnauthRoleName": "amplify-transfersafe-dev-203849-unauthRole",
+            "StackName": "amplify-transfersafe-dev-203849",
+            "StackId": "arn:aws:cloudformation:us-east-2:610564667252:stack/amplify-transfersafe-dev-203849/a7e881a0-0789-11ed-b7f4-065b7860f9e8",
+            "AmplifyAppId": "d2zi9luzaotur0"
+        },
+        "categories": {
+            "hosting": {
+                "amplifyhosting": {
+                    "appId": "d2zi9luzaotur0",
+                    "type": "cicd"
+                }
+            }
+        }
+    }
+}

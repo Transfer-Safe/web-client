@@ -17,6 +17,7 @@
     "@transfer-safe/router": "0.0.3",
     "@usedapp/core": "^1.1.2",
     "@walletconnect/web3-provider": "^1.7.8",
+    "aws-amplify": "^4.3.27",
     "classnames": "^2.3.1",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-prettier": "^4.2.1",
