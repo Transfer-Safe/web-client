@@ -1,4 +1,6 @@
 import { Button, Card, gray, Input, Spacer, Text } from '@nextui-org/react';
+import { InvoiceStruct } from '@transfer-safe/router/contracts/TransferSafeRouter';
+import { useEthers } from '@usedapp/core';
 import {
   FormEvent,
   FormEventHandler,
@@ -11,25 +13,44 @@ import style from './InvoiceForm.module.scss';
 
 import { CurrencySelector } from '../CurrencySelector';
 
-export const InvoiceForm: React.FC = () => {
-  const formRef = useRef<HTMLFormElement | null>();
+interface InvoiceFormProps {
+  onSubmit?: (invoice: InvoiceStruct) => void;
+}
 
-  const onSubmit: FormEventHandler<HTMLFormElement> = useCallback(
-    (event: FormEvent<HTMLFormElement>) => {
-      event.preventDefault();
-      return false;
-    },
-    [],
-  );
+export const InvoiceForm: React.FC<InvoiceFormProps> = ({ onSubmit }) => {
+  const formRef = useRef<HTMLFormElement | null>();
+  const { account } = useEthers();
 
   const [referenceName, setReferenceName] = useState('');
   const [userName, setUserName] = useState('');
   const [userEmail, setUserEmail] = useState('');
   const [amount, setAmount] = useState(0);
 
+  const onFormSubmit: FormEventHandler<HTMLFormElement> = useCallback(
+    (event: FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+
+      onSubmit &&
+        onSubmit({
+          amount: amount,
+          balance: 0,
+          created: new Date().valueOf(),
+          fee: 0,
+          id: account ?? '',
+          isNativeToken: true,
+          paid: false,
+          receipient: account ?? '',
+          tokenType: account ?? '0x0',
+        });
+
+      return false;
+    },
+    [amount, onSubmit, account],
+  );
+
   return (
     <Card className={style.InvoiceForm}>
-      <form onSubmit={onSubmit} ref={(ref) => (formRef.current = ref)}>
+      <form onSubmit={onFormSubmit} ref={(ref) => (formRef.current = ref)}>
         <Card.Body>
           <Input
             value={referenceName}

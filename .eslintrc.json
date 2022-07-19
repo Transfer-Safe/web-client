@@ -1,8 +1,17 @@
 {
-  "extends": ["next/core-web-vitals", "google", "prettier"],
-  "plugins": ["prettier"],
+  "extends": [
+    "eslint:recommended",
+    "next/core-web-vitals",
+    "google",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
+    "prettier"
+  ],
+  "plugins": ["prettier", "@typescript-eslint"],
+  "ignorePatterns": ["*.js"],
   "rules": {
     "require-jsdoc": "off",
+    "camelcase": "off",
     "prettier/prettier": "error",
     "comma-dangle": ["error", "always-multiline"],
     "import/order": [
