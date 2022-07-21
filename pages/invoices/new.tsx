@@ -1,27 +1,27 @@
 import { Container, Spacer, Text } from '@nextui-org/react';
-import { InvoiceStruct } from '@transfer-safe/router/contracts/TransferSafeRouter';
 import { NextPage } from 'next';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useMemo } from 'react';
 
 import style from './new.module.scss';
 
 import InvoiceForm from '../../components/InvoiceForm';
 import { SignIn } from '../../components/signin';
 import { useCreateInvoice } from '../../hooks';
+import { Invoice } from '../../models';
 
 const NewInvoice: NextPage = () => {
   const createInvoice = useCreateInvoice();
+  const isLoading = useMemo(
+    () => ['PendingSignature', 'Mining'].includes(createInvoice.state.status),
+    [createInvoice.state.status],
+  );
 
   const onCreate = useCallback(
-    async (invoice: InvoiceStruct) => {
-      await createInvoice.send(invoice);
+    async (invoice: Invoice) => {
+      await createInvoice.create(invoice);
     },
     [createInvoice],
   );
-
-  useEffect(() => {
-    console.log('Create invoice state', createInvoice.state);
-  }, [createInvoice.state]);
 
   return (
     <Container xs className={style.NewInvoicePage}>
@@ -29,7 +29,7 @@ const NewInvoice: NextPage = () => {
       <Spacer />
       <SignIn />
       <Spacer />
-      <InvoiceForm onSubmit={onCreate} />
+      <InvoiceForm loading={isLoading} onSubmit={onCreate} />
     </Container>
   );
 };

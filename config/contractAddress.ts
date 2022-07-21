@@ -1,9 +1,9 @@
 import { Mumbai } from '@usedapp/core';
 
-export const getContractAddress = (chainId: number): string => {
+export const getRouterContractAddress = (chainId: number): string => {
   switch (chainId) {
     case Mumbai.chainId:
-      return '0x9e0B75A2204A2a3a3046B7Ec2929DBF0c97e1fdf';
+      return '0x4e65BddF5b3D31157F97FA9eC12e859D03707709';
     default:
       throw new Error(`Unknown chainId: ${chainId}`);
   }

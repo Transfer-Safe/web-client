@@ -1,7 +1,13 @@
-import { Button, Card, gray, Input, Spacer, Text } from '@nextui-org/react';
-import { InvoiceStruct } from '@transfer-safe/router/contracts/TransferSafeRouter';
-import { useEthers } from '@usedapp/core';
 import {
+  Button,
+  Card,
+  gray,
+  Input,
+  Loading,
+  Spacer,
+  Text,
+} from '@nextui-org/react';
+import React, {
   FormEvent,
   FormEventHandler,
   useCallback,
@@ -11,15 +17,19 @@ import {
 
 import style from './InvoiceForm.module.scss';
 
+import { Invoice } from '../../models';
 import { CurrencySelector } from '../CurrencySelector';
 
 interface InvoiceFormProps {
-  onSubmit?: (invoice: InvoiceStruct) => void;
+  onSubmit?: (invoice: Invoice) => void;
+  loading?: boolean;
 }
 
-export const InvoiceForm: React.FC<InvoiceFormProps> = ({ onSubmit }) => {
+export const InvoiceForm: React.FC<InvoiceFormProps> = ({
+  onSubmit,
+  loading = false,
+}) => {
   const formRef = useRef<HTMLFormElement | null>();
-  const { account } = useEthers();
 
   const [referenceName, setReferenceName] = useState('');
   const [userName, setUserName] = useState('');
@@ -29,23 +39,20 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = ({ onSubmit }) => {
   const onFormSubmit: FormEventHandler<HTMLFormElement> = useCallback(
     (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault();
+      const invoice = new Invoice(
+        amount,
+        true,
+        [],
+        referenceName,
+        userName,
+        userEmail,
+      );
 
-      onSubmit &&
-        onSubmit({
-          amount: amount,
-          balance: 0,
-          created: new Date().valueOf(),
-          fee: 0,
-          id: account ?? '',
-          isNativeToken: true,
-          paid: false,
-          receipient: account ?? '',
-          tokenType: account ?? '0x0',
-        });
+      onSubmit && onSubmit(invoice);
 
       return false;
     },
-    [amount, onSubmit, account],
+    [amount, onSubmit, referenceName, userEmail, userName],
   );
 
   return (
@@ -114,7 +121,18 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = ({ onSubmit }) => {
             contentRightStyling={false}
           />
           <Spacer />
-          <Button size="lg" type="submit" aria-label="Create invoice">
+          <Button
+            size="lg"
+            type="submit"
+            aria-label="Create invoice"
+            disabled={loading}
+          >
+            {loading && (
+              <React.Fragment>
+                <Loading type="points-opacity" color="currentColor" size="sm" />
+                <Spacer y={0} x={0.25} />
+              </React.Fragment>
+            )}
             Create
           </Button>
         </Card.Body>
