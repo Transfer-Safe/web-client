@@ -17,7 +17,9 @@ export const useRefundInvoiceContractFunction = (
 };
 
 export const useRefundInvoice = () => {
-  const refundFunction = useRefundInvoiceContractFunction();
+  const refundFunction = useRefundInvoiceContractFunction({
+    transactionName: 'Refund invoice',
+  });
 
   const send = useCallback(
     async (invoice: Invoice) => {

@@ -17,7 +17,9 @@ export const useConfirmInvoiceContractFunction = (
 };
 
 export const useConfirmInvoice = () => {
-  const confirmInvoiceContractFunction = useConfirmInvoiceContractFunction();
+  const confirmInvoiceContractFunction = useConfirmInvoiceContractFunction({
+    transactionName: 'Confirm invoice',
+  });
 
   const send = useCallback(
     async (invoice: Invoice) => {

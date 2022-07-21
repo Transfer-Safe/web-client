@@ -1,6 +1,6 @@
 import { Chain, useEthers } from '@usedapp/core';
 import { NextPage } from 'next';
-import React, { useCallback, useEffect, useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 
 import assert from 'assert';

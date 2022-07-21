@@ -19,7 +19,9 @@ const useCreateInvoiceContractFunction = (options?: TransactionOptions) => {
 
 export const useCreateInvoice = () => {
   const [invoice, setInvoice] = useState<Invoice | undefined>();
-  const { send, state, resetState } = useCreateInvoiceContractFunction();
+  const { send, state, resetState } = useCreateInvoiceContractFunction({
+    transactionName: 'Create new invoice',
+  });
   const router = useRouter();
   const dispatch = useDispatch();
 

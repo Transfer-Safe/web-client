@@ -15,7 +15,9 @@ const useDepositContractFunction = (options?: TransactionOptions) => {
 };
 
 export const useDepositInvoice = () => {
-  const depositContractFunction = useDepositContractFunction();
+  const depositContractFunction = useDepositContractFunction({
+    transactionName: 'Deposit invoice with native currency',
+  });
 
   const send = useCallback(
     async (invoice: Invoice) => {
