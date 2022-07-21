@@ -55,7 +55,7 @@ const InvoicePage: NextPage<InvoicePageProps> = ({ invoiceId }) => {
       {invoice && (
         <div>
           <InvoiceView invoice={invoice} />
-          {invoice.balance == 0 && (
+          {invoice.balance == 0 && !invoice.paid && (
             <Button loading={depositInvoice.loading} onClick={onPay}>
               Pay {amount}
             </Button>

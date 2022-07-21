@@ -1,4 +1,3 @@
-import { Button } from '@nextui-org/react';
 import { Chain } from '@usedapp/core';
 import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
@@ -30,7 +29,7 @@ export const InvoiceView: React.FC<InvoiceViewProps> = ({ invoice }) => {
         <strong>Balance:</strong> {formatAmount(invoice.balance, chain)}
       </p>
       <p>
-        <strong>Receipement name:</strong> {invoice.receipientName}
+        <strong>Recipient name:</strong> {invoice.receipientName}
       </p>
     </div>
   );
