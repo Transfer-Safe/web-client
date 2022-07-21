@@ -9,6 +9,9 @@ export class Invoice {
   ref: string;
   receipientName: string;
   receipientEmail: string;
+  releaseLockTimeout: BigNumberish = 0;
+
+  private _releaseLockDate: BigNumberish = 0;
   private _balance: BigNumberish = 0;
   private _paid = false;
   private _senderAddress = constants.AddressZero;
@@ -21,6 +24,7 @@ export class Invoice {
     ref: string,
     receipientName: string,
     receipientEmail: string,
+    releaseLockTimeout: BigNumberish,
   ) {
     this.amount = amount;
     this.isNativeToken = isNativeToken;
@@ -28,6 +32,7 @@ export class Invoice {
     this.ref = ref;
     this.receipientName = receipientName;
     this.receipientEmail = receipientEmail;
+    this.releaseLockTimeout = releaseLockTimeout;
     this.id = this.generateId();
   }
 
@@ -45,6 +50,10 @@ export class Invoice {
 
   get receipientAddress(): string {
     return this._receipientAddress;
+  }
+
+  get releaseLockDate(): BigNumberish {
+    return this._releaseLockDate;
   }
 
   private generateId(): string {
@@ -68,6 +77,8 @@ export class Invoice {
       receipientAddress: this.receipientAddress,
       senderAddress: this.senderAddress,
       tokenType: constants.AddressZero,
+      releaseLockTimeout: this.releaseLockTimeout,
+      releaseLockDate: this.releaseLockDate,
     };
   }
 
@@ -79,12 +90,14 @@ export class Invoice {
       await invoice.ref,
       await invoice.receipientName,
       await invoice.receipientEmail,
+      await invoice.releaseLockTimeout,
     );
     promise.id = await invoice.id;
     promise._balance = await invoice.balance;
     promise._paid = await invoice.paid;
     promise._senderAddress = await invoice.senderAddress;
     promise._receipientAddress = await invoice.receipientAddress;
+    promise._releaseLockDate = await invoice.releaseLockDate;
     return promise;
   }
 }

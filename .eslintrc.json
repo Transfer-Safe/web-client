@@ -8,7 +8,7 @@
     "prettier"
   ],
   "plugins": ["prettier", "@typescript-eslint"],
-  "ignorePatterns": ["*.js"],
+  "ignorePatterns": ["*.js", "*.d.ts"],
   "rules": {
     "require-jsdoc": "off",
     "camelcase": "off",

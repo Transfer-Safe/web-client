@@ -13,7 +13,7 @@
     "@ethersproject/units": "^5.6.1",
     "@nextui-org/react": "^1.0.0-beta.9",
     "@reduxjs/toolkit": "^1.8.3",
-    "@transfer-safe/router": "0.0.10",
+    "@transfer-safe/router": "0.0.12",
     "@usedapp/core": "^1.1.2",
     "@walletconnect/web3-provider": "^1.7.8",
     "aws-amplify": "^4.3.27",
