@@ -46,6 +46,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = ({
         referenceName,
         userName,
         userEmail,
+        0,
       );
 
       onSubmit && onSubmit(invoice);
