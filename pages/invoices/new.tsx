@@ -4,6 +4,7 @@ import { useCallback, useMemo } from 'react';
 
 import style from './new.module.scss';
 
+import Header from '../../components/Header';
 import InvoiceForm from '../../components/InvoiceForm';
 import { SignIn } from '../../components/signin';
 import { useCreateInvoice } from '../../hooks';
@@ -25,6 +26,7 @@ const NewInvoice: NextPage = () => {
 
   return (
     <Container xs className={style.NewInvoicePage}>
+      <Header />
       <Text h2>New invoice</Text>
       <Spacer />
       <SignIn />
