@@ -16,6 +16,7 @@ export class Invoice {
   private _paid = false;
   private _senderAddress = constants.AddressZero;
   private _receipientAddress = constants.AddressZero;
+  private _fee: BigNumberish = 0;
 
   constructor(
     amount: BigNumberish,
@@ -56,6 +57,10 @@ export class Invoice {
     return this._releaseLockDate;
   }
 
+  get fee(): BigNumberish {
+    return this._fee;
+  }
+
   private generateId(): string {
     return utils.id(JSON.stringify(this) + new Date().valueOf().toString());
   }
@@ -72,7 +77,7 @@ export class Invoice {
       balance: this.balance,
       created: new Date().valueOf(),
       exist: true,
-      fee: 0,
+      fee: this.fee,
       paid: this.paid,
       receipientAddress: this.receipientAddress,
       senderAddress: this.senderAddress,
@@ -98,6 +103,7 @@ export class Invoice {
     promise._senderAddress = await invoice.senderAddress;
     promise._receipientAddress = await invoice.receipientAddress;
     promise._releaseLockDate = await invoice.releaseLockDate;
+    promise._fee = await invoice.fee;
     return promise;
   }
 }

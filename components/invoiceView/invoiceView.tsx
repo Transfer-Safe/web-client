@@ -29,6 +29,9 @@ export const InvoiceView: React.FC<InvoiceViewProps> = ({ invoice }) => {
         <strong>Balance:</strong> {formatAmount(invoice.balance, chain)}
       </p>
       <p>
+        <strong>Fee:</strong> {formatAmount(invoice.fee, chain)}
+      </p>
+      <p>
         <strong>Recipient name:</strong> {invoice.receipientName}
       </p>
     </div>
