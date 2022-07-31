@@ -1,143 +1,78 @@
-import {
-  Button,
-  Card,
-  gray,
-  Input,
-  Loading,
-  Spacer,
-  Text,
-} from '@nextui-org/react';
-import React, {
-  FormEvent,
-  FormEventHandler,
-  useCallback,
-  useRef,
-  useState,
-} from 'react';
+import classNames from 'classnames';
+import React, { HTMLAttributes, useCallback, useMemo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import style from './InvoiceForm.module.scss';
+import StepContainer from './StepContainer';
+import {
+  AmountStep,
+  ReferenceStep,
+  CurrenciesStep,
+  NotificationsStep,
+} from './steps';
 
 import { Invoice } from '../../models';
-import { CurrencySelector } from '../CurrencySelector';
+import {
+  NewInvoiceFormState,
+  NewInvoiceFormStep,
+} from '../../store/newInvoiceForm';
+import { newInvoiceNextStep } from '../../store/newInvoiceForm/actions';
+import { RootState } from '../../store/rootReducer';
 
-interface InvoiceFormProps {
-  onSubmit?: (invoice: Invoice) => void;
+type InvoiceFormProps = HTMLAttributes<HTMLDivElement> & {
+  onSubmitInvoice?: (invoice: Invoice) => void;
   loading?: boolean;
-}
+};
 
 export const InvoiceForm: React.FC<InvoiceFormProps> = ({
-  onSubmit,
-  loading = false,
+  className,
+  onSubmitInvoice,
+  loading,
+  ...props
 }) => {
-  const formRef = useRef<HTMLFormElement | null>();
+  const { step: currentStep } = useSelector<RootState, NewInvoiceFormState>(
+    ({ newInvoiceForm }) => newInvoiceForm,
+  );
+  const dispatch = useDispatch();
 
-  const [referenceName, setReferenceName] = useState('');
-  const [userName, setUserName] = useState('');
-  const [userEmail, setUserEmail] = useState('');
-  const [amount, setAmount] = useState(0);
-
-  const onFormSubmit: FormEventHandler<HTMLFormElement> = useCallback(
-    (event: FormEvent<HTMLFormElement>) => {
-      event.preventDefault();
-      const invoice = new Invoice(
-        amount,
-        true,
-        [],
-        referenceName,
-        userName,
-        userEmail,
-        0,
-      );
-
-      onSubmit && onSubmit(invoice);
-
-      return false;
-    },
-    [amount, onSubmit, referenceName, userEmail, userName],
+  const onAmountSubmit = useCallback(
+    () => dispatch(newInvoiceNextStep()),
+    [dispatch],
   );
 
+  const onReferenceSubmit = useCallback(
+    () => dispatch(newInvoiceNextStep()),
+    [dispatch],
+  );
+
+  const onNotificationsSubmit = useCallback(
+    () => dispatch(newInvoiceNextStep()),
+    [dispatch],
+  );
+
+  const currentStepRender = useMemo(() => {
+    switch (currentStep) {
+      case NewInvoiceFormStep.amount:
+        return <AmountStep onAmountSubmit={onAmountSubmit} />;
+      case NewInvoiceFormStep.reference:
+        return <ReferenceStep onReferenceSubmitted={onReferenceSubmit} />;
+      case NewInvoiceFormStep.notifications:
+        return (
+          <NotificationsStep onNotificationsSubmit={onNotificationsSubmit} />
+        );
+      case NewInvoiceFormStep.currency:
+        return <CurrenciesStep />;
+    }
+  }, [currentStep, onAmountSubmit, onReferenceSubmit, onNotificationsSubmit]);
+
   return (
-    <Card className={style.InvoiceForm}>
-      <form onSubmit={onFormSubmit} ref={(ref) => (formRef.current = ref)}>
-        <Card.Body>
-          <Input
-            value={referenceName}
-            onChange={(event) => setReferenceName(event.target.value)}
-            className={style.input}
-            size="lg"
-            label="Transfer reference"
-            aria-label="Transfer reference"
-            placeholder="e.g. — Used iPhone"
-          />
-          <Text color={gray.gray700} size="0.75em">
-            So the payer will know what he&apos;s transfering for
-          </Text>
-          <Spacer />
-          <Input
-            value={userName}
-            onChange={(event) => setUserName(event.target.value)}
-            className={style.input}
-            size="lg"
-            label="Your name"
-            aria-label="Your name"
-            placeholder="Helen"
-            autoComplete="name"
-          />
-          <Text color={gray.gray700} size="0.75em">
-            So the payer will know who&apos;s transfering
-          </Text>
-          <Spacer />
-          <Input
-            value={userEmail}
-            onChange={(event) => setUserEmail(event.target.value)}
-            className={style.input}
-            size="lg"
-            label="Your email"
-            aria-label="Your email"
-            placeholder="Helen"
-            autoComplete="email"
-            type="email"
-          />
-          <Text color={gray.gray700} size="0.75em">
-            So we can email you when the transfer is received
-          </Text>
-          <Spacer />
-          <Input
-            type="number"
-            contentLeftStyling={false}
-            contentLeft={
-              <div>
-                <CurrencySelector currency="ETH" />
-              </div>
-            }
-            value={amount}
-            onChange={(event) => setAmount(Number(event.target.value))}
-            contentRight={
-              <div>
-                <Text color={gray.gray700}>100$</Text>
-              </div>
-            }
-            label="Transfer amount"
-            aria-label="Transfer amount"
-            contentRightStyling={false}
-          />
-          <Spacer />
-          <Button
-            size="lg"
-            type="submit"
-            aria-label="Create invoice"
-            disabled={loading}
-          >
-            {loading && (
-              <React.Fragment>
-                <Loading type="points-opacity" color="currentColor" size="sm" />
-                <Spacer y={0} x={0.25} />
-              </React.Fragment>
-            )}
-            Create
-          </Button>
-        </Card.Body>
-      </form>
-    </Card>
+    <div className={classNames(className, style.InvoiceForm)} {...props}>
+      <div className={style.container}>
+        <StepContainer withDetails={currentStep !== NewInvoiceFormStep.amount}>
+          {currentStepRender}
+        </StepContainer>
+      </div>
+      <div className={style.header} />
+    </div>
   );
 };

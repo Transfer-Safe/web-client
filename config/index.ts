@@ -1,6 +1,7 @@
 import { Config, Mumbai } from '@usedapp/core';
 
 export * from './contractAddress';
+export * from './theme';
 
 export const DAPP_CONFIG: Config = {
   readOnlyChainId: Mumbai.chainId,

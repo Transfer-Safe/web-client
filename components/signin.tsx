@@ -1,6 +1,7 @@
-import { Button } from '@nextui-org/react';
 import { useEthers } from '@usedapp/core';
 import React, { useCallback } from 'react';
+
+import Button from './Button';
 
 export const SignIn: React.FC = () => {
   const { account, activateBrowserWallet, deactivate } = useEthers();

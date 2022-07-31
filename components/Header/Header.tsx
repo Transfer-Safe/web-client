@@ -1,4 +1,5 @@
-import { Button, Spacer, Text } from '@nextui-org/react';
+import { AppBar } from '@mui/material';
+import { Container } from '@mui/system';
 
 import styles from './Header.module.scss';
 
@@ -6,18 +7,11 @@ import Logo from '../Logo';
 
 const Header: React.FC = () => {
   return (
-    <div className={styles.Header}>
-      <Logo />
-      <Spacer y={0} x={1} />
-      <Button.Group>
-        <Button light auto className={styles.buttons}>
-          <Text weight="medium">Request payment</Text>
-        </Button>
-        <Button light auto className={styles.buttons}>
-          <Text weight="medium">About</Text>
-        </Button>
-      </Button.Group>
-    </div>
+    <AppBar color="transparent" className={styles.Header} position="static">
+      <Container maxWidth="xl">
+        <Logo />
+      </Container>
+    </AppBar>
   );
 };
 

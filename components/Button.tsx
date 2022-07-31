@@ -1,32 +1,12 @@
-import {
-  Button as BaseButton,
-  ButtonProps as BaseButtonProps,
-  Loading,
-  Spacer,
-} from '@nextui-org/react';
+import { LoadingButton, LoadingButtonProps } from '@mui/lab';
 import React from 'react';
 
-export type ButtonProps = BaseButtonProps & {
+export type ButtonProps = LoadingButtonProps & {
   loading?: boolean;
 };
 
-const Button: React.FC<ButtonProps> = ({
-  children,
-  loading,
-  disabled,
-  ...props
-}) => {
-  return (
-    <BaseButton {...props} disabled={disabled || loading}>
-      {loading && (
-        <React.Fragment>
-          <Loading type="points-opacity" color="currentColor" size="sm" />
-          <Spacer y={0} x={0.25} />
-        </React.Fragment>
-      )}{' '}
-      {children}
-    </BaseButton>
-  );
+const Button: React.FC<ButtonProps> = ({ children, ...props }) => {
+  return <LoadingButton {...props}>{children}</LoadingButton>;
 };
 
 export default Button;

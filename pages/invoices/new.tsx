@@ -1,4 +1,3 @@
-import { Container, Spacer, Text } from '@nextui-org/react';
 import { NextPage } from 'next';
 import { useCallback, useMemo } from 'react';
 
@@ -6,7 +5,6 @@ import style from './new.module.scss';
 
 import Header from '../../components/Header';
 import InvoiceForm from '../../components/InvoiceForm';
-import { SignIn } from '../../components/signin';
 import { useCreateInvoice } from '../../hooks';
 import { Invoice } from '../../models';
 
@@ -25,14 +23,14 @@ const NewInvoice: NextPage = () => {
   );
 
   return (
-    <Container xs className={style.NewInvoicePage}>
+    <div className={style.NewInvoicePage}>
       <Header />
-      <Text h2>New invoice</Text>
-      <Spacer />
-      <SignIn />
-      <Spacer />
-      <InvoiceForm loading={isLoading} onSubmit={onCreate} />
-    </Container>
+      <InvoiceForm
+        className={style.container}
+        loading={isLoading}
+        onSubmitInvoice={onCreate}
+      />
+    </div>
   );
 };
 
