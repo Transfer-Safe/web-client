@@ -1,30 +1,39 @@
 import { Box, Button, TextField, Typography } from '@mui/material';
-import { FormEventHandler, HTMLAttributes, useCallback, useState } from 'react';
+import { FormEventHandler, HTMLAttributes, useCallback } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import style from './ReferenceStep.module.scss';
 
+import { newInvoiceUpdate } from '../../../../store/newInvoiceForm/actions';
+import { RootState } from '../../../../store/rootReducer';
+
 type ReferenceStepProps = HTMLAttributes<HTMLDivElement> & {
-  onReferenceSubmitted: (reference: string) => void;
+  onReferenceSubmitted: () => void;
 };
 
 export const ReferenceStep: React.FC<ReferenceStepProps> = ({
   onReferenceSubmitted,
   ...props
 }) => {
-  const [reference, setReference] = useState('');
+  const dispatch = useDispatch();
+  const reference = useSelector<RootState, string>(
+    (state) => state.newInvoiceForm.reference || '',
+  );
 
   const onChange = useCallback(
-    (value: string) => setReference(value),
-    [setReference],
+    (value: string) => {
+      dispatch(newInvoiceUpdate({ reference: value }));
+    },
+    [dispatch],
   );
 
   const onSubmit: FormEventHandler<HTMLFormElement> = useCallback(
     (e) => {
       e.preventDefault();
-      onReferenceSubmitted(reference);
+      onReferenceSubmitted();
       return true;
     },
-    [onReferenceSubmitted, reference],
+    [onReferenceSubmitted],
   );
 
   return (
@@ -45,7 +54,9 @@ export const ReferenceStep: React.FC<ReferenceStepProps> = ({
             sx={{ flex: '1' }}
           />
           <Box mr={2} />
-          <Button variant="contained">Continue</Button>
+          <Button type="submit" variant="contained">
+            Continue
+          </Button>
         </Box>
       </form>
     </div>

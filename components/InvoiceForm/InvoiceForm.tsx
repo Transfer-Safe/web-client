@@ -9,6 +9,7 @@ import {
   ReferenceStep,
   CurrenciesStep,
   NotificationsStep,
+  CreateStep,
 } from './steps';
 
 import { Invoice } from '../../models';
@@ -50,6 +51,11 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = ({
     [dispatch],
   );
 
+  const onCurrenciesSubmit = useCallback(
+    () => dispatch(newInvoiceNextStep()),
+    [dispatch],
+  );
+
   const currentStepRender = useMemo(() => {
     switch (currentStep) {
       case NewInvoiceFormStep.amount:
@@ -61,9 +67,17 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = ({
           <NotificationsStep onNotificationsSubmit={onNotificationsSubmit} />
         );
       case NewInvoiceFormStep.currency:
-        return <CurrenciesStep />;
+        return <CurrenciesStep onCurrenciesSubmit={onCurrenciesSubmit} />;
+      case NewInvoiceFormStep.create:
+        return <CreateStep />;
     }
-  }, [currentStep, onAmountSubmit, onReferenceSubmit, onNotificationsSubmit]);
+  }, [
+    currentStep,
+    onAmountSubmit,
+    onReferenceSubmit,
+    onNotificationsSubmit,
+    onCurrenciesSubmit,
+  ]);
 
   return (
     <div className={classNames(className, style.InvoiceForm)} {...props}>

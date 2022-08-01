@@ -6,6 +6,9 @@ export const theme = createTheme({
     primary: {
       main: '#5F37D0',
     },
+    disabled: {
+      main: '#9B9B9B',
+    },
   },
   typography: {
     fontSize: 17,

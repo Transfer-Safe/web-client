@@ -1,11 +1,15 @@
 import { Box, Button, TextField, Typography } from '@mui/material';
 import classNames from 'classnames';
 import { FormEventHandler, HTMLAttributes, useCallback, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import style from './NotificationsStep.module.scss';
 
+import { newInvoiceUpdate } from '../../../../store/newInvoiceForm/actions';
+import { RootState } from '../../../../store/rootReducer';
+
 type NotificationsStep = HTMLAttributes<HTMLInputElement> & {
-  onNotificationsSubmit: (email: string) => void;
+  onNotificationsSubmit: () => void;
 };
 
 export const NotificationsStep: React.FC<NotificationsStep> = ({
@@ -13,17 +17,27 @@ export const NotificationsStep: React.FC<NotificationsStep> = ({
   className,
   ...props
 }) => {
-  const [email, setEmail] = useState('');
+  const dispatch = useDispatch();
+  const initialEmail = useSelector<RootState, string | undefined>(
+    (state) => state.newInvoiceForm.email,
+  );
+  const [email, setEmail] = useState(initialEmail || '');
 
-  const onChange = useCallback((value: string) => setEmail(value), [setEmail]);
+  const onChange = useCallback(
+    (value: string) => {
+      setEmail(value);
+    },
+    [setEmail],
+  );
 
   const onSubmit: FormEventHandler<HTMLFormElement> = useCallback(
     (e) => {
       e.preventDefault();
-      onNotificationsSubmit(email);
+      dispatch(newInvoiceUpdate({ email }));
+      onNotificationsSubmit();
       return true;
     },
-    [onNotificationsSubmit, email],
+    [onNotificationsSubmit, email, dispatch],
   );
 
   return (
@@ -48,7 +62,9 @@ export const NotificationsStep: React.FC<NotificationsStep> = ({
             type="email"
           />
           <Box mr={2} />
-          <Button variant="contained">Continue</Button>
+          <Button type="submit" variant="contained">
+            Continue
+          </Button>
         </Box>
       </form>
     </div>

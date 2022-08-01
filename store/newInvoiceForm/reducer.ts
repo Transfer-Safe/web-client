@@ -1,8 +1,15 @@
-import { NewInvoiceFormActions } from './actions';
+import {
+  NewInvoiceFormActions,
+  NEW_INVOICE_NEXT_STEP,
+  NEW_INVOICE_UPDATE,
+} from './actions';
 import { NewInvoiceFormState, NewInvoiceFormStep } from './types';
 
 export const initialState: NewInvoiceFormState = {
   step: NewInvoiceFormStep.amount,
+  amount: 0,
+  isNativeCurrencyEnabled: true,
+  currencies: [],
 };
 
 const STEPS_ORDER: NewInvoiceFormStep[] = [
@@ -18,8 +25,13 @@ export const newInvoiceFormReducer = (
   action: NewInvoiceFormActions,
 ): NewInvoiceFormState => {
   switch (action.type) {
-    case 'NEW_INVOICE_NEXT_STEP':
+    case NEW_INVOICE_NEXT_STEP:
       return newInvoiceNextStep(state);
+    case NEW_INVOICE_UPDATE:
+      return {
+        ...state,
+        ...action.payload,
+      };
     default:
       return state;
   }

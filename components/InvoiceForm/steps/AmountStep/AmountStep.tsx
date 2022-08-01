@@ -1,23 +1,41 @@
 import { Button, TextField, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import { FormEventHandler, useCallback, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import style from './AmountStep.module.scss';
 
+import { newInvoiceUpdate } from '../../../../store/newInvoiceForm/actions';
+import { RootState } from '../../../../store/rootReducer';
+
 interface AmountStepProps {
-  onAmountSubmit: (amount: number) => void;
+  onAmountSubmit: () => void;
 }
 
 export const AmountStep: React.FC<AmountStepProps> = ({ onAmountSubmit }) => {
-  const [amountValue, setAmountValue] = useState('');
+  const dispatch = useDispatch();
+  const currentAmount = useSelector<RootState, number>(
+    (state) => state.newInvoiceForm.amount,
+  );
+  const [amountValue, setAmountValue] = useState(
+    currentAmount ? currentAmount.toString() : '',
+  );
 
   const onSubmit: FormEventHandler<HTMLFormElement> = useCallback(
     (e) => {
       e.preventDefault();
-      onAmountSubmit(Number(amountValue));
+      onAmountSubmit();
       return true;
     },
-    [amountValue, onAmountSubmit],
+    [onAmountSubmit],
+  );
+
+  const onChange = useCallback(
+    (v: string) => {
+      setAmountValue(v);
+      dispatch(newInvoiceUpdate({ amount: Number(v) }));
+    },
+    [dispatch],
   );
 
   return (
@@ -29,7 +47,7 @@ export const AmountStep: React.FC<AmountStepProps> = ({ onAmountSubmit }) => {
         <Box mt={4} sx={{ display: 'flex' }}>
           <TextField
             value={amountValue}
-            onChange={(e) => setAmountValue(e.target.value)}
+            onChange={(e) => onChange(e.target.value)}
             type="text"
             autoFocus
             variant="outlined"
@@ -37,7 +55,9 @@ export const AmountStep: React.FC<AmountStepProps> = ({ onAmountSubmit }) => {
             sx={{ flex: '1' }}
           />
           <Box mr={2} />
-          <Button variant="contained">Continue</Button>
+          <Button type="submit" variant="contained">
+            Continue
+          </Button>
         </Box>
       </form>
     </div>
