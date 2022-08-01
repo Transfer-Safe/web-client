@@ -1,18 +1,16 @@
-import { Chain, useEthers } from '@usedapp/core';
 import { NextPage } from 'next';
 import React, { useCallback, useMemo } from 'react';
-import { useSelector } from 'react-redux';
+import { useAccount } from 'wagmi';
 
 import assert from 'assert';
 
 import Button from '../../components/Button';
 import InvoiceView from '../../components/invoiceView';
-import { SignIn } from '../../components/signin';
-import { useDepositInvoice } from '../../hooks';
+import { useCurrentChain, useDepositInvoice } from '../../hooks';
 import { useConfirmInvoice } from '../../hooks/useConfirmInvoice';
 import { useGetInvoice } from '../../hooks/useGetInvoice';
 import { useRefundInvoice } from '../../hooks/useRefundInvoice';
-import { RootState } from '../../store/rootReducer';
+import { Invoice } from '../../models';
 import { formatAmount } from '../../utils';
 
 export interface InvoicePageProps {
@@ -20,26 +18,27 @@ export interface InvoicePageProps {
 }
 
 const InvoicePage: NextPage<InvoicePageProps> = ({ invoiceId }) => {
-  const { invoice, error, loading } = useGetInvoice(invoiceId);
-  const { account } = useEthers();
-  const depositInvoice = useDepositInvoice();
-  const confirmInvoice = useConfirmInvoice();
-  const refundInvoice = useRefundInvoice();
-  const chain = useSelector<RootState, Chain>(({ settings }) => settings.chain);
+  const { data, error, isLoading } = useGetInvoice(invoiceId);
+  const invoice = data as Invoice | undefined;
+  const { address } = useAccount();
+  const depositInvoice = useDepositInvoice(invoiceId);
+  const confirmInvoice = useConfirmInvoice(invoiceId);
+  const refundInvoice = useRefundInvoice(invoiceId);
+  const chain = useCurrentChain();
 
   const onRefund = useCallback(async () => {
     assert(invoice);
-    await refundInvoice.send(invoice);
+    await refundInvoice.writeAsync?.();
   }, [refundInvoice, invoice]);
 
   const onPay = useCallback(async () => {
     assert(invoice);
-    await depositInvoice.send(invoice);
+    await depositInvoice.writeAsync?.();
   }, [invoice, depositInvoice]);
 
   const onConfirm = useCallback(async () => {
     assert(invoice);
-    await confirmInvoice.send(invoice);
+    await confirmInvoice.writeAsync?.();
   }, [invoice, confirmInvoice]);
 
   const amount = useMemo(
@@ -49,25 +48,24 @@ const InvoicePage: NextPage<InvoicePageProps> = ({ invoiceId }) => {
 
   return (
     <div>
-      <SignIn />
       {error && <p>Failed to fetch invoice</p>}
-      {loading && <p>Loading...</p>}
+      {isLoading && <p>Loading...</p>}
       {invoice && (
         <div>
           <InvoiceView invoice={invoice} />
           {invoice.balance == 0 && !invoice.paid && (
-            <Button loading={depositInvoice.loading} onClick={onPay}>
+            <Button loading={depositInvoice.isLoading} onClick={onPay}>
               Pay {amount}
             </Button>
           )}
-          {invoice.balance > 0 && account == invoice.senderAddress && (
-            <Button loading={confirmInvoice.loading} onClick={onConfirm}>
+          {invoice.balance > 0 && address == invoice.senderAddress && (
+            <Button loading={confirmInvoice.isLoading} onClick={onConfirm}>
               Confirm
             </Button>
           )}
 
-          {invoice.balance > 0 && account == invoice.receipientAddress && (
-            <Button loading={refundInvoice.loading} onClick={onRefund}>
+          {invoice.balance > 0 && address == invoice.receipientAddress && (
+            <Button loading={refundInvoice.isLoading} onClick={onRefund}>
               Refund
             </Button>
           )}

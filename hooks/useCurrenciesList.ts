@@ -5,9 +5,9 @@ import { CryptoCurrency, CurrencyCode } from '../models';
 
 export const useCurrenciesList = (): CryptoCurrency[] => {
   const currentChain = useCurrentChain();
-  const chainCurrenciesConfig = CURRENCIES_ADDRESSES[currentChain.chainId];
+  const chainCurrenciesConfig = CURRENCIES_ADDRESSES[currentChain.id];
   if (!chainCurrenciesConfig) {
-    throw new Error(`Chain ${currentChain.chainName} not supported`);
+    throw new Error(`Chain ${currentChain.name} not supported`);
   }
   const availableCurrencies: CryptoCurrency[] = [];
   Object.entries(chainCurrenciesConfig).forEach(([code, address]) => {

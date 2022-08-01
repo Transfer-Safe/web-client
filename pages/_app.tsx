@@ -2,15 +2,17 @@ import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
+import '@rainbow-me/rainbowkit/styles.css';
 
 import { CacheProvider, EmotionCache } from '@emotion/react';
 import { CssBaseline, ThemeProvider } from '@mui/material';
-import { DAppProvider } from '@usedapp/core';
+import { lightTheme, RainbowKitProvider } from '@rainbow-me/rainbowkit';
 import type { AppProps } from 'next/app';
 import React from 'react';
 import { Provider } from 'react-redux';
+import { WagmiConfig } from 'wagmi';
 
-import { DAPP_CONFIG, theme } from '../config';
+import { chains, theme, wagmiClient } from '../config';
 import store from '../store';
 import createEmotionCache from '../utils/createEmotionCache';
 
@@ -26,9 +28,16 @@ function MyApp({
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <Provider store={store}>
-          <DAppProvider config={DAPP_CONFIG}>
-            <Component {...pageProps} />
-          </DAppProvider>
+          <WagmiConfig client={wagmiClient}>
+            <RainbowKitProvider
+              chains={chains}
+              theme={lightTheme({
+                accentColor: theme.palette.primary.main,
+              })}
+            >
+              <Component {...pageProps} />
+            </RainbowKitProvider>
+          </WagmiConfig>
         </Provider>
       </ThemeProvider>
     </CacheProvider>

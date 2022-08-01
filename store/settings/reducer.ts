@@ -1,10 +1,10 @@
-import { Mumbai } from '@usedapp/core';
+import { chain } from 'wagmi';
 
 import { CHANGE_CHAIN, SettingsActions } from './actions';
 import { SettingsState } from './types';
 
 const initialState: SettingsState = {
-  chainId: Mumbai.chainId,
+  chainId: chain.polygonMumbai.id,
 };
 
 export const settingsReducer = (

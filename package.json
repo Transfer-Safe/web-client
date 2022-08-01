@@ -19,9 +19,9 @@
     "@mui/icons-material": "^5.8.4",
     "@mui/lab": "^5.0.0-alpha.91",
     "@mui/material": "^5.9.1",
+    "@rainbow-me/rainbowkit": "^0.4.5",
     "@reduxjs/toolkit": "^1.8.3",
     "@transfer-safe/router": "0.0.12",
-    "@usedapp/core": "^1.1.2",
     "@walletconnect/web3-provider": "^1.7.8",
     "aws-amplify": "^4.3.27",
     "classnames": "^2.3.1",
@@ -33,7 +33,8 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-redux": "^8.0.2",
-    "redux": "^4.2.0"
+    "redux": "^4.2.0",
+    "wagmi": "^0.6.0"
   },
   "devDependencies": {
     "@types/node": "18.0.4",

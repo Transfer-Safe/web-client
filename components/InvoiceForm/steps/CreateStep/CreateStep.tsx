@@ -1,8 +1,8 @@
-import AccountBalanceWalletOutlinedIcon from '@mui/icons-material/AccountBalanceWalletOutlined';
 import { Box, Button, Typography } from '@mui/material';
-import { useEthers } from '@usedapp/core';
+import { ConnectButton } from '@rainbow-me/rainbowkit';
 import classNames from 'classnames';
 import { HTMLAttributes, useCallback } from 'react';
+import { useAccount } from 'wagmi';
 
 import style from './CreateStep.module.scss';
 
@@ -12,11 +12,7 @@ export const CreateStep: React.FC<CreateStepProps> = ({
   className,
   ...props
 }) => {
-  const { account, activateBrowserWallet } = useEthers();
-
-  const onConnect = useCallback(() => {
-    activateBrowserWallet();
-  }, [activateBrowserWallet]);
+  const { isConnected } = useAccount();
 
   const onCreateInvoice = useCallback(() => {
     console.log('===> on create invoice');
@@ -29,17 +25,8 @@ export const CreateStep: React.FC<CreateStepProps> = ({
         Please connect, using your favorite wallet, to create the invoice
       </Typography>
       <Box mt={2}>
-        {!account && (
-          <Button
-            size="large"
-            variant="contained"
-            onClick={onConnect}
-            startIcon={<AccountBalanceWalletOutlinedIcon />}
-          >
-            Connect wallet
-          </Button>
-        )}
-        {account && (
+        {!isConnected && <ConnectButton />}
+        {isConnected && (
           <Button size="large" variant="contained" onClick={onCreateInvoice}>
             Create invoice
           </Button>

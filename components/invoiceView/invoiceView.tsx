@@ -1,9 +1,7 @@
-import { Chain } from '@usedapp/core';
 import { useMemo } from 'react';
-import { useSelector } from 'react-redux';
 
+import { useCurrentChain } from '../../hooks';
 import { Invoice } from '../../models';
-import { RootState } from '../../store/rootReducer';
 import { formatAmount } from '../../utils';
 
 export interface InvoiceViewProps {
@@ -11,7 +9,7 @@ export interface InvoiceViewProps {
 }
 
 export const InvoiceView: React.FC<InvoiceViewProps> = ({ invoice }) => {
-  const chain = useSelector<RootState, Chain>(({ settings }) => settings.chain);
+  const chain = useCurrentChain();
   const amount = useMemo(
     () => formatAmount(invoice.amount, chain),
     [invoice.amount, chain],
