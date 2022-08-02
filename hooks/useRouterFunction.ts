@@ -20,9 +20,16 @@ export function useWriteRouterFunction<
   return config;
 }
 
+export type ReadContract<T> = ReturnType<typeof useContractRead> & {
+  data?: Awaited<T>;
+};
+
 export function useReadRouterFunction<
   T extends keyof TransferSafeRouter['functions'],
->(functionName: T, args: Parameters<TransferSafeRouter['functions'][T]>) {
+>(
+  functionName: T,
+  args: Parameters<TransferSafeRouter['functions'][T]>,
+): ReadContract<ReturnType<TransferSafeRouter['functions'][T]>> {
   const routerContractAddress = useRouterContractAddress();
 
   return useContractRead({
@@ -30,5 +37,5 @@ export function useReadRouterFunction<
     functionName: functionName,
     contractInterface: TransferSafeRouter__factory.abi,
     args,
-  });
+  }) as any;
 }

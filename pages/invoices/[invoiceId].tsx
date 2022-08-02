@@ -10,7 +10,6 @@ import { useCurrentChain, useDepositInvoice } from '../../hooks';
 import { useConfirmInvoice } from '../../hooks/useConfirmInvoice';
 import { useGetInvoice } from '../../hooks/useGetInvoice';
 import { useRefundInvoice } from '../../hooks/useRefundInvoice';
-import { Invoice } from '../../models';
 import { formatAmount } from '../../utils';
 
 export interface InvoicePageProps {
@@ -18,8 +17,7 @@ export interface InvoicePageProps {
 }
 
 const InvoicePage: NextPage<InvoicePageProps> = ({ invoiceId }) => {
-  const { data, error, isLoading } = useGetInvoice(invoiceId);
-  const invoice = data as Invoice | undefined;
+  const { data: invoice, error, isLoading } = useGetInvoice(invoiceId);
   const { address } = useAccount();
   const depositInvoice = useDepositInvoice(invoiceId);
   const confirmInvoice = useConfirmInvoice(invoiceId);
@@ -53,7 +51,7 @@ const InvoicePage: NextPage<InvoicePageProps> = ({ invoiceId }) => {
       {invoice && (
         <div>
           <InvoiceView invoice={invoice} />
-          {invoice.balance == 0 && !invoice.paid && (
+          {invoice.balance === 0 && !invoice.paid && (
             <Button loading={depositInvoice.isLoading} onClick={onPay}>
               Pay {amount}
             </Button>
