@@ -70,8 +70,9 @@ export const CurrenciesStep: React.FC<CurrenciesStepProps> = ({
       onSubmit={onSubmit}
     >
       <Typography variant="h1">What currencies do you prefer?</Typography>
-      <Box mt={2} display="flex">
+      <Box mt={2} display="flex" flexWrap="wrap">
         <CurrencyButton
+          mb={2}
           onClick={switchNativeCurrency}
           active={isNativeEnabled}
           name={currentChain.nativeCurrency?.name || 'MATIC'}

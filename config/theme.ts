@@ -16,9 +16,25 @@ export const theme = createTheme({
       fontSize: '3rem',
       fontWeight: '500',
     },
+    h2: {
+      fontSize: '1.5rem',
+      fontWeight: '500',
+    },
+    h3: {
+      fontSize: '1rem',
+      fontWeight: '500',
+    },
     button: {
       textTransform: 'none',
       fontWeight: 'normal',
+    },
+    subtitle1: {
+      fontSize: '1.5rem',
+      fontWeight: '300',
+    },
+    subtitle2: {
+      fontSize: '1rem',
+      fontWeight: '300',
     },
   },
 } as ThemeOptions & {

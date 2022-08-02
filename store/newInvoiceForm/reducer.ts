@@ -1,5 +1,6 @@
 import {
   NewInvoiceFormActions,
+  NEW_INVOICE_GOTO_STEP,
   NEW_INVOICE_NEXT_STEP,
   NEW_INVOICE_UPDATE,
 } from './actions';
@@ -12,7 +13,7 @@ export const initialState: NewInvoiceFormState = {
   currencies: [],
 };
 
-const STEPS_ORDER: NewInvoiceFormStep[] = [
+export const NEW_INVOICES_STEPS_ORDER: NewInvoiceFormStep[] = [
   NewInvoiceFormStep.amount,
   NewInvoiceFormStep.reference,
   NewInvoiceFormStep.notifications,
@@ -32,6 +33,11 @@ export const newInvoiceFormReducer = (
         ...state,
         ...action.payload,
       };
+    case NEW_INVOICE_GOTO_STEP:
+      return {
+        ...state,
+        step: action.payload,
+      };
     default:
       return state;
   }
@@ -40,16 +46,16 @@ export const newInvoiceFormReducer = (
 export const newInvoiceNextStep = (
   state: NewInvoiceFormState,
 ): NewInvoiceFormState => {
-  const currentIndex = STEPS_ORDER.indexOf(state.step);
+  const currentIndex = NEW_INVOICES_STEPS_ORDER.indexOf(state.step);
   if (currentIndex < 0) {
     return state;
   }
   const nextIndex = currentIndex + 1;
-  if (nextIndex >= STEPS_ORDER.length) {
+  if (nextIndex >= NEW_INVOICES_STEPS_ORDER.length) {
     return state;
   }
   return {
     ...state,
-    step: STEPS_ORDER[nextIndex],
+    step: NEW_INVOICES_STEPS_ORDER[nextIndex],
   };
 };

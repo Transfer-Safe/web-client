@@ -1,18 +1,20 @@
 import { Box, Button, Typography } from '@mui/material';
+import { BoxProps } from '@mui/system';
 
-interface CurrencyButtonProps {
+type CurrencyButtonProps = BoxProps & {
   name: string;
   active?: boolean;
   onClick: () => void;
-}
+};
 
 export const CurrencyButton: React.FC<CurrencyButtonProps> = ({
   name,
   active = false,
   onClick,
+  ...props
 }) => {
   return (
-    <Box mr={2}>
+    <Box mr={2} {...props}>
       <Button
         onClick={onClick}
         variant="outlined"

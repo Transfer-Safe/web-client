@@ -1,8 +1,9 @@
 import { createAction } from '@reduxjs/toolkit';
 
-import { NewInvoiceFormState } from './types';
+import { NewInvoiceFormState, NewInvoiceFormStep } from './types';
 
 export const NEW_INVOICE_NEXT_STEP = 'NEW_INVOICE_NEXT_STEP';
+export const NEW_INVOICE_GOTO_STEP = 'NEW_INVOICE_GOTO_STEP';
 export const NEW_INVOICE_UPDATE = 'NEW_INVOICE_UPDATE';
 
 export const newInvoiceNextStep = createAction<
@@ -15,6 +16,12 @@ export const newInvoiceUpdate = createAction<
   typeof NEW_INVOICE_UPDATE
 >(NEW_INVOICE_UPDATE);
 
+export const newInvoiceGoToStep = createAction<
+  NewInvoiceFormStep,
+  typeof NEW_INVOICE_GOTO_STEP
+>(NEW_INVOICE_GOTO_STEP);
+
 export type NewInvoiceFormActions =
   | ReturnType<typeof newInvoiceNextStep>
-  | ReturnType<typeof newInvoiceUpdate>;
+  | ReturnType<typeof newInvoiceUpdate>
+  | ReturnType<typeof newInvoiceGoToStep>;
