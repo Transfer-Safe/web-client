@@ -1,11 +1,10 @@
+import { InvoiceStruct } from '@transfer-safe/router/contracts/TransferSafeRouter';
 import { useContractWrite } from 'wagmi';
 
 import { useWriteRouterFunction } from './useRouterFunction';
 
-import { Invoice } from '../models';
-
-export const useCreateInvoice = (invoice: Invoice) => {
-  const config = useWriteRouterFunction('createInvoice', [invoice.serialize()]);
+export const useCreateInvoice = (invoice: InvoiceStruct) => {
+  const { config } = useWriteRouterFunction('createInvoice', [invoice]);
 
   return useContractWrite(config);
 };

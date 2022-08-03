@@ -6,6 +6,9 @@ const nextConfig = withImages({
   reactStrictMode: true,
   swcMinify: true,
   i18n,
+  env: {
+    ALCHEMY_APIKEY: process.env.ALCHEMY_APIKEY
+  }
 });
 
 module.exports = nextConfig;

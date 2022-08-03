@@ -22,17 +22,17 @@ export class Invoice {
     amount: BigNumberish,
     isNativeToken: boolean,
     availableTokenTypes: string[],
-    ref: string,
-    receipientName: string,
-    receipientEmail: string,
-    releaseLockTimeout: BigNumberish,
+    ref: string | undefined,
+    receipientName: string | undefined,
+    receipientEmail?: string,
+    releaseLockTimeout: BigNumberish = 1000 * 60 * 60 * 24 * 7,
   ) {
     this.amount = amount;
     this.isNativeToken = isNativeToken;
     this.availableTokenTypes = availableTokenTypes;
-    this.ref = ref;
-    this.receipientName = receipientName;
-    this.receipientEmail = receipientEmail;
+    this.ref = ref || '';
+    this.receipientName = receipientName || '';
+    this.receipientEmail = receipientEmail || '';
     this.releaseLockTimeout = releaseLockTimeout;
     this.id = this.generateId();
   }

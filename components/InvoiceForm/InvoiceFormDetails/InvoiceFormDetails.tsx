@@ -105,6 +105,18 @@ const InvoiceFormDetails: React.FC = () => {
           </React.Fragment>
         ) : undefined}
       </InvoiceFormDetailsCard>
+      <Box mt={1} />
+      <InvoiceFormDetailsCard
+        title="Transaction cost"
+        placeholder="Disabled"
+        active={creatingInvoice.step === NewInvoiceFormStep.notifications}
+        onEdit={() => goToStep(NewInvoiceFormStep.notifications)}
+        visible={isReached(NewInvoiceFormStep.notifications)}
+      >
+        <Typography variant="subtitle2">
+          <FormattedNumber prefix="~" value={0.0015} suffix=" $" />
+        </Typography>
+      </InvoiceFormDetailsCard>
     </Box>
   );
 };
