@@ -14,6 +14,7 @@ import { newInvoiceGoToStep } from '../../../store/newInvoiceForm/actions';
 import { NEW_INVOICES_STEPS_ORDER } from '../../../store/newInvoiceForm/reducer';
 import { RootState } from '../../../store/rootReducer';
 import CurrencyLabel from '../../CurrencyLabel';
+import FormattedNumber from '../../FormattedNumber';
 
 const InvoiceFormDetails: React.FC = () => {
   const creatingInvoice = useSelector<RootState, NewInvoiceFormState>(
@@ -34,12 +35,6 @@ const InvoiceFormDetails: React.FC = () => {
         creatingInvoice.step,
       );
       const searchedIndex = NEW_INVOICES_STEPS_ORDER.indexOf(step);
-      console.log('===> isReached', {
-        currentIndex,
-        searchedIndex,
-        step,
-        currentStep: creatingInvoice.step,
-      });
       return searchedIndex <= currentIndex;
     },
     [creatingInvoice.step],
@@ -53,18 +48,22 @@ const InvoiceFormDetails: React.FC = () => {
 
       <InvoiceFormDetailsCard
         title="Amount"
-        placeholder="No amount specified"
+        placeholder="Not yet specified"
         active={creatingInvoice.step === NewInvoiceFormStep.amount}
         onEdit={() => goToStep(NewInvoiceFormStep.amount)}
         visible={isReached(NewInvoiceFormStep.amount)}
       >
-        <Typography variant="subtitle1" component="span">
-          {creatingInvoice.amount} $
-        </Typography>
-        <Typography color={theme.palette.disabled.main} variant="caption">
-          {' '}
-          1$ fee
-        </Typography>
+        {creatingInvoice.amount ? (
+          <React.Fragment>
+            <Typography variant="subtitle1" component="span">
+              <FormattedNumber value={creatingInvoice.amount} suffix=" $" />
+            </Typography>
+            <Typography color={theme.palette.disabled.main} variant="caption">
+              {' '}
+              <FormattedNumber value={1} suffix=" $" /> fee
+            </Typography>
+          </React.Fragment>
+        ) : undefined}
       </InvoiceFormDetailsCard>
       <Box mt={1} />
       <InvoiceFormDetailsCard

@@ -7,6 +7,7 @@ import style from './AmountStep.module.scss';
 
 import { newInvoiceUpdate } from '../../../../store/newInvoiceForm/actions';
 import { RootState } from '../../../../store/rootReducer';
+import FormattedNumber from '../../../FormattedNumber';
 
 interface AmountStepProps {
   onAmountSubmit: () => void;
@@ -38,6 +39,8 @@ export const AmountStep: React.FC<AmountStepProps> = ({ onAmountSubmit }) => {
     [dispatch],
   );
 
+  const disabled = !amountValue;
+
   return (
     <div className={style.AmountStep}>
       <form onSubmit={onSubmit}>
@@ -45,17 +48,24 @@ export const AmountStep: React.FC<AmountStepProps> = ({ onAmountSubmit }) => {
           How much money are you going to receive?
         </Typography>
         <Box mt={4} sx={{ display: 'flex' }}>
-          <TextField
+          <FormattedNumber
             value={amountValue}
-            onChange={(e) => onChange(e.target.value)}
-            type="text"
-            autoFocus
-            variant="outlined"
-            placeholder="100$"
-            sx={{ flex: '1' }}
+            onValueChange={(v) => onChange(v.value)}
+            suffix=" $"
+            displayType="input"
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            customInput={({ color, size, ...props }) => (
+              <TextField
+                {...props}
+                variant="outlined"
+                type="text"
+                autoFocus
+                sx={{ flex: '1' }}
+              />
+            )}
           />
           <Box mr={2} />
-          <Button type="submit" variant="contained">
+          <Button disabled={disabled} type="submit" variant="contained">
             Continue
           </Button>
         </Box>

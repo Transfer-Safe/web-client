@@ -14,9 +14,7 @@ export const CreateStep: React.FC<CreateStepProps> = ({
 }) => {
   const { isConnected } = useAccount();
 
-  const onCreateInvoice = useCallback(() => {
-    console.log('===> on create invoice');
-  }, []);
+  const onCreateInvoice = useCallback(() => undefined, []);
 
   return (
     <div className={classNames(style.CreateStep, className)} {...props}>

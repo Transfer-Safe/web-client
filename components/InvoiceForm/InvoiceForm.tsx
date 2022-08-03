@@ -82,9 +82,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = ({
   return (
     <div className={classNames(className, style.InvoiceForm)} {...props}>
       <div className={style.container}>
-        <StepContainer withDetails={currentStep !== NewInvoiceFormStep.amount}>
-          {currentStepRender}
-        </StepContainer>
+        <StepContainer withDetails>{currentStepRender}</StepContainer>
       </div>
       <div className={style.header} />
     </div>
