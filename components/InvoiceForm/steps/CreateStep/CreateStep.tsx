@@ -11,6 +11,7 @@ import { useCreateInvoice } from '../../../../hooks';
 import { Invoice } from '../../../../models';
 import { NewInvoiceFormState } from '../../../../store/newInvoiceForm';
 import { RootState } from '../../../../store/rootReducer';
+import AppModal from '../../../AppModal';
 
 type CreateStepProps = HTMLAttributes<HTMLDivElement>;
 
@@ -30,13 +31,12 @@ export const CreateStep: React.FC<CreateStepProps> = ({
       newInvoice.reference,
       undefined,
       newInvoice.email,
-    ).serialize();
+    );
   }, [newInvoice]);
 
   const createInvoice = useCreateInvoice(invoice);
 
   const onCreateInvoice = useCallback(async () => {
-    // console.log('===> createInvoice', createInvoice);
     createInvoice.write?.();
   }, [createInvoice]);
 
@@ -57,6 +57,9 @@ export const CreateStep: React.FC<CreateStepProps> = ({
           </Button>
         )}
       </Box>
+      <AppModal open title="Verify transaction in your wallet">
+        <Typography variant="body2">Yuppi</Typography>
+      </AppModal>
     </div>
   );
 };

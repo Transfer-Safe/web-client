@@ -12,17 +12,22 @@ export const theme = createTheme({
   },
   typography: {
     fontSize: 17,
+    fontFamily: 'GeneralSans-Variable',
+    fontWeightBold: 'GeneralSans-Bold',
+    fontWeightRegular: 'GeneralSans-Regular',
+    fontWeightLight: 'GeneralSans-Light',
+    fontWeightMedium: 'GeneralSans-Medium',
     h1: {
       fontSize: '3rem',
-      fontWeight: '500',
+      fontWeight: '600',
     },
     h2: {
       fontSize: '1.5rem',
-      fontWeight: '500',
+      fontWeight: '600',
     },
     h3: {
       fontSize: '1rem',
-      fontWeight: '500',
+      fontWeight: '600',
     },
     button: {
       textTransform: 'none',
@@ -35,6 +40,26 @@ export const theme = createTheme({
     subtitle2: {
       fontSize: '1rem',
       fontWeight: '300',
+    },
+  },
+  components: {
+    MuiBackdrop: {
+      styleOverrides: {
+        root: {
+          backgroundColor: 'rgba(0, 0, 0, 0.05)',
+        },
+      },
+    },
+    MuiDialog: {
+      styleOverrides: {
+        container: {},
+        paper: {
+          borderStyle: 'solid',
+          borderWidth: 0.5,
+          borderColor: '#CACDD5',
+          borderRadius: 12,
+        },
+      },
     },
   },
 } as ThemeOptions & {
