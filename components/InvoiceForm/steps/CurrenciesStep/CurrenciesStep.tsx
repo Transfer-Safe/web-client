@@ -79,6 +79,7 @@ export const CurrenciesStep: React.FC<CurrenciesStepProps> = ({
         />
         {availableCurrencies.map((currency) => (
           <CurrencyButton
+            mb={2}
             onClick={() => switchCurrency(currency.code)}
             active={isActive(currency.code)}
             key={currency.code}

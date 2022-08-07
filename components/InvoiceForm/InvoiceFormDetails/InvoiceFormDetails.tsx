@@ -1,4 +1,5 @@
 import { Box, Typography } from '@mui/material';
+import { utils } from 'ethers';
 import React, { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -6,6 +7,8 @@ import style from './InvoiceFormDetails.module.scss';
 import InvoiceFormDetailsCard from './InvoiceFormDetailsCard';
 
 import { theme } from '../../../config';
+import { useCreateInvoice } from '../../../hooks';
+import { useConvertToUsd } from '../../../hooks/useConvertToUsd';
 import {
   NewInvoiceFormState,
   NewInvoiceFormStep,
@@ -39,6 +42,9 @@ const InvoiceFormDetails: React.FC = () => {
     },
     [creatingInvoice.step],
   );
+
+  const { fee } = useCreateInvoice();
+  const feeInUsd = useConvertToUsd(fee || 0)?.toNumber();
 
   return (
     <Box width={380} className={style.InvoiceFormDetails}>
@@ -108,13 +114,16 @@ const InvoiceFormDetails: React.FC = () => {
       <Box mt={1} />
       <InvoiceFormDetailsCard
         title="Transaction cost"
-        placeholder="Disabled"
+        placeholder="Unknown"
         active={creatingInvoice.step === NewInvoiceFormStep.notifications}
         onEdit={() => goToStep(NewInvoiceFormStep.notifications)}
         visible={isReached(NewInvoiceFormStep.notifications)}
       >
         <Typography variant="subtitle2">
-          <FormattedNumber prefix="~" value={0.0015} suffix=" $" />
+          {/* <FormattedNumber prefix="~" value={utils.form} suffix=" $" /> */}
+          {fee ? (
+            <FormattedNumber prefix="~" value={feeInUsd} suffix=" $" />
+          ) : undefined}
         </Typography>
       </InvoiceFormDetailsCard>
     </Box>

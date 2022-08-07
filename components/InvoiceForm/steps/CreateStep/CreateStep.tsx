@@ -1,17 +1,14 @@
 import { Box, Button, Typography } from '@mui/material';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import classNames from 'classnames';
-import { HTMLAttributes, useCallback, useMemo } from 'react';
-import { useSelector } from 'react-redux';
+import { HTMLAttributes, useCallback } from 'react';
 import { useAccount } from 'wagmi';
 
 import style from './CreateStep.module.scss';
 
 import { useCreateInvoice } from '../../../../hooks';
-import { Invoice } from '../../../../models';
-import { NewInvoiceFormState } from '../../../../store/newInvoiceForm';
-import { RootState } from '../../../../store/rootReducer';
 import AppModal from '../../../AppModal';
+import ThrobberSection from '../../../Throbber/ThrobberSection';
 
 type CreateStepProps = HTMLAttributes<HTMLDivElement>;
 
@@ -20,21 +17,7 @@ export const CreateStep: React.FC<CreateStepProps> = ({
   ...props
 }) => {
   const { isConnected } = useAccount();
-  const newInvoice = useSelector<RootState, NewInvoiceFormState>(
-    (state) => state.newInvoiceForm,
-  );
-  const invoice = useMemo(() => {
-    return new Invoice(
-      newInvoice.amount,
-      newInvoice.isNativeCurrencyEnabled,
-      newInvoice.currencies,
-      newInvoice.reference,
-      undefined,
-      newInvoice.email,
-    );
-  }, [newInvoice]);
-
-  const createInvoice = useCreateInvoice(invoice);
+  const createInvoice = useCreateInvoice();
 
   const onCreateInvoice = useCallback(async () => {
     createInvoice.write?.();
@@ -57,8 +40,14 @@ export const CreateStep: React.FC<CreateStepProps> = ({
           </Button>
         )}
       </Box>
-      <AppModal open title="Verify transaction in your wallet">
-        <Typography variant="body2">Yuppi</Typography>
+      <AppModal
+        open={createInvoice.isLoading}
+        title="Please, sign your transaction in your wallet"
+      >
+        <ThrobberSection
+          title="Waiting for you to sign the transaction"
+          mt={2}
+        />
       </AppModal>
     </div>
   );

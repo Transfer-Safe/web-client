@@ -11,13 +11,12 @@ export function useWriteRouterFunction<
 >(functionName: T, args: Parameters<TransferSafeRouter['functions'][T]>) {
   const routerContractAddress = useRouterContractAddress();
 
-  const { config, error } = usePrepareContractWrite({
+  return usePrepareContractWrite({
     addressOrName: routerContractAddress,
     functionName: functionName,
     contractInterface: TransferSafeRouter__factory.abi,
     args,
   });
-  return { config, error };
 }
 
 export type ReadContract<T> = ReturnType<typeof useContractRead> & {
@@ -37,5 +36,5 @@ export function useReadRouterFunction<
     functionName: functionName,
     contractInterface: TransferSafeRouter__factory.abi,
     args,
-  }) as any;
+  }) as never;
 }

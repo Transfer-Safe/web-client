@@ -5,6 +5,7 @@ export const theme = createTheme({
   palette: {
     primary: {
       main: '#5F37D0',
+      light: '#F9F8FF',
     },
     disabled: {
       main: '#9B9B9B',
@@ -17,6 +18,9 @@ export const theme = createTheme({
     fontWeightRegular: 'GeneralSans-Regular',
     fontWeightLight: 'GeneralSans-Light',
     fontWeightMedium: 'GeneralSans-Medium',
+    body2: {
+      fontSize: '0.9rem',
+    },
     h1: {
       fontSize: '3rem',
       fontWeight: '600',
