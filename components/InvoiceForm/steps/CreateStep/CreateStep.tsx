@@ -72,7 +72,7 @@ export const CreateStep: React.FC<CreateStepProps> = ({
             >
               Transaction fee:{' '}
               {createInvoice.fee ? (
-                <FormattedNumber prefix="~" value={feeInUsd} suffix=" $" />
+                <FormattedNumber prefix="~" value={feeInUsd || 0} suffix=" $" />
               ) : (
                 '...'
               )}
