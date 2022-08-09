@@ -1,13 +1,14 @@
 import { Box, Button, Typography } from '@mui/material';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import classNames from 'classnames';
+import { useRouter } from 'next/router';
 import { HTMLAttributes, useCallback, useEffect, useState } from 'react';
 import { useAccount } from 'wagmi';
 
 import style from './CreateStep.module.scss';
 
 import { theme } from '../../../../config';
-import { useCreateInvoice } from '../../../../hooks';
+import { useCreateInvoice, useCurrentChain } from '../../../../hooks';
 import { useConvertToUsd } from '../../../../hooks/useConvertToUsd';
 import { formatTransactionId } from '../../../../utils';
 import AppModal from '../../../AppModal';
@@ -20,6 +21,8 @@ export const CreateStep: React.FC<CreateStepProps> = ({
   className,
   ...props
 }) => {
+  const router = useRouter();
+  const currentChain = useCurrentChain();
   const [isCreating, setIsCreating] = useState(false);
   const { isConnected } = useAccount();
   const createInvoice = useCreateInvoice();
@@ -36,12 +39,15 @@ export const CreateStep: React.FC<CreateStepProps> = ({
         ?.wait()
         .then((receipt) => {
           console.log('===> receipt', receipt);
+          router.push(
+            `/invoices/${currentChain.id}/${createInvoice.invoice.id}`,
+          );
         })
         .finally(() => {
           setIsCreating(false);
         });
     }
-  }, [createInvoice.data]);
+  }, [createInvoice.data, createInvoice.invoice, router, currentChain]);
 
   return (
     <div className={classNames(style.CreateStep, className)} {...props}>

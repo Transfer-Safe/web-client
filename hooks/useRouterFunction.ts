@@ -28,7 +28,7 @@ export function useReadRouterFunction<
 >(
   functionName: T,
   args: Parameters<TransferSafeRouter['functions'][T]>,
-): ReadContract<ReturnType<TransferSafeRouter['functions'][T]>> {
+): ReadContract<ReturnType<TransferSafeRouter[T]>> {
   const routerContractAddress = useRouterContractAddress();
 
   return useContractRead({

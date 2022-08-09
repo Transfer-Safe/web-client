@@ -40,8 +40,8 @@ export const ReferenceStep: React.FC<ReferenceStepProps> = ({
     <div className={style.ReferenceStep} {...props}>
       <Typography variant="h1">What are you receiving money for?</Typography>
       <Typography mt={2}>
-        This reference name will be visible to anyone you send the link to. You
-        can leave it blank
+        This reference will be visible to anyone you send the link to. You can
+        leave it blank
       </Typography>
       <form onSubmit={onSubmit}>
         <Box mt={4} sx={{ display: 'flex', flexDirection: 'row' }}>

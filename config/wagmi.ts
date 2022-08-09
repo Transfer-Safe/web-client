@@ -1,11 +1,9 @@
 import { getDefaultWallets } from '@rainbow-me/rainbowkit';
-import { chain, configureChains, createClient, defaultChains } from 'wagmi';
-import { MetaMaskConnector } from 'wagmi/connectors/metaMask';
+import { chain, configureChains, createClient } from 'wagmi';
 import { alchemyProvider } from 'wagmi/providers/alchemy';
-import { publicProvider } from 'wagmi/providers/public';
 
 export const { chains, provider, webSocketProvider } = configureChains(
-  [...defaultChains, chain.polygonMumbai],
+  [chain.polygonMumbai],
   [alchemyProvider({ apiKey: process.env.NEXT_PUBLIC_ALCHEMY_APIKEY })],
 );
 
@@ -16,7 +14,7 @@ const { connectors } = getDefaultWallets({
 
 export const wagmiClient = createClient({
   autoConnect: true,
-  connectors: [new MetaMaskConnector({ chains })],
+  connectors,
   provider,
   webSocketProvider,
 });

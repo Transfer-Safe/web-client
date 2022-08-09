@@ -18,8 +18,8 @@ export const CURRENCIES: Record<
 
 export const CURRENCIES_ADDRESSES: Record<number, ChainCurrencies> = {
   [chain.polygonMumbai.id]: {
-    [CurrencyCode.DAI]: '0x6B175474E89094C44Da98b954EedeAC495271d0F',
-    [CurrencyCode.USDT]: '0x6B175474E89094C44Da98b954EedeAC495271d0F',
+    [CurrencyCode.DAI]: '0xd393b1e02da9831ff419e22ea105aae4c47e1253',
+    [CurrencyCode.USDT]: '0xa02f6adc7926efebbd59fd43a84f4e0c0c91e832',
   },
 };
 

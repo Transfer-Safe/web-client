@@ -45,7 +45,7 @@ export const AmountStep: React.FC<AmountStepProps> = ({ onAmountSubmit }) => {
     <div className={style.AmountStep}>
       <form onSubmit={onSubmit}>
         <Typography variant="h1">
-          How much money are you going to receive?
+          How much money do you want to receive?
         </Typography>
         <Box mt={4} sx={{ display: 'flex' }}>
           <FormattedNumber
@@ -59,6 +59,7 @@ export const AmountStep: React.FC<AmountStepProps> = ({ onAmountSubmit }) => {
                 {...props}
                 variant="outlined"
                 type="text"
+                placeholder="e.g. 100 $"
                 autoFocus
                 sx={{ flex: '1' }}
               />

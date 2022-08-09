@@ -60,6 +60,7 @@ export const useCreateInvoice = () => {
 
   return {
     ...result,
+    invoice,
     error: result.error || configError,
     fee,
   };

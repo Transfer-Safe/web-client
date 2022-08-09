@@ -13,7 +13,7 @@ export const useGetInvoice = (invoiceId: string) => {
 
   useEffect(() => {
     if (data) {
-      Invoice.deserialize(data[0]).then(setInvoice);
+      Invoice.deserialize(data).then(setInvoice);
     }
   }, [data]);
 

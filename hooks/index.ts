@@ -3,3 +3,4 @@ export * from './useCreateInvoice';
 export * from './useDepositInvoice';
 export * from './useCurrentChain';
 export * from './useCurrenciesList';
+export * from './useCurrencyByAddress';
