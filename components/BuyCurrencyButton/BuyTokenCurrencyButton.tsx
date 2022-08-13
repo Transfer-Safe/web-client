@@ -4,6 +4,7 @@ import { useMemo } from 'react';
 import {
   useCurrencyByAddress,
   useGetInvoiceAmountInCurrency,
+  useGetTokenBalance,
 } from '../../hooks';
 import { formatNumber } from '../../utils';
 import Button, { ButtonProps } from '../Button';
@@ -22,9 +23,11 @@ export const BuyTokenCurrencyButton: React.FC<BuyTokenCurrencyButtonProps> = ({
   const currency = useMemo(() => getCurrency(token), [getCurrency, token]);
 
   const { data } = useGetInvoiceAmountInCurrency(invoiceId, token);
-  const available = 956;
 
   const theme = useTheme();
+
+  const tokenBalance = useGetTokenBalance(token);
+  const available = tokenBalance.data;
 
   return (
     <Button {...props}>
