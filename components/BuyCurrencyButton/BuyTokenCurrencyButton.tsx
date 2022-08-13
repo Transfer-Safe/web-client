@@ -1,10 +1,12 @@
 import { Box, Typography, useTheme } from '@mui/material';
-import { useMemo } from 'react';
+import { BigNumber } from 'ethers';
+import { useCallback, useMemo } from 'react';
 
 import {
   useCurrencyByAddress,
   useGetInvoiceAmountInCurrency,
   useGetTokenBalance,
+  useSendErc20,
 } from '../../hooks';
 import { formatNumber } from '../../utils';
 import Button, { ButtonProps } from '../Button';
@@ -29,8 +31,14 @@ export const BuyTokenCurrencyButton: React.FC<BuyTokenCurrencyButtonProps> = ({
   const tokenBalance = useGetTokenBalance(token);
   const available = tokenBalance.data;
 
+  const sendTokens = useSendErc20(token, data);
+
+  const onTransfer = useCallback(() => {
+    sendTokens.write?.();
+  }, [sendTokens]);
+
   return (
-    <Button {...props}>
+    <Button {...props} onClick={onTransfer}>
       <Box
         display="flex"
         justifyContent="space-between"
@@ -41,7 +49,7 @@ export const BuyTokenCurrencyButton: React.FC<BuyTokenCurrencyButtonProps> = ({
           Send {data ? formatNumber(data) : '...'} {currency?.code}
         </Typography>
         <Typography variant="body2" color={theme.palette.grey[600]}>
-          available: {available ? formatNumber(available) : '...'}
+          {available ? formatNumber(available) : '...'} available
         </Typography>
       </Box>
     </Button>

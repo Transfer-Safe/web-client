@@ -44,7 +44,7 @@ export const BuyNativeCurrencyButton: React.FC<
           {chain?.nativeCurrency?.name || 'ETH'}
         </Typography>
         <Typography color={theme.palette.grey[600]} variant="body2">
-          available: {balance.data ? formatNumber(balance.data.value) : '...'}
+          {balance.data ? formatNumber(balance.data.value) : '...'} available
         </Typography>
       </Box>
     </Button>
