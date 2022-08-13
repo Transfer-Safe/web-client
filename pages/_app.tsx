@@ -30,6 +30,7 @@ function MyApp({
               chains={chains}
               theme={lightTheme({
                 accentColor: theme.palette.primary.main,
+                borderRadius: 'small',
               })}
             >
               <Component {...pageProps} />
