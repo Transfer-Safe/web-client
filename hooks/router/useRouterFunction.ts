@@ -3,12 +3,25 @@ import {
   TransferSafeRouter__factory,
 } from '@transfer-safe/router';
 import { useContractRead, usePrepareContractWrite } from 'wagmi';
+import {
+  UsePrepareContractWriteArgs,
+  UsePrepareContractWriteConfig,
+} from 'wagmi/dist/declarations/src/hooks/contracts/usePrepareContractWrite';
 
 import { useRouterContractAddress } from './useRouterContractAddress';
 
+type PrepareWriteContractOptions = Omit<
+  UsePrepareContractWriteArgs & UsePrepareContractWriteConfig,
+  'addressOrName' | 'functionName' | 'contractInterface' | 'args'
+>;
+
 export function useWriteRouterFunction<
   T extends keyof TransferSafeRouter['functions'],
->(functionName: T, args: Parameters<TransferSafeRouter['functions'][T]>) {
+>(
+  functionName: T,
+  args: Parameters<TransferSafeRouter['functions'][T]>,
+  options?: PrepareWriteContractOptions,
+) {
   const routerContractAddress = useRouterContractAddress();
 
   return usePrepareContractWrite({
@@ -16,6 +29,7 @@ export function useWriteRouterFunction<
     functionName: functionName,
     contractInterface: TransferSafeRouter__factory.abi,
     args,
+    ...options,
   });
 }
 

@@ -37,8 +37,7 @@ export const CreateStep: React.FC<CreateStepProps> = ({
       setIsCreating(true);
       createInvoice.data
         ?.wait()
-        .then((receipt) => {
-          console.log('===> receipt', receipt);
+        .then(() => {
           router.push(
             `/invoices/${currentChain.id}/${createInvoice.invoice.id}`,
           );

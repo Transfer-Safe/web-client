@@ -1,5 +1,4 @@
 import { Box, Typography, useTheme } from '@mui/material';
-import { constants } from 'ethers';
 import { useMemo } from 'react';
 
 import {

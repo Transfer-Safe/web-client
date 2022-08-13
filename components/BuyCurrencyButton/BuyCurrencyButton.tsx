@@ -17,6 +17,8 @@ export const BuyCurrencyButton: React.FC<BuyCurrencyButtonProps> = ({
   tokenAddress,
   className,
   invoiceId,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  isNativeCurrency,
   ...props
 }) => {
   if (tokenAddress) {

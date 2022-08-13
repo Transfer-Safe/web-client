@@ -1,8 +1,10 @@
 import { Box, Typography, useTheme } from '@mui/material';
+import { useCallback } from 'react';
 import { useAccount, useBalance } from 'wagmi';
 
 import {
   useCurrentChain,
+  useDepositInvoice,
   useGetInvoiceAmountInNativeCurrency,
 } from '../../hooks';
 import { formatNumber } from '../../utils';
@@ -23,8 +25,14 @@ export const BuyNativeCurrencyButton: React.FC<
   });
   const theme = useTheme();
 
+  const deposit = useDepositInvoice(invoiceId, data);
+
+  const onDeposit = useCallback(() => {
+    deposit.write?.();
+  }, [deposit]);
+
   return (
-    <Button {...props}>
+    <Button {...props} onClick={onDeposit}>
       <Box
         display="flex"
         justifyContent="space-between"
