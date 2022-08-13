@@ -4,7 +4,7 @@ import { NextPage } from 'next';
 import Footer from '../../../components/Footer';
 import Header from '../../../components/Header';
 import InvoiceTransferView from '../../../components/InvoiceTransferView';
-import { useGetInvoice } from '../../../hooks/useGetInvoice';
+import { useGetInvoice } from '../../../hooks';
 
 interface InvoiceTransferPageProps {
   invoiceId: string;

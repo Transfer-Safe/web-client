@@ -3,9 +3,11 @@ import { useMemo } from 'react';
 
 import { useGetExchangeRate } from './useGetExchangeRate';
 
+import { CurrencyCode } from '../models';
+
 export const useConvertToUsd = (
   value: BigNumberish,
-  currency?: string,
+  currency?: CurrencyCode,
 ): BigNumber | undefined => {
   const data = useGetExchangeRate(currency);
   return useMemo(() => {

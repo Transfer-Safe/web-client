@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 import { useReadRouterFunction } from './useRouterFunction';
 
-import { Invoice } from '../models';
+import { Invoice } from '../../models';
 
 export const useGetInvoice = (invoiceId: string) => {
   const [invoice, setInvoice] = useState<Invoice | undefined>();

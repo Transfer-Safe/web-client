@@ -11,7 +11,7 @@ import Footer from '../../../components/Footer';
 import Header from '../../../components/Header';
 import InvoiceView from '../../../components/InvoiceView';
 import { useCurrentChain, useDepositInvoice } from '../../../hooks';
-import { useGetInvoice } from '../../../hooks/useGetInvoice';
+import { useGetInvoice } from '../../../hooks';
 import { formatAmount } from '../../../utils';
 
 export interface InvoicePageProps {

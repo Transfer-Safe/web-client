@@ -40,7 +40,14 @@ export const InvoiceTransferView: React.FC<InvoiceTransferViewProps> = ({
         <title>{title}</title>
       </Head>
       <Container maxWidth="sm">
-        <Typography variant="h1" textAlign="center" mt={8}>
+        <Typography
+          variant="h1"
+          textAlign="center"
+          mt={8}
+          sx={{
+            wordBreak: 'break-word',
+          }}
+        >
           <Typography
             component="span"
             variant="h1"
@@ -69,6 +76,7 @@ export const InvoiceTransferView: React.FC<InvoiceTransferViewProps> = ({
             <React.Fragment>
               {invoice.isNativeToken && (
                 <BuyCurrencyButton
+                  invoiceId={invoice.id}
                   variant="outlined"
                   isNativeCurrency
                   value={10}
@@ -84,6 +92,7 @@ export const InvoiceTransferView: React.FC<InvoiceTransferViewProps> = ({
               )}
               {invoice.availableTokenTypes.map((token) => (
                 <BuyCurrencyButton
+                  invoiceId={invoice.id}
                   key={token}
                   variant="outlined"
                   tokenAddress={token}
@@ -103,7 +112,7 @@ export const InvoiceTransferView: React.FC<InvoiceTransferViewProps> = ({
         </Box>
         <Typography
           color={theme.palette.grey[800]}
-          mt={4}
+          my={4}
           textAlign="center"
           variant="body2"
         >
