@@ -19,8 +19,12 @@ const FormattedNumber: React.FC<FormattedNumberProps> = ({
     if (typeof value === 'string') {
       return value;
     }
-    return BigNumber.from(value).div(constants.WeiPerEther).toNumber();
+    return (
+      BigNumber.from(value).div(constants.WeiPerEther.div(1000)).toNumber() /
+      1000
+    );
   }, [value]);
+
   return (
     <NumberFormat
       displayType={displayType}
