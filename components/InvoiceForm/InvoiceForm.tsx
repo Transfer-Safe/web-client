@@ -27,7 +27,9 @@ type InvoiceFormProps = HTMLAttributes<HTMLDivElement> & {
 
 export const InvoiceForm: React.FC<InvoiceFormProps> = ({
   className,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   onSubmitInvoice,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   loading,
   ...props
 }) => {

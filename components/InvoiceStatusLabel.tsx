@@ -1,4 +1,4 @@
-import { Box, BoxProps, Typography, useTheme } from '@mui/material';
+import { Box, BoxProps, Typography } from '@mui/material';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import DoneIcon from '@mui/icons-material/Done';
 import React, { useMemo } from 'react';

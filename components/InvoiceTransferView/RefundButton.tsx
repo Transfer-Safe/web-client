@@ -8,6 +8,7 @@ type RefundButtonProps = ButtonProps & {
   invoice: Invoice;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const RefundButton: React.FC<RefundButtonProps> = ({ invoice, ...props }) => {
   const isDisabled = true;
   const theme = useTheme();
