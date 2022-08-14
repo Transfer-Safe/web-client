@@ -14,6 +14,7 @@ export class Invoice {
   private _releaseLockDate: BigNumberish = 0;
   private _balance: BigNumberish = 0;
   private _paid = false;
+  private _deposited = false;
   private _senderAddress = constants.AddressZero;
   private _receipientAddress = constants.AddressZero;
   private _fee: BigNumberish = 0;
@@ -43,6 +44,10 @@ export class Invoice {
 
   get paid(): boolean {
     return this._paid;
+  }
+
+  get deposited(): boolean {
+    return this._deposited;
   }
 
   get senderAddress(): string {
@@ -84,6 +89,7 @@ export class Invoice {
       tokenType: constants.AddressZero,
       releaseLockTimeout: this.releaseLockTimeout,
       releaseLockDate: this.releaseLockDate,
+      deposited: this._deposited,
     };
   }
 
@@ -104,6 +110,7 @@ export class Invoice {
     promise._receipientAddress = await invoice.receipientAddress;
     promise._releaseLockDate = await invoice.releaseLockDate;
     promise._fee = await invoice.fee;
+    promise._deposited = await invoice.deposited;
     return promise;
   }
 }

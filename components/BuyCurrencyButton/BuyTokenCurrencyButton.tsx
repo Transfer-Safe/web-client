@@ -1,6 +1,6 @@
 import { Box, Typography, useTheme } from '@mui/material';
-import { BigNumber } from 'ethers';
-import { useCallback, useMemo } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
+import { useDispatch } from 'react-redux';
 
 import {
   useCurrencyByAddress,
@@ -8,6 +8,13 @@ import {
   useGetTokenBalance,
   useSendErc20,
 } from '../../hooks';
+import {
+  failedTransferInvoice,
+  signedTransferInvoice,
+  startTransferInvoice,
+  successTransferInvoice,
+} from '../../store/transferInvoice/actions';
+import { TransferInvoiceType } from '../../store/transferInvoice/types';
 import { formatNumber } from '../../utils';
 import Button, { ButtonProps } from '../Button';
 
@@ -23,6 +30,7 @@ export const BuyTokenCurrencyButton: React.FC<BuyTokenCurrencyButtonProps> = ({
 }) => {
   const getCurrency = useCurrencyByAddress();
   const currency = useMemo(() => getCurrency(token), [getCurrency, token]);
+  const dispatch = useDispatch();
 
   const { data } = useGetInvoiceAmountInCurrency(invoiceId, token);
 
@@ -34,8 +42,27 @@ export const BuyTokenCurrencyButton: React.FC<BuyTokenCurrencyButtonProps> = ({
   const sendTokens = useSendErc20(token, data);
 
   const onTransfer = useCallback(() => {
-    sendTokens.write?.();
-  }, [sendTokens]);
+    if (sendTokens.writeAsync) {
+      dispatch(startTransferInvoice(TransferInvoiceType.ERC20));
+      sendTokens
+        .writeAsync()
+        .then(() => dispatch(signedTransferInvoice()))
+        .catch((err) => dispatch(failedTransferInvoice(err)));
+    }
+  }, [sendTokens, dispatch]);
+
+  useEffect(() => {
+    switch (sendTokens.status) {
+      case 'success':
+        dispatch(successTransferInvoice());
+        break;
+      case 'error':
+        dispatch(failedTransferInvoice(sendTokens.error));
+        break;
+      default:
+        return;
+    }
+  }, [dispatch, sendTokens.status, sendTokens.error]);
 
   return (
     <Button {...props} onClick={onTransfer}>
@@ -48,7 +75,7 @@ export const BuyTokenCurrencyButton: React.FC<BuyTokenCurrencyButtonProps> = ({
         <Typography>
           Send {data ? formatNumber(data) : '...'} {currency?.code}
         </Typography>
-        <Typography variant="body2" color={theme.palette.grey[600]}>
+        <Typography ml={1} variant="body2" color={theme.palette.grey[600]}>
           {available ? formatNumber(available) : '...'} available
         </Typography>
       </Box>

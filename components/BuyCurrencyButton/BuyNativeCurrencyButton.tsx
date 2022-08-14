@@ -1,5 +1,6 @@
 import { Box, Typography, useTheme } from '@mui/material';
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { useAccount, useBalance } from 'wagmi';
 
 import {
@@ -7,6 +8,13 @@ import {
   useDepositInvoice,
   useGetInvoiceAmountInNativeCurrency,
 } from '../../hooks';
+import {
+  failedTransferInvoice,
+  signedTransferInvoice,
+  startTransferInvoice,
+  successTransferInvoice,
+} from '../../store/transferInvoice/actions';
+import { TransferInvoiceType } from '../../store/transferInvoice/types';
 import { formatNumber } from '../../utils';
 import Button, { ButtonProps } from '../Button';
 
@@ -24,12 +32,29 @@ export const BuyNativeCurrencyButton: React.FC<
     addressOrName: account.address,
   });
   const theme = useTheme();
+  const dispatch = useDispatch();
 
   const deposit = useDepositInvoice(invoiceId, data);
 
   const onDeposit = useCallback(() => {
-    deposit.write?.();
-  }, [deposit]);
+    if (deposit.writeAsync) {
+      dispatch(startTransferInvoice(TransferInvoiceType.NATIVE));
+      deposit
+        .writeAsync()
+        .then(() => dispatch(signedTransferInvoice()))
+        .catch((err) => dispatch(failedTransferInvoice(err)));
+    }
+  }, [deposit, dispatch]);
+
+  useEffect(() => {
+    switch (deposit.status) {
+      case 'success':
+        dispatch(successTransferInvoice());
+        break;
+      default:
+        return;
+    }
+  }, [dispatch, deposit.status]);
 
   return (
     <Button {...props} onClick={onDeposit}>
@@ -43,7 +68,7 @@ export const BuyNativeCurrencyButton: React.FC<
           Send {data ? formatNumber(data) : '...'}{' '}
           {chain?.nativeCurrency?.name || 'ETH'}
         </Typography>
-        <Typography color={theme.palette.grey[600]} variant="body2">
+        <Typography ml={1} color={theme.palette.grey[600]} variant="body2">
           {balance.data ? formatNumber(balance.data.value) : '...'} available
         </Typography>
       </Box>

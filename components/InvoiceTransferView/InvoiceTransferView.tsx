@@ -3,15 +3,19 @@ import { ConnectButton } from '@rainbow-me/rainbowkit';
 import Head from 'next/head';
 import Link from 'next/link';
 import React, { useMemo } from 'react';
+import { useSelector } from 'react-redux';
 import { useAccount } from 'wagmi';
 
 import style from './InvoiceTransferView.module.scss';
 
 import { Invoice } from '../../models';
+import { RootState } from '../../store/rootReducer';
+import { TransferInvoiceStatus } from '../../store/transferInvoice/types';
 import { formatNumber, formatTransactionId } from '../../utils';
+import AppModal from '../AppModal';
 import BuyCurrencyButton from '../BuyCurrencyButton';
 import FormattedNumber from '../FormattedNumber';
-
+import ThrobberSection from '../Throbber/ThrobberSection';
 export interface InvoiceTransferViewProps {
   invoice: Invoice;
 }
@@ -30,12 +34,51 @@ export const InvoiceTransferView: React.FC<InvoiceTransferViewProps> = ({
     return title;
   }, [invoice.amount, invoice.ref]);
 
+  const transferInvoiceStatus = useSelector<RootState, TransferInvoiceStatus>(
+    (state) => state.transferInvoice.status,
+  );
+
+  const isSigning = useMemo(
+    () => transferInvoiceStatus === TransferInvoiceStatus.SIGNING,
+    [transferInvoiceStatus],
+  );
+
+  const isTransferring = useMemo(() => {
+    if (transferInvoiceStatus === TransferInvoiceStatus.TRANSFERRING) {
+      return true;
+    }
+    if (transferInvoiceStatus === TransferInvoiceStatus.SUCCESS) {
+      if (!invoice.deposited) {
+        return true;
+      }
+    }
+    return false;
+  }, [transferInvoiceStatus, invoice.deposited]);
+
   return (
     <Box
       flex={1}
       bgcolor={theme.palette.grey[100]}
       className={style.InvoiceTransferView}
     >
+      <AppModal
+        title={`Transfering ${formatNumber(invoice.amount)}$`}
+        open={isTransferring || isSigning}
+      >
+        {isSigning && (
+          <ThrobberSection
+            title="Waiting for you to sign the transaction"
+            mt={2}
+          />
+        )}
+        {isTransferring && (
+          <ThrobberSection
+            title="Transfering funds"
+            mt={2}
+            subtitle="Transaction 0x323...234"
+          />
+        )}
+      </AppModal>
       <Head>
         <title>{title}</title>
       </Head>
@@ -48,6 +91,7 @@ export const InvoiceTransferView: React.FC<InvoiceTransferViewProps> = ({
             wordBreak: 'break-word',
           }}
         >
+          {invoice.deposited && <span>Deposited! </span>}
           <Typography
             component="span"
             variant="h1"

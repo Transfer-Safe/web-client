@@ -9,12 +9,15 @@ import { NewInvoiceFormState } from './newInvoiceForm';
 import { newInvoiceFormReducer } from './newInvoiceForm/reducer';
 import { settingsReducer } from './settings/reducer';
 import { SettingsState } from './settings/types';
+import { transferInvoiceReducer } from './transferInvoice/reducer';
+import { TransferInvoiceState } from './transferInvoice/types';
 
 export interface RootState {
   account: AccountState;
   settings: SettingsState;
   creatingInvoice: CreatingInvoiceState;
   newInvoiceForm: NewInvoiceFormState;
+  transferInvoice: TransferInvoiceState;
 }
 
 export const rootReducer = combineReducers<RootState>({
@@ -22,4 +25,5 @@ export const rootReducer = combineReducers<RootState>({
   settings: settingsReducer,
   creatingInvoice: creatingInvoiceReducer,
   newInvoiceForm: newInvoiceFormReducer,
+  transferInvoice: transferInvoiceReducer,
 });
