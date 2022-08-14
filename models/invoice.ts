@@ -67,7 +67,8 @@ export class Invoice {
   }
 
   private generateId(): string {
-    return utils.id(JSON.stringify(this) + new Date().valueOf().toString());
+    const id = utils.id(JSON.stringify(this) + new Date().valueOf().toString());
+    return id.substring(id.length - 8).toLocaleUpperCase();
   }
 
   serialize(): InvoiceStruct {
