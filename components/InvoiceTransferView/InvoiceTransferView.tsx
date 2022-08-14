@@ -1,7 +1,7 @@
 import { Box, Container, Typography, useTheme } from '@mui/material';
 import Head from 'next/head';
 import Link from 'next/link';
-import React, { useEffect, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { InvoiceTransferButtons } from './InvoiceTransferButtons';
@@ -62,10 +62,6 @@ export const InvoiceTransferView: React.FC<InvoiceTransferViewProps> = ({
     }
     return false;
   }, [transferInvoiceStatus, invoice.deposited]);
-
-  useEffect(() => {
-    console.log('===> invoice.deposited', invoice.deposited);
-  }, [invoice.deposited]);
 
   return (
     <Box
@@ -136,6 +132,7 @@ export const InvoiceTransferView: React.FC<InvoiceTransferViewProps> = ({
           </Typography>
         </Link>
         {!invoice.deposited && <InvoiceTransferButtons invoice={invoice} />}
+        {invoice.deposited && !invoice.paid && <span>Refund</span>}
       </Container>
     </Box>
   );

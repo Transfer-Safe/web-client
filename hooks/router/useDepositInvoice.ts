@@ -3,8 +3,12 @@ import { useContractWrite } from 'wagmi';
 
 import { useWriteRouterFunction } from './useRouterFunction';
 
-export const useDepositInvoice = (invoiceId: string, amount?: BigNumber) => {
-  const { config } = useWriteRouterFunction('deposit', [invoiceId], {
+export const useDepositInvoice = (
+  invoiceId: string,
+  instant: boolean,
+  amount?: BigNumber,
+) => {
+  const { config } = useWriteRouterFunction('deposit', [invoiceId, instant], {
     overrides: {
       value: amount,
     },

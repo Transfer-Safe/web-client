@@ -34,7 +34,7 @@ export const BuyNativeCurrencyButton: React.FC<
   const theme = useTheme();
   const dispatch = useDispatch();
 
-  const deposit = useDepositInvoice(invoiceId, data);
+  const deposit = useDepositInvoice(invoiceId, false, data);
 
   const onDeposit = useCallback(() => {
     if (deposit.writeAsync) {
