@@ -21,7 +21,8 @@ const InvoiceTransferPage: NextPage<InvoiceTransferPageProps> = ({
   invoiceId,
 }) => {
   const preloadedInvoice = useMemo(
-    () => preloadedInvoiceJson && Invoice.fromJson(preloadedInvoiceJson),
+    () =>
+      preloadedInvoiceJson ? Invoice.fromJson(preloadedInvoiceJson) : undefined,
     [preloadedInvoiceJson],
   );
   const { data: freshInvoice } = useGetInvoice(invoiceId, { watch: true });
@@ -45,6 +46,11 @@ const InvoiceTransferPage: NextPage<InvoiceTransferPageProps> = ({
   );
 };
 
+// InvoiceTransferPage.getInitialProps = (ctx: NextPageContext) => {
+//   const invoiceId = ctx.query.invoiceId as string;
+//   return { invoiceId };
+// };
+
 export async function getServerSideProps(
   ctx: NextPageContext,
 ): Promise<{ props: InvoiceTransferPageProps }> {
@@ -52,6 +58,7 @@ export async function getServerSideProps(
   const chainId = Number(ctx.query.chainId as string);
 
   const invoice = await loadInvoice(invoiceId, chainId);
+  console.log('===> invoice', invoice);
 
   return {
     props: {

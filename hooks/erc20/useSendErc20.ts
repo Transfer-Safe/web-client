@@ -13,7 +13,7 @@ export const useSendErc20 = (
     addressOrName: token,
     contractInterface: erc20ABI,
     functionName: 'transfer',
-    args: [routerAddress, amount, 'test-metadata'],
+    args: [routerAddress, amount],
     onError: console.warn,
   });
 

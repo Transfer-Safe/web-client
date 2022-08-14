@@ -1,4 +1,4 @@
-import { BigNumber, constants } from 'ethers';
+import { BigNumber, constants, utils } from 'ethers';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useContractWrite, useFeeData } from 'wagmi';
@@ -29,7 +29,7 @@ export const useCreateInvoice = () => {
 
   const invoice = useMemo(() => {
     return new Invoice(
-      BigNumber.from(newInvoice.amount).mul(constants.WeiPerEther),
+      utils.parseEther(newInvoice.amount.toString()),
       newInvoice.isNativeCurrencyEnabled,
       newInvoice.currencies.map((code) => getCurrency(code).address),
       newInvoice.reference,
