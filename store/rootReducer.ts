@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux';
 
 import { accountReducer, AccountState } from './account';
+import { confirmInvoiceReducer, ConfirmInvoiceState } from './confirmInvoice';
 import {
   creatingInvoiceReducer,
   CreatingInvoiceState,
@@ -18,6 +19,7 @@ export interface RootState {
   creatingInvoice: CreatingInvoiceState;
   newInvoiceForm: NewInvoiceFormState;
   transferInvoice: TransferInvoiceState;
+  confirmInvoice: ConfirmInvoiceState;
 }
 
 export const rootReducer = combineReducers<RootState>({
@@ -26,4 +28,5 @@ export const rootReducer = combineReducers<RootState>({
   creatingInvoice: creatingInvoiceReducer,
   newInvoiceForm: newInvoiceFormReducer,
   transferInvoice: transferInvoiceReducer,
+  confirmInvoice: confirmInvoiceReducer,
 });

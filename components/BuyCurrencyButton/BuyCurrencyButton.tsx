@@ -38,33 +38,4 @@ export const BuyCurrencyButton: React.FC<BuyCurrencyButtonProps> = ({
       {...props}
     />
   );
-
-  // return (
-  //   <Button
-  //     className={classNames(style.BuyCurrencyButton, className)}
-  //     {...props}
-  //   >
-  //     <Box
-  //       display="flex"
-  //       justifyContent="space-between"
-  //       width="100%"
-  //       alignItems="center"
-  //     >
-  //       <Box>
-  //         <Typography component="span" fontWeight="500">
-  //           Send {formatNumber(value)} {currencyCode}{' '}
-  //         </Typography>
-  //       </Box>
-  //       <Box>
-  //         <Typography
-  //           component="span"
-  //           variant="body2"
-  //           color={theme.palette.grey[600]}
-  //         >
-  //           {formatNumber(balance.data?.value || 0)} {currencyCode} available
-  //         </Typography>
-  //       </Box>
-  //     </Box>
-  //   </Button>
-  // );
 };

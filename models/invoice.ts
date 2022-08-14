@@ -141,16 +141,16 @@ export class Invoice {
     promise._deposited = await invoice.deposited;
     promise.instant = await invoice.instant;
     promise._created = new Date(
-      BigNumber.from(await invoice.created).toNumber(),
+      BigNumber.from(await invoice.created).toNumber() * 1000,
     );
     promise._depositDate = new Date(
-      BigNumber.from(await invoice.depositDate).toNumber(),
+      BigNumber.from(await invoice.depositDate).toNumber() * 1000,
     );
     promise._confirmDate = new Date(
-      BigNumber.from(await invoice.confirmDate).toNumber(),
+      BigNumber.from(await invoice.confirmDate).toNumber() * 1000,
     );
     promise._refundDate = new Date(
-      BigNumber.from(await invoice.refundDate).toNumber(),
+      BigNumber.from(await invoice.refundDate).toNumber() * 1000,
     );
     promise.instant = await invoice.instant;
     return promise;

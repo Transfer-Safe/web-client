@@ -3,7 +3,7 @@ import numeral from 'numeral';
 
 export const formatNumber = (
   value: BigNumberish,
-  format = '0,0.[00]',
+  format = '0,0.[000]',
 ): string => {
   let numberValue: number | undefined;
   if (typeof value === 'number') {

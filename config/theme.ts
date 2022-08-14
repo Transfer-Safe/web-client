@@ -39,11 +39,11 @@ export const theme = createTheme({
     },
     subtitle1: {
       fontSize: '1.5rem',
-      fontWeight: '300',
+      fontWeight: '500',
     },
     subtitle2: {
       fontSize: '1rem',
-      fontWeight: '300',
+      fontWeight: '500',
     },
   },
   components: {
