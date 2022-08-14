@@ -1,37 +1,62 @@
 import { InvoiceStruct } from '@transfer-safe/router/contracts/TransferSafeRouter';
-import { BigNumberish, utils, constants, BigNumber } from 'ethers';
+import { utils, constants, BigNumber } from 'ethers';
+
+export interface NonPromisifiedInvoiceStruct extends InvoiceStruct {
+  id: string;
+  amount: string;
+  fee: string;
+  created: string;
+  balance: string;
+  paid: boolean;
+  deposited: boolean;
+  isNativeToken: boolean;
+  tokenType: string;
+  availableTokenTypes: string[];
+  ref: string;
+  receipientAddress: string;
+  senderAddress: string;
+  receipientName: string;
+  receipientEmail: string;
+  exist: boolean;
+  instant: boolean;
+  releaseLockTimeout: string;
+  releaseLockDate: string;
+  depositDate: string;
+  confirmDate: string;
+  refundDate: string;
+}
 
 export class Invoice {
   id: string;
-  amount: BigNumberish;
+  amount: BigNumber;
   isNativeToken: boolean;
   availableTokenTypes: string[];
   ref: string;
   receipientName: string;
   receipientEmail: string;
-  releaseLockTimeout: BigNumberish = 0;
+  releaseLockTimeout: BigNumber = BigNumber.from(0);
   instant: boolean;
 
-  private _releaseLockDate: BigNumberish = 0;
-  private _balance: BigNumberish = 0;
+  private _releaseLockDate: BigNumber = BigNumber.from(0);
+  private _balance: BigNumber = BigNumber.from(0);
   private _paid = false;
   private _deposited = false;
   private _senderAddress = constants.AddressZero;
   private _receipientAddress = constants.AddressZero;
-  private _fee: BigNumberish = 0;
+  private _fee: BigNumber = BigNumber.from(0);
   private _created: Date = new Date();
   private _depositDate: Date = new Date();
   private _confirmDate: Date = new Date();
   private _refundDate: Date = new Date();
 
   constructor(
-    amount: BigNumberish,
+    amount: BigNumber,
     isNativeToken: boolean,
     availableTokenTypes: string[],
     ref: string | undefined,
     receipientName: string | undefined,
     receipientEmail?: string,
-    releaseLockTimeout: BigNumberish = 1000 * 60 * 60 * 24 * 7,
+    releaseLockTimeout: BigNumber = BigNumber.from(1000 * 60 * 60 * 24 * 7),
     instant = false,
   ) {
     this.amount = amount;
@@ -45,7 +70,7 @@ export class Invoice {
     this.instant = instant;
   }
 
-  get balance(): BigNumberish {
+  get balance(): BigNumber {
     return this._balance;
   }
 
@@ -65,11 +90,11 @@ export class Invoice {
     return this._receipientAddress;
   }
 
-  get releaseLockDate(): BigNumberish {
+  get releaseLockDate(): BigNumber {
     return this._releaseLockDate;
   }
 
-  get fee(): BigNumberish {
+  get fee(): BigNumber {
     return this._fee;
   }
 
@@ -123,21 +148,21 @@ export class Invoice {
 
   static async deserialize(invoice: InvoiceStruct): Promise<Invoice> {
     const promise = new Invoice(
-      await invoice.amount,
+      BigNumber.from(await invoice.amount),
       await invoice.isNativeToken,
       await Promise.all(invoice.availableTokenTypes),
       await invoice.ref,
       await invoice.receipientName,
       await invoice.receipientEmail,
-      await invoice.releaseLockTimeout,
+      await BigNumber.from(invoice.releaseLockTimeout),
     );
     promise.id = await invoice.id;
-    promise._balance = await invoice.balance;
+    promise._balance = BigNumber.from(await invoice.balance);
     promise._paid = await invoice.paid;
     promise._senderAddress = await invoice.senderAddress;
     promise._receipientAddress = await invoice.receipientAddress;
-    promise._releaseLockDate = await invoice.releaseLockDate;
-    promise._fee = await invoice.fee;
+    promise._releaseLockDate = BigNumber.from(await invoice.releaseLockDate);
+    promise._fee = BigNumber.from(await invoice.fee);
     promise._deposited = await invoice.deposited;
     promise.instant = await invoice.instant;
     promise._created = new Date(
@@ -153,6 +178,68 @@ export class Invoice {
       BigNumber.from(await invoice.refundDate).toNumber() * 1000,
     );
     promise.instant = await invoice.instant;
+    return promise;
+  }
+
+  toJson(): NonPromisifiedInvoiceStruct {
+    return {
+      id: this.id,
+      amount: this.amount.toHexString(),
+      availableTokenTypes: this.availableTokenTypes,
+      isNativeToken: this.isNativeToken,
+      ref: this.ref,
+      receipientName: this.receipientName,
+      receipientEmail: this.receipientEmail,
+      balance: this.balance.toHexString(),
+      created: constants.Zero.toHexString(),
+      exist: true,
+      fee: this.fee.toHexString(),
+      paid: this.paid,
+      receipientAddress: this.receipientAddress,
+      senderAddress: this.senderAddress,
+      tokenType: constants.AddressZero,
+      releaseLockTimeout: this.releaseLockTimeout.toHexString(),
+      releaseLockDate: this.releaseLockDate.toHexString(),
+      deposited: this._deposited,
+      confirmDate: constants.Zero.toHexString(),
+      depositDate: constants.Zero.toHexString(),
+      refundDate: constants.Zero.toHexString(),
+      instant: this.instant,
+    };
+  }
+
+  static fromJson(invoice: NonPromisifiedInvoiceStruct) {
+    const promise = new Invoice(
+      BigNumber.from(invoice.amount),
+      invoice.isNativeToken,
+      invoice.availableTokenTypes,
+      invoice.ref,
+      invoice.receipientName,
+      invoice.receipientEmail,
+      BigNumber.from(invoice.releaseLockTimeout),
+    );
+    promise.id = invoice.id;
+    promise._balance = BigNumber.from(invoice.balance);
+    promise._paid = invoice.paid;
+    promise._senderAddress = invoice.senderAddress;
+    promise._receipientAddress = invoice.receipientAddress;
+    promise._releaseLockDate = BigNumber.from(invoice.releaseLockDate);
+    promise._fee = BigNumber.from(invoice.fee);
+    promise._deposited = invoice.deposited;
+    promise.instant = invoice.instant;
+    promise._created = new Date(
+      BigNumber.from(invoice.created).toNumber() * 1000,
+    );
+    promise._depositDate = new Date(
+      BigNumber.from(invoice.depositDate).toNumber() * 1000,
+    );
+    promise._confirmDate = new Date(
+      BigNumber.from(invoice.confirmDate).toNumber() * 1000,
+    );
+    promise._refundDate = new Date(
+      BigNumber.from(invoice.refundDate).toNumber() * 1000,
+    );
+    promise.instant = invoice.instant;
     return promise;
   }
 }

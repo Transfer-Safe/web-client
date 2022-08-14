@@ -25,7 +25,7 @@ export const InvoiceTransferView: React.FC<InvoiceTransferViewProps> = ({
   const title = useMemo(() => {
     let title = formatNumber(invoice.amount) + '$ transfer request';
     if (invoice.ref) {
-      title += ' for' + invoice.ref;
+      title += ' for ' + invoice.ref;
     }
     return title;
   }, [invoice.amount, invoice.ref]);
