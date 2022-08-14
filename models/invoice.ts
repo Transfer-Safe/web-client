@@ -122,7 +122,7 @@ export class Invoice {
   serialize(): InvoiceStruct {
     return {
       id: this.id,
-      amount: utils.parseEther(this.amount.toString()).toHexString(),
+      amount: this.amount,
       availableTokenTypes: this.availableTokenTypes,
       isNativeToken: this.isNativeToken,
       ref: this.ref,
