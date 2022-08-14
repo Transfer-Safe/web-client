@@ -2,7 +2,7 @@ import Lottie, { LottieComponentProps } from 'lottie-react';
 import { useMemo } from 'react';
 
 type AnimationProps = Omit<LottieComponentProps, 'animationData'> & {
-  animation: 'loader';
+  animation: 'loader' | 'success';
 };
 
 const Animation: React.FC<AnimationProps> = ({ animation, ...props }) => {
@@ -10,6 +10,8 @@ const Animation: React.FC<AnimationProps> = ({ animation, ...props }) => {
     switch (animation) {
       case 'loader':
         return require('./animations/loader.json');
+      case 'success':
+        return require('./animations/success.json');
     }
   }, [animation]);
   return <Lottie animationData={animationData} {...props} />;

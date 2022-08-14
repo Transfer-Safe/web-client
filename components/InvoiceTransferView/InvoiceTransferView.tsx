@@ -6,11 +6,13 @@ import { useSelector } from 'react-redux';
 import { PayInvoice } from './PayInvoice';
 import style from './InvoiceTransferView.module.scss';
 import { ConfirmInvoice } from './ConfirmInvoice';
+import PaidInvoice from './PaidInvoice';
 
 import { Invoice } from '../../models';
 import { formatNumber } from '../../utils';
 import { RootState } from '../../store/rootReducer';
 import { TransferInvoiceStatus } from '../../store/transferInvoice/types';
+import { ConfirmInvoiceStatus } from '../../store/confirmInvoice';
 export interface InvoiceTransferViewProps {
   invoice: Invoice;
 }
@@ -31,6 +33,9 @@ export const InvoiceTransferView: React.FC<InvoiceTransferViewProps> = ({
   const transferingStatus = useSelector<RootState, TransferInvoiceStatus>(
     (state) => state.transferInvoice.status,
   );
+  const confirmingStatus = useSelector<RootState, ConfirmInvoiceStatus>(
+    (state) => state.confirmInvoice.status,
+  );
 
   const showPayInvoice = useMemo(
     () =>
@@ -39,8 +44,17 @@ export const InvoiceTransferView: React.FC<InvoiceTransferViewProps> = ({
   );
 
   const showConfirmInvoice = useMemo(() => {
-    return invoice.deposited && !showPayInvoice;
-  }, [invoice.deposited, showPayInvoice]);
+    return (
+      invoice.deposited &&
+      !showPayInvoice &&
+      (!invoice.paid || confirmingStatus === ConfirmInvoiceStatus.SUCCESS)
+    );
+  }, [invoice.deposited, confirmingStatus, invoice.paid, showPayInvoice]);
+
+  const showPaidInvoice = useMemo(
+    () => invoice.paid && !showConfirmInvoice,
+    [invoice.paid, showConfirmInvoice],
+  );
 
   return (
     <Box
@@ -54,6 +68,7 @@ export const InvoiceTransferView: React.FC<InvoiceTransferViewProps> = ({
       <Container maxWidth="sm">
         {showPayInvoice && <PayInvoice invoice={invoice} />}
         {showConfirmInvoice && <ConfirmInvoice invoice={invoice} />}
+        {showPaidInvoice && <PaidInvoice invoice={invoice} />}
       </Container>
     </Box>
   );

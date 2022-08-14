@@ -41,7 +41,7 @@ export const BuyNativeCurrencyButton: React.FC<
       dispatch(startTransferInvoice(TransferInvoiceType.NATIVE));
       deposit
         .writeAsync()
-        .then(() => dispatch(signedTransferInvoice()))
+        .then(({ hash }) => dispatch(signedTransferInvoice({ txId: hash })))
         .catch((err) => dispatch(failedTransferInvoice(err)));
     }
   }, [deposit, dispatch]);

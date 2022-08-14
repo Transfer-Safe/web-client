@@ -58,12 +58,7 @@ export const InvoiceTransferButtons: React.FC<InvoiceTransferButtonsProps> = ({
           </React.Fragment>
         )}
       </Box>
-      <Typography
-        color={theme.palette.grey[800]}
-        my={4}
-        textAlign="center"
-        variant="body2"
-      >
+      <Typography color={theme.palette.grey[800]} my={4} variant="body2">
         We will hold your transfer until you confirm it by pressing the
         “Confirm” button. If you change your mind you can refund your deposit
         after{' '}

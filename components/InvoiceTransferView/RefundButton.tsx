@@ -24,7 +24,7 @@ const RefundButton: React.FC<RefundButtonProps> = ({ invoice, ...props }) => {
           textAlign="center"
           variant="caption"
         >
-          Refund will be available in 1 day
+          Refund will be available in 14 days
         </Typography>
       )}
     </React.Fragment>

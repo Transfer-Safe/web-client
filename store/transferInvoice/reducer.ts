@@ -28,6 +28,7 @@ export const transferInvoiceReducer = (
     case SIGNED_TRANSFER_INVOICE:
       return {
         ...state,
+        txId: action.payload.txId,
         status: TransferInvoiceStatus.TRANSFERRING,
       };
     case SUCCESS_TRANSFER_INVOICE:

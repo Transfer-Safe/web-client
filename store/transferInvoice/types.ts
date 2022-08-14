@@ -15,4 +15,5 @@ export interface TransferInvoiceState {
   status: TransferInvoiceStatus;
   transferType?: TransferInvoiceType;
   transferError: string | null;
+  txId?: string;
 }

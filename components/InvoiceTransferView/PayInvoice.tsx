@@ -1,6 +1,5 @@
-import { Box, Typography, useTheme } from '@mui/material';
-import Link from 'next/link';
-import React, { useCallback, useMemo } from 'react';
+import { Box, Link, Typography, useTheme } from '@mui/material';
+import React, { useCallback, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { InvoiceTransferButtons } from './InvoiceTransferButtons';
@@ -14,6 +13,8 @@ import { resetTransferInvoice } from '../../store/transferInvoice/actions';
 import { RootState } from '../../store/rootReducer';
 import { TransferInvoiceStatus } from '../../store/transferInvoice/types';
 import Button from '../Button';
+import InvoiceStatusLabel from '../InvoiceStatusLabel';
+import { useLinkToTransaction } from '../../hooks/useLinkToTransaction';
 
 interface PayInvoiceProps {
   invoice: Invoice;
@@ -58,6 +59,11 @@ export const PayInvoice: React.FC<PayInvoiceProps> = ({ invoice }) => {
     [dispatch],
   );
 
+  const txId = useSelector<RootState, string | undefined>(
+    (state) => state.transferInvoice.txId,
+  );
+  const linkToExplorer = useLinkToTransaction(txId);
+
   return (
     <Box>
       <AppModal
@@ -71,11 +77,27 @@ export const PayInvoice: React.FC<PayInvoiceProps> = ({ invoice }) => {
           />
         )}
         {isTransferring && (
-          <ThrobberSection
-            title="Transfering funds"
-            mt={2}
-            subtitle="Transaction 0x323...234"
-          />
+          <React.Fragment>
+            <ThrobberSection
+              title="Transfering funds"
+              mt={2}
+              subtitle="Transaction 0x323...234"
+            />
+            {linkToExplorer && (
+              <Button
+                href={linkToExplorer}
+                target="_blank"
+                variant="outlined"
+                size="small"
+                sx={{
+                  mt: 2,
+                  width: '100%',
+                }}
+              >
+                View in Explorer
+              </Button>
+            )}
+          </React.Fragment>
         )}
       </AppModal>
       <AppModal
@@ -97,9 +119,10 @@ export const PayInvoice: React.FC<PayInvoiceProps> = ({ invoice }) => {
           Awesome!
         </Button>
       </AppModal>
+      <InvoiceStatusLabel mt={4} invoice={invoice} />
       <Typography
         variant="h1"
-        mt={8}
+        mt={2}
         sx={{
           wordBreak: 'break-word',
         }}

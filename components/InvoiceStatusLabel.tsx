@@ -1,5 +1,6 @@
 import { Box, BoxProps, Typography, useTheme } from '@mui/material';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import DoneIcon from '@mui/icons-material/Done';
 import React, { useMemo } from 'react';
 import { useAccount } from 'wagmi';
 
@@ -13,7 +14,6 @@ const InvoiceStatusLabel: React.FC<InvoiceStatusLabelProps> = ({
   invoice,
   ...props
 }) => {
-  const theme = useTheme();
   const account = useAccount();
 
   const backgroundColor = useMemo(() => {
@@ -23,12 +23,12 @@ const InvoiceStatusLabel: React.FC<InvoiceStatusLabelProps> = ({
     if (invoice.deposited) {
       return '#ffcf00';
     }
-    return theme.palette.success.main;
-  }, [invoice, theme]);
+    return '#d2c2ff';
+  }, [invoice]);
 
   const invoiceStatus = useMemo(() => {
     if (invoice.paid) {
-      return 'Invoice paid';
+      return 'Transfer completed';
     }
 
     if (invoice.deposited) {
@@ -37,11 +37,13 @@ const InvoiceStatusLabel: React.FC<InvoiceStatusLabelProps> = ({
       }
       return 'Waiting for confirmation';
     }
+
+    return 'Waiting for transfer';
   }, [invoice, account.address]);
 
   const Icon = useMemo(() => {
     if (invoice.paid) {
-      return;
+      return DoneIcon;
     }
     if (invoice.deposited) {
       return AccessTimeIcon;

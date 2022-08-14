@@ -14,7 +14,7 @@ export const startTransferInvoice = createAction<
 >(START_TRANSFER_INVOICE);
 
 export const signedTransferInvoice = createAction<
-  void,
+  { txId: string },
   typeof SIGNED_TRANSFER_INVOICE
 >(SIGNED_TRANSFER_INVOICE);
 
