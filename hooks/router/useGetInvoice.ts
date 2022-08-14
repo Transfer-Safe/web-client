@@ -1,15 +1,23 @@
 import { useEffect, useState } from 'react';
 
-import { useReadRouterFunction } from './useRouterFunction';
+import {
+  ReadFunctionOptions,
+  useReadRouterFunction,
+} from './useRouterFunction';
 
 import { Invoice } from '../../models';
 
-export const useGetInvoice = (invoiceId: string) => {
+export const useGetInvoice = (
+  invoiceId: string,
+  options?: ReadFunctionOptions,
+) => {
   const [invoice, setInvoice] = useState<Invoice | undefined>();
 
-  const { data, ...invoiceFunction } = useReadRouterFunction('getInvoice', [
-    invoiceId,
-  ]);
+  const { data, ...invoiceFunction } = useReadRouterFunction(
+    'getInvoice',
+    [invoiceId],
+    options,
+  );
 
   useEffect(() => {
     if (data) {

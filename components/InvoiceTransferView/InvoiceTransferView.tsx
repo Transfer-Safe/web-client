@@ -61,16 +61,17 @@ export const InvoiceTransferView: React.FC<InvoiceTransferViewProps> = ({
 
         <Link href="https://google.com" target="_blank">
           <Typography
-            mt={3}
+            mt={2}
             textAlign="center"
             lineHeight="2rem"
             variant="subtitle1"
+            fontSize="1.1rem"
           >
             Transfer request from{' '}
             {formatTransactionId(invoice.receipientAddress)}
           </Typography>
         </Link>
-        <Box mt={4} display="flex" flexDirection="column" alignItems="center">
+        <Box mt={2} display="flex" flexDirection="column" alignItems="center">
           {!isConnected && <ConnectButton />}
           {isConnected && (
             <React.Fragment>

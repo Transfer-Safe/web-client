@@ -15,6 +15,10 @@ type PrepareWriteContractOptions = Omit<
   'addressOrName' | 'functionName' | 'contractInterface' | 'args'
 >;
 
+export interface ReadFunctionOptions {
+  watch?: boolean;
+}
+
 export function useWriteRouterFunction<
   T extends keyof TransferSafeRouter['functions'],
 >(
@@ -42,6 +46,7 @@ export function useReadRouterFunction<
 >(
   functionName: T,
   args: Parameters<TransferSafeRouter['functions'][T]>,
+  options: ReadFunctionOptions = {},
 ): ReadContract<ReturnType<TransferSafeRouter[T]>> {
   const routerContractAddress = useRouterContractAddress();
 
@@ -50,5 +55,6 @@ export function useReadRouterFunction<
     functionName: functionName,
     contractInterface: TransferSafeRouter__factory.abi,
     args,
+    ...options,
   }) as never;
 }

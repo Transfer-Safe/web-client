@@ -13,7 +13,7 @@ interface InvoiceTransferPageProps {
 const InvoiceTransferPage: NextPage<InvoiceTransferPageProps> = ({
   invoiceId,
 }) => {
-  const { data: invoice } = useGetInvoice(invoiceId);
+  const { data: invoice } = useGetInvoice(invoiceId, { watch: true });
 
   return (
     <Box minHeight="100vh" display="flex" flexDirection="column">

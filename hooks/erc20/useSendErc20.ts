@@ -14,6 +14,7 @@ export const useSendErc20 = (
     contractInterface: erc20ABI,
     functionName: 'transfer',
     args: [routerAddress, amount],
+    onError: console.warn,
   });
 
   return useContractWrite(config);
