@@ -15,7 +15,7 @@ const Home: NextPage = () => {
         }}
       >
         <Typography variant="h1" fontWeight="600">
-          Hello Next.js
+          Transfer safe
         </Typography>
       </Container>
     </div>
