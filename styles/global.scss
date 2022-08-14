@@ -1,0 +1,5 @@
+@import './general-sans.css';
+
+.MuiTimelineItem-root::before {
+  display: none;
+}

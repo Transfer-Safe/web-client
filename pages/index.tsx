@@ -1,13 +1,23 @@
-import { Button } from '@nextui-org/react';
+import { Typography } from '@mui/material';
+import { Container } from '@mui/system';
 import type { NextPage } from 'next';
-import Link from 'next/link';
+
+import Header from '../components/Header';
 
 const Home: NextPage = () => {
   return (
     <div>
-      <Link href="invoices/new">
-        <Button>Create invoice</Button>
-      </Link>
+      <Header />
+      <Container
+        maxWidth="md"
+        sx={{
+          my: 3,
+        }}
+      >
+        <Typography variant="h1" fontWeight="600">
+          Hello Next.js
+        </Typography>
+      </Container>
     </div>
   );
 };

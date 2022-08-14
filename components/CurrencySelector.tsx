@@ -1,4 +1,4 @@
-import { Dropdown } from '@nextui-org/react';
+import { MenuItem, Select } from '@mui/material';
 
 const currencies = ['ETH'];
 
@@ -11,13 +11,12 @@ export const CurrencySelector: React.FC<CurrencySelectorProps> = ({
   currency,
 }) => {
   return (
-    <Dropdown>
-      <Dropdown.Button light>{currency}</Dropdown.Button>
-      <Dropdown.Menu>
-        {currencies.map((item) => (
-          <Dropdown.Item key={item}>{item}</Dropdown.Item>
-        ))}
-      </Dropdown.Menu>
-    </Dropdown>
+    <Select label="Select currency" value={currency}>
+      {currencies.map((item) => (
+        <MenuItem key={item} value={item}>
+          {item}
+        </MenuItem>
+      ))}
+    </Select>
   );
 };
