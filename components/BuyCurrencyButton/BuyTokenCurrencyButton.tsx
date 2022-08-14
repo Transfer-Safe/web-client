@@ -46,7 +46,7 @@ export const BuyTokenCurrencyButton: React.FC<BuyTokenCurrencyButtonProps> = ({
       dispatch(startTransferInvoice(TransferInvoiceType.ERC20));
       sendTokens
         .writeAsync()
-        .then(() => dispatch(signedTransferInvoice()))
+        .then(({ hash }) => dispatch(signedTransferInvoice({ txId: hash })))
         .catch((err) => dispatch(failedTransferInvoice(err)));
     }
   }, [sendTokens, dispatch]);
