@@ -21,18 +21,18 @@ const InvoiceHeadTags: React.FC<InvoiceHeadTagsProps> = ({ invoice }) => {
     return title;
   }, [invoice.ref]);
 
+  const docTitle = [formattedAmount, title, '—', 'TransferSafe'].join(' ');
+
   return (
     <Head>
-      <title>
-        {formattedAmount} {title}
-      </title>
+      <title>{docTitle}</title>
       <meta
         property="og:image"
         content={createOgImageUrl(formattedAmount, title)}
       />
       <meta property="og:image:height" content="630" />
       <meta property="og:image:width" content="1200" />
-      <meta property="og:title" content={title} />
+      <meta property="og:title" content={docTitle} />
       <meta
         property="og:description"
         content="Transfer your funds safely with TransferSafe"
