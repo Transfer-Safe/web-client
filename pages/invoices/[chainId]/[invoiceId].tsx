@@ -1,5 +1,5 @@
 import { Box } from '@mui/material';
-import { NextPage } from 'next';
+import { NextPage, NextPageContext } from 'next';
 import React from 'react';
 
 import style from './InvoicePage.module.scss';
@@ -8,12 +8,17 @@ import Footer from '../../../components/Footer';
 import Header from '../../../components/Header';
 import InvoiceView from '../../../components/InvoiceView';
 import { useGetInvoice } from '../../../hooks';
+import { dencryptEmail, loadInvoice } from '../../../utils';
 
 export interface InvoicePageProps {
   invoiceId: string;
+  encodedEmail?: string;
 }
 
-const InvoicePage: NextPage<InvoicePageProps> = ({ invoiceId }) => {
+const InvoicePage: NextPage<InvoicePageProps> = ({
+  invoiceId,
+  encodedEmail,
+}) => {
   const { data: invoice } = useGetInvoice(invoiceId, { watch: true });
 
   return (
@@ -24,16 +29,29 @@ const InvoicePage: NextPage<InvoicePageProps> = ({ invoiceId }) => {
       className={style.InvoicePage}
     >
       <Header />
-      {invoice && <InvoiceView invoice={invoice} />}
+      {invoice && <InvoiceView encodedEmail={encodedEmail} invoice={invoice} />}
       <Footer />
     </Box>
   );
 };
 
-InvoicePage.getInitialProps = async (ctx) => {
+export async function getServerSideProps(
+  ctx: NextPageContext,
+): Promise<{ props: InvoicePageProps }> {
+  const invoiceId = ctx.query.invoiceId as string;
+  const chainId = Number(ctx.query.chainId as string);
+
+  const invoice = await loadInvoice(invoiceId, chainId);
+  const email = invoice.receipientEmail
+    ? dencryptEmail(invoice.receipientEmail)
+    : undefined;
+
   return {
-    invoiceId: ctx.query.invoiceId as string,
+    props: {
+      invoiceId,
+      encodedEmail: email,
+    },
   };
-};
+}
 
 export default InvoicePage;

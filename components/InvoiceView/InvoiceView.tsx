@@ -12,9 +12,13 @@ import { CurrencyLabelList } from '../CurrencyLabel';
 
 export interface InvoiceViewProps {
   invoice: Invoice;
+  encodedEmail?: string;
 }
 
-export const InvoiceView: React.FC<InvoiceViewProps> = ({ invoice }) => {
+export const InvoiceView: React.FC<InvoiceViewProps> = ({
+  invoice,
+  encodedEmail,
+}) => {
   const formattedAmount = useMemo(
     () => formatNumber(invoice.amount),
     [invoice.amount],
@@ -88,10 +92,10 @@ export const InvoiceView: React.FC<InvoiceViewProps> = ({ invoice }) => {
               Transfer request created!
             </Typography>
             <Typography color={theme.palette.grey[800]} mt={2}>
-              {invoice.receipientEmail && (
+              {encodedEmail && (
                 <span>
                   You&apos;ll receive notifications regarding this request to{' '}
-                  {invoice.receipientEmail}.{' '}
+                  {encodedEmail}.{' '}
                 </span>
               )}
               Invoice will be paid in{' '}

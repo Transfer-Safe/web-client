@@ -1,4 +1,5 @@
 import { NextPage } from 'next';
+import { useCallback, useEffect } from 'react';
 
 import style from './new.module.scss';
 
@@ -6,18 +7,7 @@ import Header from '../../components/Header';
 import InvoiceForm from '../../components/InvoiceForm';
 
 const NewInvoice: NextPage = () => {
-  // const createInvoice = useCreateInvoice();
-  // const isLoading = useMemo(
-  //   () => ['PendingSignature', 'Mining'].includes(createInvoice.state.status),
-  //   [createInvoice.state.status],
-  // );
-
-  // const onCreate = useCallback(
-  //   async (invoice: Invoice) => {
-  //     await createInvoice.create(invoice);
-  //   },
-  //   [createInvoice],
-  // );
+  const onSubmitInvoice = useCallback(() => undefined, []);
 
   return (
     <div className={style.NewInvoicePage}>
@@ -25,7 +15,7 @@ const NewInvoice: NextPage = () => {
       <InvoiceForm
         className={style.container}
         loading={false}
-        onSubmitInvoice={() => undefined}
+        onSubmitInvoice={onSubmitInvoice}
       />
     </div>
   );

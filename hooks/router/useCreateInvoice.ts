@@ -1,4 +1,4 @@
-import { BigNumber, constants, utils } from 'ethers';
+import { BigNumber, utils } from 'ethers';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useContractWrite, useFeeData } from 'wagmi';
@@ -9,12 +9,20 @@ import { CurrencyCode, Invoice } from '../../models';
 import { NewInvoiceFormState } from '../../store/newInvoiceForm';
 import { RootState } from '../../store/rootReducer';
 import { useCurrenciesList } from '../useCurrenciesList';
+import { encryptEmailClient } from '../../utils';
 
 export const useCreateInvoice = () => {
   const newInvoice = useSelector<RootState, NewInvoiceFormState>(
     (state) => state.newInvoiceForm,
   );
   const currencies = useCurrenciesList();
+  const [encryptedEmail, setEncryptedEmail] = useState<string | undefined>();
+
+  useEffect(() => {
+    if (newInvoice.email) {
+      encryptEmailClient(newInvoice.email).then(setEncryptedEmail);
+    }
+  }, [newInvoice.email]);
 
   const getCurrency = useCallback(
     (code: CurrencyCode) => {
@@ -34,9 +42,9 @@ export const useCreateInvoice = () => {
       newInvoice.currencies.map((code) => getCurrency(code).address),
       newInvoice.reference,
       undefined,
-      newInvoice.email,
+      encryptedEmail,
     );
-  }, [newInvoice, getCurrency]);
+  }, [newInvoice, encryptedEmail, getCurrency]);
 
   const [fee, setFee] = useState<BigNumber | undefined>();
   const feeData = useFeeData();
