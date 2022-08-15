@@ -46,6 +46,12 @@ const InvoiceTransferPage: NextPage<InvoiceTransferPageProps> = ({
   );
 };
 
+// InvoiceTransferPage.getInitialProps = (ctx: NextPageContext) => {
+//   return {
+//     invoiceId: ctx.query.invoiceId as string,
+//   };
+// };
+
 export async function getServerSideProps(
   ctx: NextPageContext,
 ): Promise<{ props: InvoiceTransferPageProps }> {

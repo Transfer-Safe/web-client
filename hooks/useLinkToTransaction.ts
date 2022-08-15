@@ -5,5 +5,13 @@ export const useLinkToTransaction = (txId?: string) => {
   if (!txId) {
     return;
   }
-  return currentChain.blockExplorers?.default?.url + txId;
+  return currentChain.blockExplorers?.default?.url + '/tx/' + txId;
 };
+
+export function useLinkToAddress(address?: string) {
+  const currentChain = useCurrentChain();
+  if (!address) {
+    return;
+  }
+  return currentChain.blockExplorers?.default?.url + '/address/' + address;
+}

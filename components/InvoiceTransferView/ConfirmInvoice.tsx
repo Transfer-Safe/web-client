@@ -17,6 +17,7 @@ import {
 import AppModal from '../AppModal';
 import ThrobberSection from '../Throbber/ThrobberSection';
 import Button from '../Button';
+import { useLinkToTransaction } from '../../hooks/useLinkToTransaction';
 
 interface ConfirmInvoiceProps {
   invoice: Invoice;
@@ -52,6 +53,8 @@ export const ConfirmInvoice: React.FC<ConfirmInvoiceProps> = ({ invoice }) => {
   const txId = useSelector<RootState, string | undefined>(
     (state) => state.confirmInvoice.txid,
   );
+
+  const linkToTransaction = useLinkToTransaction(txId);
 
   const onCloseSuccess = useCallback(() => {
     dispatch(resetConfirmInvoice());
@@ -90,6 +93,20 @@ export const ConfirmInvoice: React.FC<ConfirmInvoiceProps> = ({ invoice }) => {
         >
           Nice!
         </Button>
+        {linkToTransaction && (
+          <Button
+            href={linkToTransaction}
+            target="_blank"
+            variant="outlined"
+            size="small"
+            sx={{
+              mt: 2,
+              width: '100%',
+            }}
+          >
+            View in Explorer
+          </Button>
+        )}
       </AppModal>
       <InvoiceStatusLabel mt={4} invoice={invoice} />
       <Typography variant="h1" mt={2}>

@@ -18,7 +18,17 @@ export const InvoiceTransferButtons: React.FC<InvoiceTransferButtonsProps> = ({
 
   return (
     <React.Fragment>
-      <Box mt={2} display="flex" flexDirection="column" alignItems="center">
+      <Box
+        mt={2}
+        display="flex"
+        flexDirection="column"
+        sx={{
+          alignItems: {
+            xs: 'center',
+            md: 'inherit',
+          },
+        }}
+      >
         {!isConnected && <ConnectButton />}
         {isConnected && (
           <React.Fragment>

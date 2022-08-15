@@ -14,7 +14,10 @@ import { RootState } from '../../store/rootReducer';
 import { TransferInvoiceStatus } from '../../store/transferInvoice/types';
 import Button from '../Button';
 import InvoiceStatusLabel from '../InvoiceStatusLabel';
-import { useLinkToTransaction } from '../../hooks/useLinkToTransaction';
+import {
+  useLinkToAddress,
+  useLinkToTransaction,
+} from '../../hooks/useLinkToTransaction';
 
 interface PayInvoiceProps {
   invoice: Invoice;
@@ -63,6 +66,7 @@ export const PayInvoice: React.FC<PayInvoiceProps> = ({ invoice }) => {
     (state) => state.transferInvoice.txId,
   );
   const linkToExplorer = useLinkToTransaction(txId);
+  const linkToReceiverAddress = useLinkToAddress(invoice.receipientAddress);
 
   return (
     <Box>
@@ -118,6 +122,20 @@ export const PayInvoice: React.FC<PayInvoiceProps> = ({ invoice }) => {
         >
           Awesome!
         </Button>
+        {linkToExplorer && (
+          <Button
+            href={linkToExplorer}
+            target="_blank"
+            variant="outlined"
+            size="small"
+            sx={{
+              mt: 2,
+              width: '100%',
+            }}
+          >
+            View in Explorer
+          </Button>
+        )}
       </AppModal>
       <InvoiceStatusLabel mt={4} invoice={invoice} />
       <Typography
@@ -142,16 +160,20 @@ export const PayInvoice: React.FC<PayInvoiceProps> = ({ invoice }) => {
         )}
       </Typography>
 
-      <Link href="https://google.com" target="_blank">
+      {linkToReceiverAddress && (
         <Typography
           mt={2}
           lineHeight="2rem"
           variant="subtitle1"
           fontSize="1.1rem"
         >
-          Transfer request from {formatTransactionId(invoice.receipientAddress)}
+          Transfer request from{' '}
+          <Link href={linkToReceiverAddress} target="_blank">
+            {formatTransactionId(invoice.receipientAddress)}
+          </Link>
         </Typography>
-      </Link>
+      )}
+
       <InvoiceTransferButtons invoice={invoice} />
     </Box>
   );
