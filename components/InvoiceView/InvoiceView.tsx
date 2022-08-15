@@ -1,6 +1,6 @@
 import { Box, Container, TextField, Typography, useTheme } from '@mui/material';
 import Head from 'next/head';
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 
 import InvoiceTimeline from './InvoiceTimeline';
 
@@ -31,6 +31,14 @@ export const InvoiceView: React.FC<InvoiceViewProps> = ({ invoice }) => {
 
   const theme = useTheme();
 
+  const link = useMemo(() => {
+    return window.location.href.replace('/invoices/', '/transfer/');
+  }, []);
+
+  const onCopyLink = useCallback(() => {
+    navigator.clipboard.writeText(link);
+  }, [link]);
+
   return (
     <Box
       bgcolor={theme.palette.grey[100]}
@@ -55,14 +63,14 @@ export const InvoiceView: React.FC<InvoiceViewProps> = ({ invoice }) => {
           >
             <Typography variant="h1">{title}</Typography>
             <Box mt={6} display="flex">
-              <Button variant="contained" sx={{ marginRight: 2 }}>
+              <Button
+                variant="contained"
+                sx={{ marginRight: 2 }}
+                onClick={onCopyLink}
+              >
                 Copy link
               </Button>
-              <TextField
-                sx={{ flex: 1 }}
-                value={window.location.href}
-                variant="outlined"
-              />
+              <TextField sx={{ flex: 1 }} value={link} variant="outlined" />
             </Box>
             <Typography mt={2}>
               Share this link to receive the transfer
