@@ -15,6 +15,7 @@ export interface InvoicePageProps {
 
 const InvoicePage: NextPage<InvoicePageProps> = ({ invoiceId }) => {
   const { data: invoice } = useGetInvoice(invoiceId, { watch: true });
+  console.log('invoice', invoice);
 
   return (
     <Box
