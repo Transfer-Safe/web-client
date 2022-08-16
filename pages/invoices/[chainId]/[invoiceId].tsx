@@ -47,7 +47,7 @@ export async function getServerSideProps(
   const chainId = Number(ctx.query.chainId as string);
 
   const invoice = await loadInvoice(invoiceId, chainId);
-  console.log('===> invoice', invoiceId, invoice);
+
   const email =
     invoice.receipientEmail.length > 0
       ? dencryptEmail(invoice.receipientEmail)
