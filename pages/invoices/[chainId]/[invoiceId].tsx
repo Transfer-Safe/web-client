@@ -12,7 +12,7 @@ import { dencryptEmail, loadInvoice } from '../../../utils';
 
 export interface InvoicePageProps {
   invoiceId: string;
-  encodedEmail?: string;
+  encodedEmail: string | null;
 }
 
 const InvoicePage: NextPage<InvoicePageProps> = ({
@@ -29,7 +29,12 @@ const InvoicePage: NextPage<InvoicePageProps> = ({
       className={style.InvoicePage}
     >
       <Header />
-      {invoice && <InvoiceView encodedEmail={encodedEmail} invoice={invoice} />}
+      {invoice && (
+        <InvoiceView
+          encodedEmail={encodedEmail || undefined}
+          invoice={invoice}
+        />
+      )}
       <Footer />
     </Box>
   );
@@ -42,14 +47,16 @@ export async function getServerSideProps(
   const chainId = Number(ctx.query.chainId as string);
 
   const invoice = await loadInvoice(invoiceId, chainId);
-  const email = invoice.receipientEmail
-    ? dencryptEmail(invoice.receipientEmail)
-    : undefined;
+  console.log('===> invoice', invoiceId, invoice);
+  const email =
+    invoice.receipientEmail.length > 0
+      ? dencryptEmail(invoice.receipientEmail)
+      : undefined;
 
   return {
     props: {
       invoiceId,
-      encodedEmail: email,
+      encodedEmail: email || null,
     },
   };
 }

@@ -1,6 +1,6 @@
 import classNames from 'classnames';
-import React, { HTMLAttributes, useCallback, useMemo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { HTMLAttributes, useCallback, useEffect, useMemo } from 'react';
+import { useSelector } from 'react-redux';
 
 import style from './InvoiceForm.module.scss';
 import StepContainer from './StepContainer';
@@ -16,9 +16,14 @@ import { Invoice } from '../../models';
 import {
   NewInvoiceFormState,
   NewInvoiceFormStep,
-} from '../../store/newInvoiceForm';
-import { newInvoiceNextStep } from '../../store/newInvoiceForm/actions';
+  newInvoiceNextStep,
+} from '../../store/features/newInvoiceForm';
 import { RootState } from '../../store/rootReducer';
+import {
+  encryptEmail,
+  resetEmailEncryption,
+} from '../../store/features/encryptEmail';
+import { useAppDispatch } from '../../hooks';
 
 type InvoiceFormProps = HTMLAttributes<HTMLDivElement> & {
   onSubmitInvoice?: (invoice: Invoice) => void;
@@ -33,10 +38,11 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = ({
   loading,
   ...props
 }) => {
-  const { step: currentStep } = useSelector<RootState, NewInvoiceFormState>(
-    ({ newInvoiceForm }) => newInvoiceForm,
-  );
-  const dispatch = useDispatch();
+  const { step: currentStep, email } = useSelector<
+    RootState,
+    NewInvoiceFormState
+  >(({ newInvoiceForm }) => newInvoiceForm);
+  const dispatch = useAppDispatch();
 
   const onAmountSubmit = useCallback(
     () => dispatch(newInvoiceNextStep()),
@@ -80,6 +86,14 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = ({
     onNotificationsSubmit,
     onCurrenciesSubmit,
   ]);
+
+  useEffect(() => {
+    if (email) {
+      dispatch(encryptEmail(email));
+    } else {
+      dispatch(resetEmailEncryption());
+    }
+  }, [dispatch, email]);
 
   return (
     <div className={classNames(className, style.InvoiceForm)} {...props}>

@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import style from './ReferenceStep.module.scss';
 
-import { newInvoiceUpdate } from '../../../../store/newInvoiceForm/actions';
+import { newInvoiceUpdate } from '../../../../store/features/newInvoiceForm';
 import { RootState } from '../../../../store/rootReducer';
 
 type ReferenceStepProps = HTMLAttributes<HTMLDivElement> & {

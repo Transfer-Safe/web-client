@@ -18,5 +18,5 @@ export default function handler(
   const body = req.body as Body;
   const encryptedEmail = encryptEmail(body.email);
 
-  res.status(200).json({ encryptedEmail });
+  res.status(200).json({ encryptedEmail: encryptedEmail });
 }

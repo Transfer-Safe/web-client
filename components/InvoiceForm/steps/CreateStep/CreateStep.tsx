@@ -1,8 +1,15 @@
-import { Box, Button, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import classNames from 'classnames';
+import { useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
-import { HTMLAttributes, useCallback, useEffect, useState } from 'react';
+import {
+  HTMLAttributes,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import { useAccount } from 'wagmi';
 
 import style from './CreateStep.module.scss';
@@ -14,6 +21,8 @@ import { formatTransactionId } from '../../../../utils';
 import AppModal from '../../../AppModal';
 import FormattedNumber from '../../../FormattedNumber';
 import ThrobberSection from '../../../Throbber/ThrobberSection';
+import { selectIsEncryptingEmail } from '../../../../store/features/encryptEmail';
+import Button from '../../../Button';
 
 type CreateStepProps = HTMLAttributes<HTMLDivElement>;
 
@@ -27,6 +36,12 @@ export const CreateStep: React.FC<CreateStepProps> = ({
   const { isConnected } = useAccount();
   const createInvoice = useCreateInvoice();
   const feeInUsd = useConvertToUsd(createInvoice.fee || 0)?.toNumber();
+  const isEmailEncrypting = useSelector(selectIsEncryptingEmail);
+
+  const isLoading = useMemo(
+    () => isEmailEncrypting || !createInvoice.writeAsync,
+    [isEmailEncrypting, createInvoice],
+  );
 
   const onCreateInvoice = useCallback(async () => {
     createInvoice.write?.();
@@ -61,7 +76,12 @@ export const CreateStep: React.FC<CreateStepProps> = ({
         {!isConnected && <ConnectButton />}
         {isConnected && (
           <Box display="flex" alignItems="center">
-            <Button size="large" variant="contained" onClick={onCreateInvoice}>
+            <Button
+              loading={isLoading}
+              size="large"
+              variant="contained"
+              onClick={onCreateInvoice}
+            >
               Create invoice
             </Button>
             <Typography

@@ -8,8 +8,10 @@ import { CurrencyButton } from './CurrencyButton';
 
 import { useCurrenciesList, useCurrentChain } from '../../../../hooks';
 import { CurrencyCode } from '../../../../models';
-import { NewInvoiceFormState } from '../../../../store/newInvoiceForm';
-import { newInvoiceUpdate } from '../../../../store/newInvoiceForm/actions';
+import {
+  NewInvoiceFormState,
+  newInvoiceUpdate,
+} from '../../../../store/features/newInvoiceForm';
 import { RootState } from '../../../../store/rootReducer';
 
 type CurrenciesStepProps = HTMLAttributes<HTMLFormElement> & {

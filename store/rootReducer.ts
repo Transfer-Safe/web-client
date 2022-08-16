@@ -6,8 +6,12 @@ import {
   creatingInvoiceReducer,
   CreatingInvoiceState,
 } from './creatingInvoice';
-import { NewInvoiceFormState } from './newInvoiceForm';
-import { newInvoiceFormReducer } from './newInvoiceForm/reducer';
+import encryptEmailReducer, {
+  EncryptEmailState,
+} from './features/encryptEmail';
+import newInvoiceFormReducer, {
+  NewInvoiceFormState,
+} from './features/newInvoiceForm';
 import { settingsReducer } from './settings/reducer';
 import { SettingsState } from './settings/types';
 import { transferInvoiceReducer } from './transferInvoice/reducer';
@@ -20,6 +24,7 @@ export interface RootState {
   newInvoiceForm: NewInvoiceFormState;
   transferInvoice: TransferInvoiceState;
   confirmInvoice: ConfirmInvoiceState;
+  encryptEmail: EncryptEmailState;
 }
 
 export const rootReducer = combineReducers<RootState>({
@@ -29,4 +34,5 @@ export const rootReducer = combineReducers<RootState>({
   newInvoiceForm: newInvoiceFormReducer,
   transferInvoice: transferInvoiceReducer,
   confirmInvoice: confirmInvoiceReducer,
+  encryptEmail: encryptEmailReducer,
 });

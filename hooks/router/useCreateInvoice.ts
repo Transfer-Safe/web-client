@@ -6,23 +6,17 @@ import { useContractWrite, useFeeData } from 'wagmi';
 import { useWriteRouterFunction } from './useRouterFunction';
 
 import { CurrencyCode, Invoice } from '../../models';
-import { NewInvoiceFormState } from '../../store/newInvoiceForm';
+import { NewInvoiceFormState } from '../../store/features/newInvoiceForm';
 import { RootState } from '../../store/rootReducer';
 import { useCurrenciesList } from '../useCurrenciesList';
-import { encryptEmailClient } from '../../utils';
+import { selectEncryptedEmail } from '../../store/features/encryptEmail';
 
 export const useCreateInvoice = () => {
   const newInvoice = useSelector<RootState, NewInvoiceFormState>(
     (state) => state.newInvoiceForm,
   );
   const currencies = useCurrenciesList();
-  const [encryptedEmail, setEncryptedEmail] = useState<string | undefined>();
-
-  useEffect(() => {
-    if (newInvoice.email) {
-      encryptEmailClient(newInvoice.email).then(setEncryptedEmail);
-    }
-  }, [newInvoice.email]);
+  const encryptedEmail = useSelector(selectEncryptedEmail);
 
   const getCurrency = useCallback(
     (code: CurrencyCode) => {

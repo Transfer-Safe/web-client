@@ -9,9 +9,9 @@ import { theme } from '../../../config';
 import {
   NewInvoiceFormState,
   NewInvoiceFormStep,
-} from '../../../store/newInvoiceForm';
-import { newInvoiceGoToStep } from '../../../store/newInvoiceForm/actions';
-import { NEW_INVOICES_STEPS_ORDER } from '../../../store/newInvoiceForm/reducer';
+  NEW_INVOICES_STEPS_ORDER,
+  newInvoiceGoToStep,
+} from '../../../store/features/newInvoiceForm';
 import { RootState } from '../../../store/rootReducer';
 import CurrencyLabel from '../../CurrencyLabel';
 import FormattedNumber from '../../FormattedNumber';
