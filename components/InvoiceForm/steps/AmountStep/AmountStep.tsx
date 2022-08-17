@@ -1,4 +1,4 @@
-import { Button, TextField, Typography } from '@mui/material';
+import { TextField, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import { FormEventHandler, useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -8,6 +8,7 @@ import style from './AmountStep.module.scss';
 import { newInvoiceUpdate } from '../../../../store/features/newInvoiceForm';
 import { RootState } from '../../../../store/rootReducer';
 import FormattedNumber from '../../../FormattedNumber';
+import Button from '../../../Button';
 
 interface AmountStepProps {
   onAmountSubmit: () => void;
@@ -22,13 +23,17 @@ export const AmountStep: React.FC<AmountStepProps> = ({ onAmountSubmit }) => {
     currentAmount ? currentAmount.toString() : '',
   );
 
-  const onSubmit: FormEventHandler<HTMLFormElement> = useCallback(
+  const onSubmit = useCallback(() => {
+    onAmountSubmit();
+  }, [onAmountSubmit]);
+
+  const onFormSubmit: FormEventHandler<HTMLFormElement> = useCallback(
     (e) => {
       e.preventDefault();
-      onAmountSubmit();
+      onSubmit();
       return true;
     },
-    [onAmountSubmit],
+    [onSubmit],
   );
 
   const onChange = useCallback(
@@ -43,7 +48,7 @@ export const AmountStep: React.FC<AmountStepProps> = ({ onAmountSubmit }) => {
 
   return (
     <div className={style.AmountStep}>
-      <form onSubmit={onSubmit}>
+      <form onSubmit={onFormSubmit}>
         <Typography variant="h1">
           How much money do you want to receive?
         </Typography>
@@ -66,7 +71,13 @@ export const AmountStep: React.FC<AmountStepProps> = ({ onAmountSubmit }) => {
             )}
           />
           <Box mr={2} />
-          <Button disabled={disabled} type="submit" variant="contained">
+          <Button
+            shortcut="enter"
+            disabled={disabled}
+            type="submit"
+            variant="contained"
+            onClick={onSubmit}
+          >
             Continue
           </Button>
         </Box>

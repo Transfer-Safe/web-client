@@ -58,7 +58,7 @@ export class Invoice {
     ref: string | undefined,
     receipientName: string | undefined,
     receipientEmail?: string,
-    releaseLockTimeout: BigNumber = BigNumber.from(1000 * 60 * 60 * 24 * 7),
+    releaseLockTimeout: BigNumber = BigNumber.from(1000 * 60 * 60 * 24 * 7 * 2),
     instant = false,
   ) {
     this.amount = amount;

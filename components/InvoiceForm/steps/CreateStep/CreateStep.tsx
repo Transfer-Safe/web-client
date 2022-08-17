@@ -44,8 +44,11 @@ export const CreateStep: React.FC<CreateStepProps> = ({
   );
 
   const onCreateInvoice = useCallback(async () => {
+    if (isLoading) {
+      return;
+    }
     createInvoice.write?.();
-  }, [createInvoice]);
+  }, [createInvoice, isLoading]);
 
   useEffect(() => {
     if (createInvoice.data) {
@@ -81,6 +84,7 @@ export const CreateStep: React.FC<CreateStepProps> = ({
               size="large"
               variant="contained"
               onClick={onCreateInvoice}
+              shortcut="enter"
             >
               Create invoice
             </Button>

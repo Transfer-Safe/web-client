@@ -11,12 +11,14 @@ import {
   NotificationsStep,
   CreateStep,
 } from './steps';
+import TypeStep from './steps/TypeStep';
 
 import { Invoice } from '../../models';
 import {
   NewInvoiceFormState,
   NewInvoiceFormStep,
   newInvoiceNextStep,
+  newInvoiceUpdate,
 } from '../../store/features/newInvoiceForm';
 import { RootState } from '../../store/rootReducer';
 import {
@@ -64,6 +66,14 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = ({
     [dispatch],
   );
 
+  const onTypeSubmit = useCallback(
+    (instantTransfer: boolean) => {
+      dispatch(newInvoiceUpdate({ instantTransfer }));
+      dispatch(newInvoiceNextStep());
+    },
+    [dispatch],
+  );
+
   const currentStepRender = useMemo(() => {
     switch (currentStep) {
       case NewInvoiceFormStep.amount:
@@ -76,6 +86,8 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = ({
         );
       case NewInvoiceFormStep.currency:
         return <CurrenciesStep onCurrenciesSubmit={onCurrenciesSubmit} />;
+      case NewInvoiceFormStep.type:
+        return <TypeStep onTypeSubmit={onTypeSubmit} />;
       case NewInvoiceFormStep.create:
         return <CreateStep />;
     }
@@ -85,6 +97,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = ({
     onReferenceSubmit,
     onNotificationsSubmit,
     onCurrenciesSubmit,
+    onTypeSubmit,
   ]);
 
   useEffect(() => {

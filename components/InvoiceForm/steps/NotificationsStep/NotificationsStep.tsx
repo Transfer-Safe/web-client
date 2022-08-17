@@ -1,4 +1,4 @@
-import { Box, Button, TextField, Typography } from '@mui/material';
+import { Box, TextField, Typography } from '@mui/material';
 import classNames from 'classnames';
 import { FormEventHandler, HTMLAttributes, useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -7,6 +7,7 @@ import style from './NotificationsStep.module.scss';
 
 import { newInvoiceUpdate } from '../../../../store/features/newInvoiceForm';
 import { RootState } from '../../../../store/rootReducer';
+import Button from '../../../Button';
 
 type NotificationsStep = HTMLAttributes<HTMLInputElement> & {
   onNotificationsSubmit: () => void;
@@ -30,14 +31,18 @@ export const NotificationsStep: React.FC<NotificationsStep> = ({
     [setEmail],
   );
 
-  const onSubmit: FormEventHandler<HTMLFormElement> = useCallback(
+  const onSubmit = useCallback(() => {
+    dispatch(newInvoiceUpdate({ email }));
+    onNotificationsSubmit();
+  }, [dispatch, email, onNotificationsSubmit]);
+
+  const onFormSubmit: FormEventHandler<HTMLFormElement> = useCallback(
     (e) => {
       e.preventDefault();
-      dispatch(newInvoiceUpdate({ email }));
-      onNotificationsSubmit();
+      onSubmit();
       return true;
     },
-    [onNotificationsSubmit, email, dispatch],
+    [onSubmit],
   );
 
   return (
@@ -49,7 +54,7 @@ export const NotificationsStep: React.FC<NotificationsStep> = ({
         You can type in your email here, we&apos;ll use it only for
         notifications regarding your invoice. It won&apos;t be visible to anyone
       </Typography>
-      <form onSubmit={onSubmit}>
+      <form onSubmit={onFormSubmit}>
         <Box mt={2} sx={{ display: 'flex' }}>
           <TextField
             autoComplete="email"
@@ -62,7 +67,12 @@ export const NotificationsStep: React.FC<NotificationsStep> = ({
             type="email"
           />
           <Box mr={2} />
-          <Button type="submit" variant="contained">
+          <Button
+            shortcut="enter"
+            type="submit"
+            variant="contained"
+            onClick={onSubmit}
+          >
             Continue
           </Button>
         </Box>

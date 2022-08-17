@@ -1,5 +1,5 @@
 import { NextPage } from 'next';
-import { useCallback, useEffect } from 'react';
+import { useCallback } from 'react';
 
 import style from './new.module.scss';
 

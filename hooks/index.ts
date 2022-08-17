@@ -4,3 +4,4 @@ export * from './useCurrencyByAddress';
 export * from './router';
 export * from './erc20';
 export * from './useAppDispatch';
+export * from './useOnKey';

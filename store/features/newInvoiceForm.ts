@@ -7,6 +7,7 @@ export enum NewInvoiceFormStep {
   reference,
   notifications,
   currency,
+  type,
   create,
 }
 
@@ -17,6 +18,7 @@ export interface NewInvoiceFormState {
   amount: number;
   isNativeCurrencyEnabled: boolean;
   currencies: CurrencyCode[];
+  instantTransfer?: boolean;
 }
 
 export const NEW_INVOICES_STEPS_ORDER: NewInvoiceFormStep[] = [
@@ -24,6 +26,7 @@ export const NEW_INVOICES_STEPS_ORDER: NewInvoiceFormStep[] = [
   NewInvoiceFormStep.reference,
   NewInvoiceFormStep.notifications,
   NewInvoiceFormStep.currency,
+  NewInvoiceFormStep.type,
   NewInvoiceFormStep.create,
 ];
 

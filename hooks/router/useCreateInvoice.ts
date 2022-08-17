@@ -37,6 +37,8 @@ export const useCreateInvoice = () => {
       newInvoice.reference,
       undefined,
       encryptedEmail,
+      undefined,
+      true,
     );
   }, [newInvoice, encryptedEmail, getCurrency]);
 

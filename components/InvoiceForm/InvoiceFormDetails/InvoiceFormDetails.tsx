@@ -108,6 +108,20 @@ const InvoiceFormDetails: React.FC = () => {
           </React.Fragment>
         ) : undefined}
       </InvoiceFormDetailsCard>
+      <Box mt={1} />
+      <InvoiceFormDetailsCard
+        title="Transfer type"
+        placeholder="Not choosen yet"
+        active={creatingInvoice.step === NewInvoiceFormStep.type}
+        onEdit={() => goToStep(NewInvoiceFormStep.type)}
+        visible={isReached(NewInvoiceFormStep.type)}
+      >
+        {creatingInvoice.instantTransfer !== undefined
+          ? creatingInvoice.instantTransfer
+            ? 'Instant transfer'
+            : 'Two-step transfer'
+          : undefined}
+      </InvoiceFormDetailsCard>
     </Box>
   );
 };

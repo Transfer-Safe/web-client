@@ -107,6 +107,7 @@ export const InvoiceView: React.FC<InvoiceViewProps> = ({
                   },
                 }}
                 onClick={onCopyLink}
+                shortcut="enter"
               >
                 Copy link
               </Button>

@@ -1,4 +1,4 @@
-import { Box, Button, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import classNames from 'classnames';
 import { FormEventHandler, HTMLAttributes, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -13,6 +13,7 @@ import {
   newInvoiceUpdate,
 } from '../../../../store/features/newInvoiceForm';
 import { RootState } from '../../../../store/rootReducer';
+import Button from '../../../Button';
 
 type CurrenciesStepProps = HTMLAttributes<HTMLFormElement> & {
   onCurrenciesSubmit: () => void;
@@ -56,20 +57,24 @@ export const CurrenciesStep: React.FC<CurrenciesStepProps> = ({
     [enabledCurrencies, isActive, dispatch],
   );
 
-  const onSubmit: FormEventHandler<HTMLFormElement> = useCallback(
+  const onSubmit = useCallback(() => {
+    onCurrenciesSubmit();
+  }, [onCurrenciesSubmit]);
+
+  const onFormSubmit: FormEventHandler<HTMLFormElement> = useCallback(
     (e) => {
       e.preventDefault();
-      onCurrenciesSubmit();
+      onSubmit();
       return true;
     },
-    [onCurrenciesSubmit],
+    [onSubmit],
   );
 
   return (
     <form
       {...props}
       className={classNames(style.CurrenciesStep, className)}
-      onSubmit={onSubmit}
+      onSubmit={onFormSubmit}
     >
       <Typography variant="h1">What currencies do you prefer?</Typography>
       <Box mt={2} display="flex" flexWrap="wrap">
@@ -90,7 +95,12 @@ export const CurrenciesStep: React.FC<CurrenciesStepProps> = ({
         ))}
       </Box>
       <Box mt={2}>
-        <Button variant="contained" type="submit">
+        <Button
+          shortcut="enter"
+          variant="contained"
+          type="submit"
+          onClick={onSubmit}
+        >
           Continue
         </Button>
       </Box>
