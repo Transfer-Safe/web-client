@@ -4,6 +4,8 @@ import { useMemo } from 'react';
 import { InvoiceTimelineCard } from './InvoiceTimelineCard';
 
 import { Invoice } from '../../models';
+import { formatNumber } from '../../utils';
+import { useCurrentChain } from '../../hooks';
 
 enum InvoiceStatus {
   Created = 'created',
@@ -29,23 +31,64 @@ const InvoiceTimeline: React.FC<InvoiceTimelineProps> = ({ invoice }) => {
     }
     return InvoiceStatus.Created;
   }, [invoice]);
+
+  const currentChain = useCurrentChain();
+
+  const formattedAmount = useMemo(
+    () =>
+      formatNumber(invoice.paidAmount) +
+        ' ' +
+        currentChain.nativeCurrency?.name || 'MATIC',
+    [invoice, currentChain],
+  );
+
   return (
     <Box>
       <InvoiceTimelineCard
-        timestamp={new Date()}
+        timestamp={invoice.createdDate}
         title="Invoice created"
         completed
-        nextCompleted
+        nextCompleted={invoice.deposited || invoice.paid}
         isFirst
+        active={invoiceStatus === InvoiceStatus.Created}
       />
-      <InvoiceTimelineCard
-        timestamp={new Date()}
-        title="Invoice deposited"
-        subtitle="Now waiting for confirmation"
-        completed
-        active
-      />
-      <InvoiceTimelineCard title="Invoice confirmed" isLast />
+      {!invoice.instant && (
+        <InvoiceTimelineCard
+          timestamp={invoice.depositDate}
+          title="Invoice deposited"
+          subtitle={
+            invoiceStatus === InvoiceStatus.Deposited
+              ? 'Now waiting for confirmation'
+              : undefined
+          }
+          completed={invoice.deposited}
+          active={invoiceStatus === InvoiceStatus.Deposited}
+          nextCompleted={invoice.paid || invoice.refunded}
+        />
+      )}
+      {!invoice.refunded && (
+        <InvoiceTimelineCard
+          title="Transfer completed"
+          subtitle={
+            invoiceStatus === InvoiceStatus.Paid
+              ? `Sender confirmed the transfer, ${formattedAmount} are in your wallet`
+              : undefined
+          }
+          completed={invoice.paid}
+          active={invoiceStatus === InvoiceStatus.Paid}
+          isLast
+          timestamp={invoice.confirmDate}
+        />
+      )}
+      {invoice.refunded && (
+        <InvoiceTimelineCard
+          title="Invoice refunded"
+          completed
+          isLast
+          active
+          timestamp={invoice.refundDate}
+        />
+      )}
     </Box>
   );
 };

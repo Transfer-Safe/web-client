@@ -145,6 +145,11 @@ export const InvoiceTimelineCard: React.FC<InvoiceTimelineCardProps> = ({
           <Typography
             fontSize={timestampFontSize}
             color={theme.palette.grey[500]}
+            sx={{
+              display: {
+                md: 'none',
+              },
+            }}
           >
             {timestamp.toLocaleString()}
           </Typography>

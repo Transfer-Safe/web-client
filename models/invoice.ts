@@ -5,7 +5,8 @@ export interface NonPromisifiedInvoiceStruct extends InvoiceStruct {
   id: string;
   amount: string;
   fee: string;
-  created: string;
+  paidAmount: string;
+  refundedAmount: string;
   balance: string;
   paid: boolean;
   deposited: boolean;
@@ -20,6 +21,7 @@ export interface NonPromisifiedInvoiceStruct extends InvoiceStruct {
   exist: boolean;
   instant: boolean;
   releaseLockTimeout: string;
+  createdDate: string;
   releaseLockDate: string;
   depositDate: string;
   confirmDate: string;
@@ -45,11 +47,13 @@ export class Invoice {
   private _senderAddress = constants.AddressZero;
   private _receipientAddress = constants.AddressZero;
   private _fee: BigNumber = BigNumber.from(0);
-  private _created: Date = new Date();
-  private _depositDate: Date = new Date();
-  private _confirmDate: Date = new Date();
-  private _refundDate: Date = new Date();
+  private _createdDate: Date = new Date();
+  private _depositDate?: Date;
+  private _confirmDate?: Date;
+  private _refundDate?: Date;
   private _refunded = false;
+  private _paidAmount: BigNumber = BigNumber.from(0);
+  private _refundedAmount: BigNumber = BigNumber.from(0);
 
   constructor(
     amount: BigNumber,
@@ -100,24 +104,32 @@ export class Invoice {
     return this._fee;
   }
 
-  get created(): Date {
-    return this._created;
+  get createdDate(): Date {
+    return this._createdDate;
   }
 
-  get depositDate(): Date {
+  get depositDate(): Date | undefined {
     return this._depositDate;
   }
 
-  get confirmDate(): Date {
+  get confirmDate(): Date | undefined {
     return this._confirmDate;
   }
 
-  get refundDate(): Date {
+  get refundDate(): Date | undefined {
     return this._refundDate;
   }
 
   get refunded(): boolean {
     return this._refunded;
+  }
+
+  get paidAmount(): BigNumber {
+    return this._paidAmount;
+  }
+
+  get refundedAmount(): BigNumber {
+    return this._refundedAmount;
   }
 
   private generateId(): string {
@@ -135,7 +147,9 @@ export class Invoice {
       receipientName: this.receipientName,
       receipientEmail: this.receipientEmail,
       balance: this.balance,
-      created: constants.Zero,
+      createdDate: constants.Zero,
+      paidAmount: this.paidAmount,
+      refundedAmount: this.refundedAmount,
       exist: true,
       fee: this.fee,
       paid: this.paid,
@@ -170,20 +184,27 @@ export class Invoice {
     promise._receipientAddress = await invoice.receipientAddress;
     promise._releaseLockDate = BigNumber.from(await invoice.releaseLockDate);
     promise._fee = BigNumber.from(await invoice.fee);
+    promise._paidAmount = BigNumber.from(await invoice.paidAmount);
+    promise._refundedAmount = BigNumber.from(await invoice.refundedAmount);
     promise._deposited = await invoice.deposited;
     promise.instant = await invoice.instant;
-    promise._created = new Date(
-      BigNumber.from(await invoice.created).toNumber() * 1000,
+    promise._createdDate = new Date(
+      BigNumber.from(await invoice.createdDate).toNumber() * 1000,
     );
-    promise._depositDate = new Date(
-      BigNumber.from(await invoice.depositDate).toNumber() * 1000,
-    );
-    promise._confirmDate = new Date(
-      BigNumber.from(await invoice.confirmDate).toNumber() * 1000,
-    );
-    promise._refundDate = new Date(
-      BigNumber.from(await invoice.refundDate).toNumber() * 1000,
-    );
+    const depositDate = await invoice.depositDate;
+    promise._depositDate =
+      depositDate != constants.Zero
+        ? new Date(BigNumber.from(depositDate).toNumber() * 1000)
+        : undefined;
+    const confirmDate = await invoice.confirmDate;
+    promise._confirmDate =
+      confirmDate != constants.Zero
+        ? new Date(BigNumber.from(confirmDate).toNumber() * 1000)
+        : undefined;
+    const refundDate = await invoice.refundDate;
+    promise._refundDate = refundDate
+      ? new Date(BigNumber.from(refundDate).toNumber() * 1000)
+      : undefined;
     promise.instant = await invoice.instant;
     promise._refunded = await invoice.refunded;
     return promise;
@@ -199,7 +220,7 @@ export class Invoice {
       receipientName: this.receipientName,
       receipientEmail: this.receipientEmail,
       balance: this.balance.toHexString(),
-      created: constants.Zero.toHexString(),
+      createdDate: constants.Zero.toHexString(),
       exist: true,
       fee: this.fee.toHexString(),
       paid: this.paid,
@@ -214,6 +235,8 @@ export class Invoice {
       refundDate: constants.Zero.toHexString(),
       instant: this.instant,
       refunded: this.refunded,
+      paidAmount: this.paidAmount.toHexString(),
+      refundedAmount: this.refundedAmount.toHexString(),
     };
   }
 
@@ -229,6 +252,8 @@ export class Invoice {
     );
     promise.id = invoice.id;
     promise._balance = BigNumber.from(invoice.balance);
+    promise._paidAmount = BigNumber.from(invoice.paidAmount);
+    promise._refundedAmount = BigNumber.from(invoice.refundedAmount);
     promise._paid = invoice.paid;
     promise._senderAddress = invoice.senderAddress;
     promise._receipientAddress = invoice.receipientAddress;
@@ -236,8 +261,8 @@ export class Invoice {
     promise._fee = BigNumber.from(invoice.fee);
     promise._deposited = invoice.deposited;
     promise.instant = invoice.instant;
-    promise._created = new Date(
-      BigNumber.from(invoice.created).toNumber() * 1000,
+    promise._createdDate = new Date(
+      BigNumber.from(invoice.createdDate).toNumber() * 1000,
     );
     promise._depositDate = new Date(
       BigNumber.from(invoice.depositDate).toNumber() * 1000,

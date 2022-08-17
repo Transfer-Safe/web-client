@@ -38,7 +38,7 @@ export const useCreateInvoice = () => {
       undefined,
       encryptedEmail,
       undefined,
-      true,
+      newInvoice.instantTransfer,
     );
   }, [newInvoice, encryptedEmail, getCurrency]);
 
