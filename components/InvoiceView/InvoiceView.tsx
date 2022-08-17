@@ -2,8 +2,7 @@ import { Box, Container, TextField, Typography, useTheme } from '@mui/material';
 import Head from 'next/head';
 import { useCallback, useMemo } from 'react';
 
-import InvoiceTimeline from './InvoiceTimeline';
-
+import InvoiceTimeline from '../InvoiceTimeline';
 import { useCurrencyByAddress } from '../../hooks';
 import { Invoice } from '../../models';
 import { formatNumber } from '../../utils';
@@ -26,10 +25,10 @@ export const InvoiceView: React.FC<InvoiceViewProps> = ({
 
   const title = useMemo(() => {
     if (invoice.ref) {
-      return `${formattedAmount}$ transfer request for ${invoice.ref}`;
+      return `for ${invoice.ref}`;
     }
-    return `${formattedAmount} transfer request`;
-  }, [invoice.ref, formattedAmount]);
+    return 'transfer request';
+  }, [invoice.ref]);
 
   const getCurrency = useCurrencyByAddress();
 
@@ -51,46 +50,94 @@ export const InvoiceView: React.FC<InvoiceViewProps> = ({
       flexDirection="column"
     >
       <Head>
-        <title>{title}</title>
+        <title>{`${formattedAmount}$ ${title}`}</title>
       </Head>
       <Container
         maxWidth="lg"
         sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}
       >
-        <Box display="flex" flex="1" py={8} alignItems="stretch">
+        <Box
+          display="flex"
+          flex="1"
+          py={8}
+          alignItems="stretch"
+          flexDirection={{
+            xs: 'column',
+            md: 'row',
+          }}
+        >
           <Box
             flex="1"
-            pr={4}
+            pr={{
+              xs: 0,
+              md: 4,
+            }}
             display="flex"
             flexDirection="column"
             justifyContent="center"
           >
-            <Typography variant="h1">{title}</Typography>
-            <Box mt={6} display="flex">
+            <Typography variant="h1">
+              <Typography
+                variant="h1"
+                component="span"
+                color={theme.palette.primary.main}
+              >
+                {formattedAmount}$
+              </Typography>{' '}
+              {title}
+            </Typography>
+            <Box
+              mt={6}
+              display="flex"
+              flexDirection={{
+                xs: 'column-reverse',
+                md: 'row',
+              }}
+            >
               <Button
                 variant="contained"
-                sx={{ marginRight: 2 }}
+                sx={{
+                  marginRight: {
+                    xs: 0,
+                    md: 2,
+                  },
+                  marginTop: {
+                    xs: 1,
+                    md: 0,
+                  },
+                }}
                 onClick={onCopyLink}
               >
                 Copy link
               </Button>
               <TextField sx={{ flex: 1 }} value={link} variant="outlined" />
             </Box>
-            <Typography mt={2}>
+            <Typography mt={1} variant="body2">
               Share this link to receive the transfer
             </Typography>
           </Box>
           <Box bgcolor={theme.palette.grey[400]} width="1px" />
           <Box
             flex="1"
-            pl={4}
+            pl={{
+              md: 4,
+            }}
+            mt={{
+              xs: 4,
+            }}
             display="flex"
             flexDirection="column"
             justifyContent="center"
           >
-            <Typography variant="h2" color={theme.palette.primary.main}>
-              Transfer request created!
-            </Typography>
+            <Typography variant="h2">Invoice status</Typography>
+            <Box
+              mt={{
+                xs: 0,
+                md: 2,
+              }}
+            >
+              <InvoiceTimeline invoice={invoice} />
+            </Box>
             <Typography color={theme.palette.grey[800]} mt={2}>
               {encodedEmail && (
                 <span>
@@ -108,9 +155,6 @@ export const InvoiceView: React.FC<InvoiceViewProps> = ({
               />
               .
             </Typography>
-            <Box>
-              <InvoiceTimeline invoice={invoice} />
-            </Box>
           </Box>
         </Box>
       </Container>

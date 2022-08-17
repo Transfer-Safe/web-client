@@ -24,6 +24,7 @@ export interface NonPromisifiedInvoiceStruct extends InvoiceStruct {
   depositDate: string;
   confirmDate: string;
   refundDate: string;
+  refunded: boolean;
 }
 
 export class Invoice {
@@ -48,6 +49,7 @@ export class Invoice {
   private _depositDate: Date = new Date();
   private _confirmDate: Date = new Date();
   private _refundDate: Date = new Date();
+  private _refunded = false;
 
   constructor(
     amount: BigNumber,
@@ -114,6 +116,10 @@ export class Invoice {
     return this._refundDate;
   }
 
+  get refunded(): boolean {
+    return this._refunded;
+  }
+
   private generateId(): string {
     const id = utils.id(JSON.stringify(this) + new Date().valueOf().toString());
     return id.substring(id.length - 8).toLocaleUpperCase();
@@ -143,6 +149,7 @@ export class Invoice {
       depositDate: constants.Zero,
       refundDate: constants.Zero,
       instant: this.instant,
+      refunded: this.refunded,
     };
   }
 
@@ -154,7 +161,7 @@ export class Invoice {
       await invoice.ref,
       await invoice.receipientName,
       await invoice.receipientEmail,
-      await BigNumber.from(invoice.releaseLockTimeout),
+      BigNumber.from(await invoice.releaseLockTimeout),
     );
     promise.id = await invoice.id;
     promise._balance = BigNumber.from(await invoice.balance);
@@ -178,6 +185,7 @@ export class Invoice {
       BigNumber.from(await invoice.refundDate).toNumber() * 1000,
     );
     promise.instant = await invoice.instant;
+    promise._refunded = await invoice.refunded;
     return promise;
   }
 
@@ -205,6 +213,7 @@ export class Invoice {
       depositDate: constants.Zero.toHexString(),
       refundDate: constants.Zero.toHexString(),
       instant: this.instant,
+      refunded: this.refunded,
     };
   }
 
@@ -240,6 +249,7 @@ export class Invoice {
       BigNumber.from(invoice.refundDate).toNumber() * 1000,
     );
     promise.instant = invoice.instant;
+    promise._refunded = invoice.refunded;
     return promise;
   }
 }
