@@ -42,8 +42,8 @@ const PaidInvoice: React.FC<PaidInvoiceProps> = ({ invoice }) => {
       <Box mt={4}>
         <Typography>
           This transfer has succesfully been made on{' '}
-          {invoice.confirmDate.toLocaleDateString()}
-          at {invoice.confirmDate.toLocaleTimeString()}
+          {invoice.confirmDate?.toLocaleDateString()}
+          at {invoice.confirmDate?.toLocaleTimeString()}
         </Typography>
       </Box>
     </Box>
