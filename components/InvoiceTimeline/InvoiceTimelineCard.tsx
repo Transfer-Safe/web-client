@@ -66,6 +66,7 @@ export const InvoiceTimelineCard: React.FC<InvoiceTimelineCardProps> = ({
         justifyContent="center"
         alignItems="flex-end"
         mr={3}
+        flexShrink={0}
       >
         {timestamp && (
           <React.Fragment>
@@ -92,7 +93,8 @@ export const InvoiceTimelineCard: React.FC<InvoiceTimelineCardProps> = ({
         flexDirection="column"
         alignItems="center"
         mr={3}
-        width="12px"
+        width="45px"
+        flexShrink={0}
       >
         <Box
           flex={1}

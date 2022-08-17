@@ -34,11 +34,18 @@ const InvoiceTimeline: React.FC<InvoiceTimelineProps> = ({ invoice }) => {
 
   const currentChain = useCurrentChain();
 
-  const formattedAmount = useMemo(
+  const formattedPaidAmount = useMemo(
     () =>
       formatNumber(invoice.paidAmount) +
         ' ' +
         currentChain.nativeCurrency?.name || 'MATIC',
+    [invoice, currentChain],
+  );
+
+  const formattedDepositedAmount = useMemo(
+    () =>
+      formatNumber(invoice.balance) + ' ' + currentChain.nativeCurrency?.name ||
+      'MATIC',
     [invoice, currentChain],
   );
 
@@ -58,7 +65,7 @@ const InvoiceTimeline: React.FC<InvoiceTimelineProps> = ({ invoice }) => {
           title="Invoice deposited"
           subtitle={
             invoiceStatus === InvoiceStatus.Deposited
-              ? 'Now waiting for confirmation'
+              ? `We received ${formattedDepositedAmount}. Now waiting for confirmation`
               : undefined
           }
           completed={invoice.deposited}
@@ -71,7 +78,7 @@ const InvoiceTimeline: React.FC<InvoiceTimelineProps> = ({ invoice }) => {
           title="Transfer completed"
           subtitle={
             invoiceStatus === InvoiceStatus.Paid
-              ? `Sender confirmed the transfer, ${formattedAmount} are in your wallet`
+              ? `Sender confirmed the transfer, ${formattedPaidAmount} are in your wallet`
               : undefined
           }
           completed={invoice.paid}
