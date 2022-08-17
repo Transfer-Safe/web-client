@@ -45,7 +45,16 @@ export const ReferenceStep: React.FC<ReferenceStepProps> = ({
         leave it blank
       </Typography>
       <form onSubmit={onSubmit}>
-        <Box mt={4} sx={{ display: 'flex', flexDirection: 'row' }}>
+        <Box
+          mt={4}
+          sx={{
+            display: 'flex',
+            flexDirection: {
+              xs: 'column',
+              md: 'row',
+            },
+          }}
+        >
           <TextField
             autoFocus
             value={reference}
@@ -55,7 +64,18 @@ export const ReferenceStep: React.FC<ReferenceStepProps> = ({
             sx={{ flex: '1' }}
           />
           <Box mr={2} />
-          <Button shortcut="enter" type="submit" variant="contained">
+          <Button
+            shortcut="enter"
+            type="submit"
+            variant="contained"
+            size="large"
+            sx={{
+              mt: {
+                xs: 1,
+                md: 0,
+              },
+            }}
+          >
             Continue
           </Button>
         </Box>

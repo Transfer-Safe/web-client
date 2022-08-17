@@ -52,7 +52,16 @@ export const AmountStep: React.FC<AmountStepProps> = ({ onAmountSubmit }) => {
         <Typography variant="h1">
           How much money do you want to receive?
         </Typography>
-        <Box mt={4} sx={{ display: 'flex' }}>
+        <Box
+          mt={4}
+          sx={{
+            display: 'flex',
+            flexDirection: {
+              xs: 'column',
+              md: 'row',
+            },
+          }}
+        >
           <FormattedNumber
             value={amountValue}
             onValueChange={(v) => onChange(v.value)}
@@ -72,6 +81,13 @@ export const AmountStep: React.FC<AmountStepProps> = ({ onAmountSubmit }) => {
           />
           <Box mr={2} />
           <Button
+            size="large"
+            sx={{
+              mt: {
+                xs: 1,
+                md: 0,
+              },
+            }}
             shortcut="enter"
             disabled={disabled}
             type="submit"

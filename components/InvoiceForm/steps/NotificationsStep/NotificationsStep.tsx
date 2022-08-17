@@ -55,7 +55,16 @@ export const NotificationsStep: React.FC<NotificationsStep> = ({
         notifications regarding your invoice. It won&apos;t be visible to anyone
       </Typography>
       <form onSubmit={onFormSubmit}>
-        <Box mt={2} sx={{ display: 'flex' }}>
+        <Box
+          mt={2}
+          sx={{
+            display: 'flex',
+            flexDirection: {
+              xs: 'column',
+              md: 'row',
+            },
+          }}
+        >
           <TextField
             autoComplete="email"
             autoFocus
@@ -72,6 +81,13 @@ export const NotificationsStep: React.FC<NotificationsStep> = ({
             type="submit"
             variant="contained"
             onClick={onSubmit}
+            size="large"
+            sx={{
+              mt: {
+                xs: 1,
+                md: 0,
+              },
+            }}
           >
             Continue
           </Button>

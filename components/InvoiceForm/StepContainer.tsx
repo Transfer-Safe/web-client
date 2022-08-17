@@ -22,19 +22,51 @@ const StepContainer: React.FC<StepContainerProps> = ({
       className={classNames(className)}
       sx={{
         display: 'flex',
-        flexDirection: 'row',
+        flexDirection: {
+          xs: 'column',
+          md: 'row',
+        },
         flex: '1',
         alignItems: 'center',
       }}
       {...props}
     >
-      <Box sx={{ flex: '1' }}>{children}</Box>
+      <Box
+        sx={{
+          flex: { md: 1 },
+          minHeight: { xs: '60vh', md: 'inherit' },
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: {
+            xs: 'center',
+            md: 'inherit',
+          },
+          paddingY: {
+            xs: 4,
+            md: 0,
+          },
+        }}
+      >
+        {children}
+      </Box>
       {withDetails && (
         <React.Fragment>
-          <Box marginX={6}>
+          <Box
+            marginX={6}
+            display={{
+              xs: 'none',
+              md: 'inherit',
+            }}
+          >
             <Image src={vr} alt="-" height={400} width={23} />
           </Box>
-          <InvoiceFormDetails />
+          <InvoiceFormDetails
+            mt={{
+              xs: 4,
+              md: 0,
+            }}
+            width={{ xs: '100%', md: '380px' }}
+          />
         </React.Fragment>
       )}
     </Container>

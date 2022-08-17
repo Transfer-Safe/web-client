@@ -32,7 +32,14 @@ const TypeStep: React.FC<TypeStepProps> = ({ onTypeSubmit }) => {
         </Typography>
         .
       </Typography>
-      <Box display="flex" mt={2}>
+      <Box
+        display="flex"
+        mt={4}
+        flexDirection={{
+          xs: 'column',
+          md: 'row',
+        }}
+      >
         <Button
           shortcut="enter"
           size="large"
@@ -41,7 +48,12 @@ const TypeStep: React.FC<TypeStepProps> = ({ onTypeSubmit }) => {
         >
           Enable two-step
         </Button>
-        <Button size="large" variant="outlined" sx={{ ml: 2 }} onClick={onSkip}>
+        <Button
+          size="large"
+          variant="outlined"
+          sx={{ ml: { md: 2 }, mt: { xs: 1, md: 0 } }}
+          onClick={onSkip}
+        >
           Maybe next time
         </Button>
       </Box>

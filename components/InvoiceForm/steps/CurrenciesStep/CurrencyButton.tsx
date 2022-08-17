@@ -20,7 +20,16 @@ export const CurrencyButton: React.FC<CurrencyButtonProps> = ({
         variant="outlined"
         color={active ? 'primary' : 'disabled'}
       >
-        <Box height={110} width={180}>
+        <Box
+          height={{
+            xs: 55,
+            md: 110,
+          }}
+          width={{
+            xs: 90,
+            md: 180,
+          }}
+        >
           <Typography fontWeight="500" align="left">
             {name}
           </Typography>

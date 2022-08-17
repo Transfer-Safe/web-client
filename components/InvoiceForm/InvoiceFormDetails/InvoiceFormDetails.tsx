@@ -1,4 +1,4 @@
-import { Box, Typography } from '@mui/material';
+import { Box, BoxProps, Typography } from '@mui/material';
 import React, { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -16,7 +16,9 @@ import { RootState } from '../../../store/rootReducer';
 import CurrencyLabel from '../../CurrencyLabel';
 import FormattedNumber from '../../FormattedNumber';
 
-const InvoiceFormDetails: React.FC = () => {
+type InvoiceFormDetailsProps = BoxProps;
+
+const InvoiceFormDetails: React.FC<InvoiceFormDetailsProps> = (props) => {
   const creatingInvoice = useSelector<RootState, NewInvoiceFormState>(
     (state) => state.newInvoiceForm,
   );
@@ -44,8 +46,8 @@ const InvoiceFormDetails: React.FC = () => {
   // const feeInUsd = useConvertToUsd(fee || 0)?.toNumber();
 
   return (
-    <Box width={380} className={style.InvoiceFormDetails}>
-      <Typography mb={4} variant="h2">
+    <Box {...props} className={style.InvoiceFormDetails}>
+      <Typography mb={{ md: 4, xs: 2 }} variant="h2">
         Your invoice
       </Typography>
 
