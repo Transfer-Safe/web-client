@@ -21,7 +21,7 @@ export type GetDecimalsResponse = ReturnType<typeof useContractRead> & {
 
 export const useGetExchangeRate = (
   currencyCode?: CurrencyCode,
-): BigNumber | undefined => {
+): { rate: BigNumber; decimals: number } | undefined => {
   const currentChain = useCurrentChain();
   const address = useMemo(() => {
     if (currencyCode) {
@@ -45,7 +45,10 @@ export const useGetExchangeRate = (
 
   return useMemo(() => {
     if (decimals.data && latestRoundData.data) {
-      return latestRoundData.data.answer.div(Math.pow(10, decimals.data));
+      return {
+        rate: latestRoundData.data.answer,
+        decimals: decimals.data,
+      };
     }
     return;
   }, [latestRoundData.data, decimals.data]);
