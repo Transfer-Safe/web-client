@@ -82,32 +82,43 @@ export const ConfirmInvoice: React.FC<ConfirmInvoiceProps> = ({ invoice }) => {
         title="Invoice confirmed"
         onClose={onCloseSuccess}
       >
-        You succesfully confirmed invoice. {formatNumber(invoice.amount)}$ has
-        been transferred to {formatTransactionId(invoice.receipientAddress)}.
-        <Button
-          variant="contained"
-          sx={{
-            width: { xs: '100%', md: 'auto' },
-            marginTop: 4,
+        <Typography>
+          You succesfully confirmed invoice. {formatNumber(invoice.amount)}$ has
+          been transferred to {formatTransactionId(invoice.receipientAddress)}.
+        </Typography>
+        <Box
+          mt={4}
+          display="flex"
+          flexDirection={{
+            xs: 'column',
+            md: 'row',
           }}
-          onClick={onCloseSuccess}
         >
-          Nice!
-        </Button>
-        {linkToTransaction && (
           <Button
-            href={linkToTransaction}
-            target="_blank"
-            variant="outlined"
-            size="small"
+            variant="contained"
             sx={{
-              mt: 2,
-              width: '100%',
+              width: { xs: '100%', md: 'auto' },
+              marginTop: { xs: 4, md: 0 },
             }}
+            onClick={onCloseSuccess}
           >
-            View in Explorer
+            Sweet!
           </Button>
-        )}
+          {linkToTransaction && (
+            <Button
+              href={linkToTransaction}
+              target="_blank"
+              variant="outlined"
+              sx={{
+                mt: { xs: 1, md: 0 },
+                width: { xs: '100%', md: 'auto' },
+                ml: { xs: 0, md: 2 },
+              }}
+            >
+              View in Explorer
+            </Button>
+          )}
+        </Box>
       </AppModal>
       <InvoiceStatusLabel mt={4} invoice={invoice} />
       <Typography variant="h1" mt={2}>

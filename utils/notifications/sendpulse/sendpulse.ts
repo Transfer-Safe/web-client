@@ -34,7 +34,6 @@ export class SendpulseClient implements NotificationClientInterface {
     return new Promise((resolve, reject) => {
       sendpulse.smtpSendMail(
         (response: SendpulseResponse) => {
-          console.log('===> sendpulse response', response);
           if (response.is_error || response.error_code) {
             reject(new Error('Sendpulse error: ' + response.message));
           } else {

@@ -25,12 +25,33 @@ class Notifications {
       'Invoice deposited',
       NotificationType.InvoiceDeposited,
       {
-        amount: formatInvoiceAmount(invoice, chainId),
+        amount: formatInvoiceAmount(invoice, 'balance', chainId),
         transactionLink: linkToTransaction(txHash, chainId),
         sender: formatTransactionId(invoice.senderAddress),
         senderLink: linkToAddress(invoice.senderAddress, chainId),
         // TODO: use dynamic domains
-        invoiceLink: `https://alpha.transfersafe.net/invoice/${invoice.id}`,
+        invoiceLink: `https://alpha.transfersafe.net/invoices/${invoice.id}`,
+      },
+    );
+  }
+
+  async invoiceConfirmed(
+    email: string,
+    chainId: number,
+    invoice: Invoice,
+    txHash: string,
+  ) {
+    await this.sendEmail(
+      email,
+      'Transfer completed',
+      NotificationType.InvoiceConfirmed,
+      {
+        amount: formatInvoiceAmount(invoice, 'paidAmount', chainId),
+        transactionLink: linkToTransaction(txHash, chainId),
+        sender: formatTransactionId(invoice.senderAddress),
+        senderLink: linkToAddress(invoice.senderAddress, chainId),
+        // TODO: use dynamic domains
+        invoiceLink: `https://alpha.transfersafe.net/invoices/${invoice.id}`,
       },
     );
   }

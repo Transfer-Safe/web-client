@@ -128,7 +128,7 @@ export const PayInvoice: React.FC<PayInvoiceProps> = ({ invoice }) => {
               marginTop: { xs: 4, md: 0 },
             }}
           >
-            Awesome!
+            Awesome
           </Button>
           {linkToExplorer && (
             <Button

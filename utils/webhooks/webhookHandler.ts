@@ -1,6 +1,10 @@
-import { TransferSafeRouter__factory } from '@transfer-safe/router';
+import {
+  TransferSafeRouter,
+  TransferSafeRouter__factory,
+} from '@transfer-safe/router';
 
 import { handleDeposit } from './handleDeposit';
+import { handleConfirm } from './handleConfirm';
 
 import { loadTransaction } from '../ethers';
 
@@ -12,9 +16,13 @@ export const handleTransactionWebhook = async (
   const router = TransferSafeRouter__factory.createInterface();
   const functionData = router.parseTransaction(transaction);
 
-  switch (functionData.name) {
+  console.log('===> Handle webhook function', functionData.name);
+
+  switch (functionData.name as keyof TransferSafeRouter['functions']) {
     case 'deposit':
       return handleDeposit(chainId, txId, functionData);
+    case 'confirmInvoice':
+      return handleConfirm(chainId, txId, functionData);
     default:
       return;
   }
