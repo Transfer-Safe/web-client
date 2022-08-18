@@ -112,30 +112,39 @@ export const PayInvoice: React.FC<PayInvoiceProps> = ({ invoice }) => {
         <Typography>
           You have succesfully transfered {formatNumber(invoice.amount)}$
         </Typography>
-        <Button
-          onClick={onCloseSuccessModal}
-          variant="contained"
-          sx={{
-            width: { xs: '100%', md: 'auto' },
-            marginTop: 4,
+        <Box
+          display="flex"
+          mt={4}
+          flexDirection={{
+            xs: 'column',
+            md: 'row',
           }}
         >
-          Awesome!
-        </Button>
-        {linkToExplorer && (
           <Button
-            href={linkToExplorer}
-            target="_blank"
-            variant="outlined"
-            size="small"
+            onClick={onCloseSuccessModal}
+            variant="contained"
             sx={{
-              mt: 2,
-              width: '100%',
+              width: { xs: '100%', md: 'auto' },
+              marginTop: { xs: 4, md: 0 },
             }}
           >
-            View in Explorer
+            Awesome!
           </Button>
-        )}
+          {linkToExplorer && (
+            <Button
+              href={linkToExplorer}
+              target="_blank"
+              variant="outlined"
+              sx={{
+                mt: { xs: 1, md: 0 },
+                width: { xs: '100%', md: 'auto' },
+                ml: { xs: 0, md: 2 },
+              }}
+            >
+              View in Explorer
+            </Button>
+          )}
+        </Box>
       </AppModal>
       <InvoiceStatusLabel mt={4} invoice={invoice} />
       <Typography
