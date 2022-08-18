@@ -14,6 +14,9 @@ export const useConvertToUsd = (
     if (!data) {
       return;
     }
-    return data.mul(BigNumber.from(value).div(constants.WeiPerEther));
+    const { rate, decimals } = data;
+    return BigNumber.from(value)
+      .mul(rate)
+      .div(BigNumber.from(10).pow(decimals));
   }, [data, value]);
 };
