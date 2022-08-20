@@ -3,7 +3,7 @@ import { chain } from 'wagmi';
 export const getRouterContractAddress = (chainId: number): string => {
   switch (chainId) {
     case chain.polygonMumbai.id:
-      return '0xB0a89C716ED27b99964158877CB7aA5B8cBfe5a1';
+      return '0x9bDd14F2fa9D2aD5583D9fE0d8b8EDc5F9180f96';
     default:
       throw new Error(`Unknown chainId: ${chainId}`);
   }

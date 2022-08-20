@@ -1,6 +1,6 @@
 import { Box } from '@mui/material';
 import { NextPage, NextPageContext } from 'next';
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import style from './InvoicePage.module.scss';
 
@@ -9,17 +9,27 @@ import Header from '../../../components/Header';
 import InvoiceView from '../../../components/InvoiceView';
 import { useGetInvoice } from '../../../hooks';
 import { dencryptEmail, loadInvoice } from '../../../utils';
+import { Invoice, NonPromisifiedInvoiceStruct } from '../../../models';
 
 export interface InvoicePageProps {
   invoiceId: string;
   encodedEmail: string | null;
+  invoice?: NonPromisifiedInvoiceStruct;
 }
 
 const InvoicePage: NextPage<InvoicePageProps> = ({
   invoiceId,
   encodedEmail,
+  invoice: preloadedInvoiceJson,
 }) => {
-  const { data: invoice } = useGetInvoice(invoiceId, { watch: true });
+  const preloadedInvoice = useMemo(
+    () =>
+      preloadedInvoiceJson ? Invoice.fromJson(preloadedInvoiceJson) : undefined,
+    [preloadedInvoiceJson],
+  );
+  const { data: loadedInvoice } = useGetInvoice(invoiceId, { watch: true });
+
+  const invoice = loadedInvoice || preloadedInvoice;
 
   return (
     <Box
@@ -57,6 +67,7 @@ export async function getServerSideProps(
     props: {
       invoiceId,
       encodedEmail: email || null,
+      invoice: invoice.toJson(),
     },
   };
 }

@@ -35,7 +35,7 @@ export const CreateStep: React.FC<CreateStepProps> = ({
   const [isCreating, setIsCreating] = useState(false);
   const { isConnected } = useAccount();
   const createInvoice = useCreateInvoice();
-  const feeInUsd = useConvertToUsd(createInvoice.fee || 0)?.toNumber();
+  const feeInUsd = useConvertToUsd(createInvoice.fee || 0);
   const isEmailEncrypting = useSelector(selectIsEncryptingEmail);
 
   const isLoading = useMemo(

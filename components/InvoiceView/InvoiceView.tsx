@@ -1,6 +1,6 @@
 import { Box, Container, TextField, Typography, useTheme } from '@mui/material';
 import Head from 'next/head';
-import { useCallback, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import InvoiceTimeline from '../InvoiceTimeline';
 import { useCurrencyByAddress } from '../../hooks';
@@ -18,6 +18,7 @@ export const InvoiceView: React.FC<InvoiceViewProps> = ({
   invoice,
   encodedEmail,
 }) => {
+  const [link, setLink] = useState('');
   const formattedAmount = useMemo(
     () => formatNumber(invoice.amount),
     [invoice.amount],
@@ -34,8 +35,8 @@ export const InvoiceView: React.FC<InvoiceViewProps> = ({
 
   const theme = useTheme();
 
-  const link = useMemo(() => {
-    return window.location.href.replace('/invoices/', '/transfer/');
+  useEffect(() => {
+    setLink(window.location.href.replace('/invoices/', '/transfer/'));
   }, []);
 
   const onCopyLink = useCallback(() => {

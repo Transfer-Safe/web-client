@@ -4,6 +4,7 @@ import React from 'react';
 import { useAccount } from 'wagmi';
 
 import { Invoice } from '../../models';
+import { formatTransactionId } from '../../utils';
 import BuyCurrencyButton from '../BuyCurrencyButton';
 
 interface InvoiceTransferButtonsProps {
@@ -37,7 +38,6 @@ export const InvoiceTransferButtons: React.FC<InvoiceTransferButtonsProps> = ({
                 invoiceId={invoice.id}
                 variant="outlined"
                 isNativeCurrency
-                value={10}
                 size="large"
                 sx={{
                   width: {
@@ -68,18 +68,26 @@ export const InvoiceTransferButtons: React.FC<InvoiceTransferButtonsProps> = ({
           </React.Fragment>
         )}
       </Box>
-      <Typography color={theme.palette.grey[800]} my={4} variant="body2">
-        We will hold your transfer until you confirm it by pressing the
-        “Confirm” button. If you change your mind you can refund your deposit
-        after{' '}
-        <Box
-          component="span"
-          fontWeight="600"
-          color={theme.palette.primary.main}
-        >
-          2 weeks
-        </Box>
-      </Typography>
+      {!invoice.instant && (
+        <Typography color={theme.palette.grey[800]} my={4} variant="body2">
+          We will hold your transfer until you confirm it by pressing the
+          “Confirm” button. If you change your mind you can refund your deposit
+          after{' '}
+          <Box
+            component="span"
+            fontWeight="600"
+            color={theme.palette.primary.main}
+          >
+            2 weeks
+          </Box>
+        </Typography>
+      )}
+      {invoice.instant && (
+        <Typography color={theme.palette.grey[800]} my={4} variant="body2">
+          Your transfer will be sent directly to the recipient (wallet{' '}
+          {formatTransactionId(invoice.receipientAddress)}).
+        </Typography>
+      )}
     </React.Fragment>
   );
 };

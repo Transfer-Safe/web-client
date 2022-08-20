@@ -1,4 +1,4 @@
-import { BigNumber, BigNumberish, constants } from 'ethers';
+import { BigNumber, BigNumberish } from 'ethers';
 import { useMemo } from 'react';
 
 import { useGetExchangeRate } from './useGetExchangeRate';
