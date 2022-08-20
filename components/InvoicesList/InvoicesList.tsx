@@ -8,6 +8,7 @@ import InvoiceListItem from './InvoiceListItem';
 import InvoiceListItemSkeleton from './InvoiceListItemSkeleton';
 
 import { useInvoicesList } from '../../hooks/router/useInvoicesList';
+import Button from '../Button';
 
 export const InvoicesList: React.FC = () => {
   const account = useAccount();
@@ -33,7 +34,7 @@ export const InvoicesList: React.FC = () => {
           <InvoiceListItemSkeleton />
         </Box>
       )}
-      {invoices.data && (
+      {invoices.data?.length ? (
         <Box mt={2}>
           {invoices.data.map((invoice) => (
             <InvoiceListItem
@@ -42,6 +43,13 @@ export const InvoicesList: React.FC = () => {
               key={invoice.id}
             />
           ))}
+        </Box>
+      ) : undefined}
+      {invoices.data?.length === 0 && (
+        <Box mt={2}>
+          <Button variant="outlined" href="/invoices/new">
+            Create your first invoice
+          </Button>
         </Box>
       )}
     </Box>
