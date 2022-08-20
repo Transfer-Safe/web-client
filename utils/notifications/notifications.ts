@@ -21,9 +21,13 @@ class Notifications {
     invoice: Invoice,
     txHash: string,
   ) {
+    const invoiceName =
+      formatNumber(invoice.amount) +
+      '$ transfer request' +
+      (invoice.ref.length > 0 ? 'for ' + invoice.ref : '');
     await this.sendEmail(
       email,
-      'Invoice deposited',
+      `${invoiceName} deposited`,
       NotificationType.InvoiceDeposited,
       {
         amount: formatInvoiceAmount(invoice, 'balance', chainId),
@@ -35,10 +39,7 @@ class Notifications {
         ),
         // TODO: use dynamic domains
         invoiceLink: `https://alpha.transfersafe.net/invoices/${chainId}/${invoice.id}`,
-        invoiceName:
-          formatNumber(invoice.amount) +
-          '$ transfer request' +
-          (invoice.ref.length > 0 ? 'for ' + invoice.ref : ''),
+        invoiceName,
       },
     );
   }
@@ -49,17 +50,26 @@ class Notifications {
     invoice: Invoice,
     txHash: string,
   ) {
+    const invoiceName =
+      formatNumber(invoice.amount) +
+      '$ transfer' +
+      (invoice.ref.length > 0 ? 'for ' + invoice.ref : '');
+
     await this.sendEmail(
       email,
-      'Transfer completed',
+      `${invoiceName} received`,
       NotificationType.InvoiceConfirmed,
       {
         amount: formatInvoiceAmount(invoice, 'paidAmount', chainId),
         transactionLink: linkToTransaction(txHash, chainId),
         sender: formatTransactionId(invoice.senderAddress),
-        senderLink: linkToAddress(invoice.senderAddress, chainId),
+        senderLink: linkToAddress(invoice.senderAddress, chainId)?.replace(
+          'https://',
+          '',
+        ),
         // TODO: use dynamic domains
         invoiceLink: `https://alpha.transfersafe.net/invoices/${invoice.id}`,
+        invoiceName,
       },
     );
   }

@@ -60,7 +60,7 @@ export const CreateStep: React.FC<CreateStepProps> = ({
             `/invoices/${currentChain.id}/${createInvoice.invoice.id}`,
           );
         })
-        .finally(() => {
+        .catch(() => {
           setIsCreating(false);
         });
     }
