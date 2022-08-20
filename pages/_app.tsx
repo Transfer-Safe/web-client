@@ -3,15 +3,15 @@ import '@rainbow-me/rainbowkit/styles.css';
 
 import { CacheProvider, EmotionCache } from '@emotion/react';
 import { CssBaseline, ThemeProvider } from '@mui/material';
-import { lightTheme, RainbowKitProvider } from '@rainbow-me/rainbowkit';
 import type { AppProps } from 'next/app';
 import React from 'react';
 import { Provider } from 'react-redux';
-import { chain, WagmiConfig } from 'wagmi';
+import { WagmiConfig } from 'wagmi';
 
-import { chains, theme, wagmiClient } from '../config';
+import { theme, wagmiClient } from '../config';
 import store from '../store';
 import createEmotionCache from '../utils/createEmotionCache';
+import AppRainbowKitProvider from '../components/AppRainbowKitProvider';
 
 const clientSideEmotionCache = createEmotionCache();
 
@@ -26,17 +26,9 @@ function MyApp({
         <CssBaseline />
         <Provider store={store}>
           <WagmiConfig client={wagmiClient}>
-            <RainbowKitProvider
-              chains={chains}
-              theme={lightTheme({
-                accentColor: theme.palette.primary.main,
-                borderRadius: 'small',
-              })}
-              // TODO: proper chain
-              initialChain={chain.polygonMumbai}
-            >
+            <AppRainbowKitProvider>
               <Component {...pageProps} />
-            </RainbowKitProvider>
+            </AppRainbowKitProvider>
           </WagmiConfig>
         </Provider>
       </ThemeProvider>

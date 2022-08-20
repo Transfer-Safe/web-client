@@ -1,8 +1,4 @@
-import {
-  ConnectButton,
-  lightTheme,
-  RainbowKitProvider,
-} from '@rainbow-me/rainbowkit';
+import { ConnectButton } from '@rainbow-me/rainbowkit';
 import MenuIcon from '@mui/icons-material/Menu';
 import {
   AppBar,
@@ -15,16 +11,15 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  useTheme,
 } from '@mui/material';
 import { Container } from '@mui/system';
 import { useCallback, useMemo, useState } from 'react';
-import { chain, useAccount } from 'wagmi';
+import { useAccount } from 'wagmi';
 
 import styles from './Header.module.scss';
 
 import Logo from '../Logo';
-import { chains } from '../../config';
+import AppRainbowKitProvider from '../AppRainbowKitProvider';
 
 interface MenuItem {
   label: string;
@@ -51,7 +46,6 @@ const Header: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const onClose = useCallback(() => setSidebarOpen(false), [setSidebarOpen]);
   const onOpen = useCallback(() => setSidebarOpen(true), [setSidebarOpen]);
-  const theme = useTheme();
   const account = useAccount();
 
   const visibleMenuItems = useMemo(
@@ -100,17 +94,9 @@ const Header: React.FC = () => {
             </List>
           </Box>
           <Box>
-            <RainbowKitProvider
-              chains={chains}
-              theme={lightTheme({
-                accentColor: theme.palette.primary.main,
-                borderRadius: 'small',
-              })}
-              // TODO: proper chain
-              initialChain={chain.polygonMumbai}
-            >
+            <AppRainbowKitProvider>
               <ConnectButton />
-            </RainbowKitProvider>
+            </AppRainbowKitProvider>
           </Box>
         </Box>
       </Drawer>
