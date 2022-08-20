@@ -34,7 +34,7 @@ class Notifications {
           '',
         ),
         // TODO: use dynamic domains
-        invoiceLink: `https://alpha.transfersafe.net/invoices/${invoice.id}`,
+        invoiceLink: `https://alpha.transfersafe.net/invoices/${chainId}/${invoice.id}`,
         invoiceName:
           formatNumber(invoice.amount) +
           '$ transfer request' +
