@@ -6,6 +6,7 @@ import {
   Button,
   Drawer,
   IconButton,
+  Link,
   List,
   ListItem,
   ListItemButton,
@@ -108,7 +109,11 @@ const Header: React.FC = () => {
           alignItems="center"
         >
           <Box display="flex" flexDirection="row" alignItems="center">
-            <Logo />
+            <Link href="/">
+              <Box display="flex" flexDirection="column" alignItems="center">
+                <Logo />
+              </Box>
+            </Link>
             <Box
               display={{
                 xs: 'none',

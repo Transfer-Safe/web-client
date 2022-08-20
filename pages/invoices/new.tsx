@@ -6,7 +6,7 @@ import style from './new.module.scss';
 import Header from '../../components/Header';
 import InvoiceForm from '../../components/InvoiceForm';
 
-const NewInvoice: NextPage = () => {
+const NewInvoicePage: NextPage = () => {
   const onSubmitInvoice = useCallback(() => undefined, []);
 
   return (
@@ -21,4 +21,4 @@ const NewInvoice: NextPage = () => {
   );
 };
 
-export default NewInvoice;
+export default NewInvoicePage;
