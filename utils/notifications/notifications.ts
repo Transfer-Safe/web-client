@@ -6,6 +6,7 @@ import { Invoice } from '../../models';
 import { formatInvoiceAmount } from '../formatInvoiceAmount';
 import { linkToAddress, linkToTransaction } from '../linkToTransaction';
 import { formatTransactionId } from '../formatTransaction';
+import { formatNumber } from '../formatNumber';
 
 class Notifications {
   emailClient: NotificationClientInterface;
@@ -28,9 +29,16 @@ class Notifications {
         amount: formatInvoiceAmount(invoice, 'balance', chainId),
         transactionLink: linkToTransaction(txHash, chainId),
         sender: formatTransactionId(invoice.senderAddress),
-        senderLink: linkToAddress(invoice.senderAddress, chainId),
+        senderLink: linkToAddress(invoice.senderAddress, chainId)?.replace(
+          'https://',
+          '',
+        ),
         // TODO: use dynamic domains
         invoiceLink: `https://alpha.transfersafe.net/invoices/${invoice.id}`,
+        invoiceName:
+          formatNumber(invoice.amount) +
+          '$ transfer request' +
+          (invoice.ref.length > 0 ? 'for ' + invoice.ref : ''),
       },
     );
   }
