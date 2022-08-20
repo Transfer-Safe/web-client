@@ -7,7 +7,7 @@ import { lightTheme, RainbowKitProvider } from '@rainbow-me/rainbowkit';
 import type { AppProps } from 'next/app';
 import React from 'react';
 import { Provider } from 'react-redux';
-import { WagmiConfig } from 'wagmi';
+import { chain, WagmiConfig } from 'wagmi';
 
 import { chains, theme, wagmiClient } from '../config';
 import store from '../store';
@@ -32,6 +32,8 @@ function MyApp({
                 accentColor: theme.palette.primary.main,
                 borderRadius: 'small',
               })}
+              // TODO: proper chain
+              initialChain={chain.polygonMumbai}
             >
               <Component {...pageProps} />
             </RainbowKitProvider>
