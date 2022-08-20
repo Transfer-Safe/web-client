@@ -15,6 +15,7 @@ import {
 } from '@mui/material';
 import { Container } from '@mui/system';
 import { useCallback, useMemo, useState } from 'react';
+import { useRouter } from 'next/router';
 import { useAccount } from 'wagmi';
 
 import styles from './Header.module.scss';
@@ -48,6 +49,7 @@ const Header: React.FC = () => {
   const onClose = useCallback(() => setSidebarOpen(false), [setSidebarOpen]);
   const onOpen = useCallback(() => setSidebarOpen(true), [setSidebarOpen]);
   const account = useAccount();
+  const router = useRouter();
 
   const visibleMenuItems = useMemo(
     () => menuItems.filter((item) => account.isConnected || !item.requireAuth),
@@ -73,6 +75,7 @@ const Header: React.FC = () => {
           display="flex"
           flexDirection="column"
           justifyContent="space-between"
+          height="100%"
         >
           <Box>
             <Box my={1}>
@@ -81,7 +84,16 @@ const Header: React.FC = () => {
             <Box mt={1} />
             <List>
               {visibleMenuItems.map((item) => (
-                <ListItem key={item.label} disablePadding>
+                <ListItem
+                  key={item.label}
+                  disablePadding
+                  onClick={() => {
+                    if (item.href) {
+                      router.push(item.href);
+                    }
+                    item.onClick?.();
+                  }}
+                >
                   <ListItemButton>
                     {item.icon && (
                       <ListItemIcon sx={{ minWidth: 'inherit', mr: 1 }}>

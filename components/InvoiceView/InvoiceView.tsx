@@ -39,9 +39,18 @@ export const InvoiceView: React.FC<InvoiceViewProps> = ({
     setLink(window.location.href.replace('/invoices/', '/transfer/'));
   }, []);
 
+  const sharingAvailable = useMemo(
+    () => navigator.canShare && navigator.canShare({ url: link }),
+    [link],
+  );
+
   const onCopyLink = useCallback(() => {
-    navigator.clipboard.writeText(link);
-  }, [link]);
+    if (sharingAvailable) {
+      navigator.share({ url: link });
+    } else {
+      navigator.clipboard.writeText(link);
+    }
+  }, [link, sharingAvailable]);
 
   return (
     <Box
@@ -111,7 +120,7 @@ export const InvoiceView: React.FC<InvoiceViewProps> = ({
                 shortcut="enter"
                 size="large"
               >
-                Copy link
+                {sharingAvailable ? 'Share' : 'Copy link'}
               </Button>
               <TextField sx={{ flex: 1 }} value={link} variant="outlined" />
             </Box>
