@@ -8,7 +8,10 @@ const nextConfig = {
   swcMinify: true,
   i18n,
   env: {
-    ALCHEMY_APIKEY: process.env.ALCHEMY_APIKEY
+    ALCHEMY_APIKEY: process.env.ALCHEMY_APIKEY || process.env.NEXT_PUBLIC_ALCHEMY_APIKEY,
+    EMAIL_SECRET: process.env.EMAIL_SECRET,
+    SENDPULSE_API_USER_ID: process.env.SENDPULSE_API_USER_ID,
+    SENDPULSE_API_SECRET: process.env.SENDPULSE_API_SECRET,
   }
 };
 
