@@ -6,3 +6,4 @@ export * from './useRefundInvoice';
 export * from './useRouterContractAddress';
 export * from './useRouterFunction';
 export * from './useGetInvoiceAmount';
+export * from './useGetFee';

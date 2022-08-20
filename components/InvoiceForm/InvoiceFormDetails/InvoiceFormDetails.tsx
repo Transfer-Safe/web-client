@@ -1,11 +1,16 @@
-import { Box, BoxProps, Typography } from '@mui/material';
-import React, { useCallback } from 'react';
+import {
+  Box,
+  BoxProps,
+  Typography,
+  TypographyProps,
+  useTheme,
+} from '@mui/material';
+import React, { useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import style from './InvoiceFormDetails.module.scss';
 import InvoiceFormDetailsCard from './InvoiceFormDetailsCard';
 
-import { theme } from '../../../config';
 import {
   NewInvoiceFormState,
   NewInvoiceFormStep,
@@ -15,8 +20,29 @@ import {
 import { RootState } from '../../../store/rootReducer';
 import CurrencyLabel from '../../CurrencyLabel';
 import FormattedNumber from '../../FormattedNumber';
+import { useGetFee } from '../../../hooks';
+import { formatNumber } from '../../../utils';
 
 type InvoiceFormDetailsProps = BoxProps;
+
+const FeeAmount: React.FC<TypographyProps & { amount: number }> = ({
+  amount,
+  ...props
+}) => {
+  const fee = useGetFee(amount);
+  const formattedAmount = useMemo(() => {
+    if (!fee.data || !fee.amount) {
+      return 'incl. ... fee';
+    }
+    return (
+      'incl. ' +
+      formatNumber(fee.amount) +
+      `$ fee (${formatNumber(fee.data.toNumber() / 10)}%)`
+    );
+  }, [fee]);
+
+  return <Typography {...props}>{formattedAmount}</Typography>;
+};
 
 const InvoiceFormDetails: React.FC<InvoiceFormDetailsProps> = (props) => {
   const creatingInvoice = useSelector<RootState, NewInvoiceFormState>(
@@ -42,8 +68,7 @@ const InvoiceFormDetails: React.FC<InvoiceFormDetailsProps> = (props) => {
     [creatingInvoice.step],
   );
 
-  // const { fee } = useCreateInvoice();
-  // const feeInUsd = useConvertToUsd(fee || 0)?.toNumber();
+  const theme = useTheme();
 
   return (
     <Box {...props} className={style.InvoiceFormDetails}>
@@ -63,10 +88,12 @@ const InvoiceFormDetails: React.FC<InvoiceFormDetailsProps> = (props) => {
             <Typography variant="subtitle1" component="span">
               <FormattedNumber value={creatingInvoice.amount} suffix=" $" />
             </Typography>
-            <Typography color={theme.palette.disabled.main} variant="caption">
-              {' '}
-              <FormattedNumber value={1} suffix=" $" /> fee
-            </Typography>
+            <FeeAmount
+              variant="caption"
+              sx={{ ml: 1 }}
+              color={theme.palette.grey[700]}
+              amount={creatingInvoice.amount}
+            />
           </React.Fragment>
         ) : undefined}
       </InvoiceFormDetailsCard>
