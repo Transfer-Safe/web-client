@@ -15,11 +15,17 @@ interface SendpulseResponse {
 
 export class SendpulseClient implements NotificationClientInterface {
   constructor() {
-    assert(process.env.API_USER_ID);
-    assert(process.env.API_SECRET);
+    assert(
+      process.env.SENDPULSE_API_USER_ID,
+      'SENDPULSE_API_USER_ID IS REQUED',
+    );
+    assert(
+      process.env.SENDPULSE_API_SECRET,
+      'SENDPULSE_API_SECRET IS REQUIRED',
+    );
     sendpulse.init(
-      process.env.API_USER_ID,
-      process.env.API_SECRET,
+      process.env.SENDPULSE_API_USER_ID,
+      process.env.SENDPULSE_API_SECRET,
       '/tmp',
       () => undefined,
     );
