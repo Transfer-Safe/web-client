@@ -11,6 +11,7 @@
     "prepare": "husky install"
   },
   "dependencies": {
+    "0xsequence": "^0.40.5",
     "@emotion/react": "^11.9.3",
     "@emotion/server": "^11.4.0",
     "@emotion/styled": "^11.9.3",

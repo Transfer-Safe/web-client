@@ -16,8 +16,6 @@ export const handleTransactionWebhook = async (
   const router = TransferSafeRouter__factory.createInterface();
   const functionData = router.parseTransaction(transaction);
 
-  console.log('===> Handle webhook function', functionData.name);
-
   switch (functionData.name as keyof TransferSafeRouter['functions']) {
     case 'deposit':
       return handleDeposit(chainId, txId, functionData);

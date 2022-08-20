@@ -1,6 +1,8 @@
-import { getDefaultWallets } from '@rainbow-me/rainbowkit';
+import { connectorsForWallets, wallet } from '@rainbow-me/rainbowkit';
 import { chain, configureChains, createClient } from 'wagmi';
 import { alchemyProvider } from 'wagmi/providers/alchemy';
+
+import { sequenceWallet } from './sequenceWallet';
 
 const defaultProvider = alchemyProvider({
   apiKey: process.env.ALCHEMY_APIKEY,
@@ -11,14 +13,21 @@ export const { chains, provider, webSocketProvider } = configureChains(
   [defaultProvider],
 );
 
-const { connectors } = getDefaultWallets({
-  appName: 'TransferSafe',
-  chains,
-});
+const connectors = connectorsForWallets([
+  {
+    groupName: 'Recommended',
+    wallets: [
+      sequenceWallet({ chains }),
+      wallet.metaMask({ chains }),
+      wallet.rainbow({ chains }),
+      wallet.walletConnect({ chains }),
+    ],
+  },
+]);
 
 export const wagmiClient = createClient({
   autoConnect: true,
-  connectors,
+  connectors: () => [...connectors()],
   provider,
   webSocketProvider,
 });
