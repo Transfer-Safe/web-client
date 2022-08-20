@@ -1,8 +1,7 @@
 import { connectorsForWallets, wallet } from '@rainbow-me/rainbowkit';
 import { chain, configureChains, createClient } from 'wagmi';
 import { alchemyProvider } from 'wagmi/providers/alchemy';
-
-import { sequenceWallet } from './sequenceWallet';
+import { sequenceWallet } from 'sequence-rainbowkit-wallet';
 
 const defaultProvider = alchemyProvider({
   apiKey: process.env.ALCHEMY_APIKEY,
