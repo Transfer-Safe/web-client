@@ -28,17 +28,20 @@ export const InvoiceTransferView: React.FC<InvoiceTransferViewProps> = ({
     (state) => state.confirmInvoice.status,
   );
 
-  const showPayInvoice = useMemo(
-    () =>
-      !invoice.deposited || transferingStatus === TransferInvoiceStatus.SUCCESS,
-    [invoice.deposited, transferingStatus],
-  );
+  const showPayInvoice = useMemo(() => {
+    const showPayInvoice =
+      !invoice.deposited ||
+      (invoice.deposited && transferingStatus !== TransferInvoiceStatus.IDLE);
+
+    return showPayInvoice;
+  }, [invoice.deposited, transferingStatus]);
 
   const showConfirmInvoice = useMemo(() => {
     return (
       invoice.deposited &&
       !showPayInvoice &&
-      (!invoice.paid || confirmingStatus === ConfirmInvoiceStatus.SUCCESS)
+      (!invoice.paid ||
+        (invoice.paid && confirmingStatus !== ConfirmInvoiceStatus.IDLE))
     );
   }, [invoice.deposited, confirmingStatus, invoice.paid, showPayInvoice]);
 
