@@ -19,6 +19,8 @@ export const InvoiceView: React.FC<InvoiceViewProps> = ({
   encodedEmail,
 }) => {
   const [link, setLink] = useState('');
+  const [sharingAvailable, setSharingAvailable] = useState(false);
+
   const formattedAmount = useMemo(
     () => formatNumber(invoice.amount),
     [invoice.amount],
@@ -39,10 +41,13 @@ export const InvoiceView: React.FC<InvoiceViewProps> = ({
     setLink(window.location.href.replace('/invoices/', '/transfer/'));
   }, []);
 
-  const sharingAvailable = useMemo(
-    () => navigator.canShare && navigator.canShare({ url: link }),
-    [link],
-  );
+  useEffect(() => {
+    if (navigator.canShare && navigator.canShare({ url: link })) {
+      setSharingAvailable(true);
+    } else {
+      setSharingAvailable(false);
+    }
+  }, [link]);
 
   const onCopyLink = useCallback(() => {
     if (sharingAvailable) {
