@@ -1,7 +1,4 @@
-import { TransferSafeRouter } from '@transfer-safe/router';
-import { TransactionDescription } from 'ethers/lib/utils';
-
-import { handleConfirm } from './handleConfirm';
+import { InvoiceDepositedEvent } from '@transfer-safe/router/contracts/TransferSafeRouter';
 
 import { dencryptEmail } from '../encryptEmail';
 import { loadInvoice } from '../ethers';
@@ -10,17 +7,18 @@ import notifications from '../notifications/notifications';
 export const handleDeposit = async (
   chainId: number,
   txHash: string,
-  transaction: TransactionDescription,
+  event: InvoiceDepositedEvent,
 ) => {
-  const [invoiceId] = transaction.args as Parameters<
-    TransferSafeRouter['deposit']
-  >;
-  const invoice = await loadInvoice(await invoiceId, chainId);
+  const [invoiceId] = event.args;
+  const invoice = await loadInvoice(invoiceId, chainId);
   if (invoice.receipientEmail.length < 1) {
     return;
   }
   if (invoice.paid) {
-    return handleConfirm(chainId, txHash, transaction);
+    return;
+  }
+  if (!invoice.deposited) {
+    return;
   }
   const email = dencryptEmail(invoice.receipientEmail);
   await notifications.invoiceDeposited(email, chainId, invoice, txHash);

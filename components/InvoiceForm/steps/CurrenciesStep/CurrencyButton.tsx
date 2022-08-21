@@ -1,6 +1,6 @@
 import { Box, Button, Typography } from '@mui/material';
 import { BoxProps } from '@mui/system';
-import { BigNumber, constants, utils } from 'ethers';
+import { utils } from 'ethers';
 import { useMemo } from 'react';
 
 import { useConvertFromUsd } from '../../../../hooks';

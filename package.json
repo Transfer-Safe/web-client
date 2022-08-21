@@ -23,7 +23,7 @@
     "@rainbow-me/rainbowkit": "^0.4.5",
     "@reduxjs/toolkit": "^1.8.3",
     "@sentry/nextjs": "^7.10.0",
-    "@transfer-safe/router": "0.0.23",
+    "@transfer-safe/router": "0.0.24",
     "@walletconnect/web3-provider": "^1.7.8",
     "aws-amplify": "^4.3.27",
     "classnames": "^2.3.1",

@@ -7,8 +7,8 @@ import style from './CurrenciesStep.module.scss';
 import { CurrencyButton } from './CurrencyButton';
 
 import { useCurrenciesList, useCurrentChain } from '../../../../hooks';
-import { CurrencyCode, Invoice } from '../../../../models';
-import newInvoiceForm, {
+import { CurrencyCode } from '../../../../models';
+import {
   NewInvoiceFormState,
   newInvoiceUpdate,
 } from '../../../../store/features/newInvoiceForm';
@@ -41,10 +41,6 @@ export const CurrenciesStep: React.FC<CurrenciesStepProps> = ({
     (code: CurrencyCode) => enabledCurrencies.includes(code),
     [enabledCurrencies],
   );
-
-  const switchNativeCurrency = useCallback(() => {
-    dispatch(newInvoiceUpdate({ isNativeCurrencyEnabled: !isNativeEnabled }));
-  }, [isNativeEnabled, dispatch]);
 
   const switchCurrency = useCallback(
     (code: CurrencyCode) => {
