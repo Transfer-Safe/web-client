@@ -75,7 +75,7 @@ export const AmountStep: React.FC<AmountStepProps> = ({ onAmountSubmit }) => {
                 type="text"
                 placeholder="e.g. 100 $"
                 autoFocus
-                inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+                inputProps={{ inputMode: 'decimal', pattern: '[0-9\\.,]*' }}
                 sx={{ flex: '1' }}
               />
             )}
