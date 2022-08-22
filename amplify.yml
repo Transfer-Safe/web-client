@@ -18,4 +18,4 @@ frontend:
     - pattern: '/_next/static/**/*'
       headers:
         - key: 'Cache-Control' 
-          value: 's-maxage=86400'
+          value: 'public, max-age=86400'
