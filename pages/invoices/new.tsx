@@ -1,4 +1,5 @@
 import { NextPage } from 'next';
+import Head from 'next/head';
 import { useCallback } from 'react';
 
 import style from './new.module.scss';
@@ -11,6 +12,9 @@ const NewInvoicePage: NextPage = () => {
 
   return (
     <div className={style.NewInvoicePage}>
+      <Head>
+        <title>Create new invoice — TransferSafe</title>
+      </Head>
       <Header />
       <InvoiceForm
         className={style.container}
