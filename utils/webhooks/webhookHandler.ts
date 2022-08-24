@@ -36,7 +36,6 @@ const handleEvent = async (
   chainId: number,
   txId: string,
 ) => {
-  console.log('===> handleEvent', event.name);
   switch (event.name) {
     case 'InvoiceDeposited':
       return handleDeposit(
