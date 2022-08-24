@@ -12,8 +12,7 @@ import encryptEmailReducer, {
 import newInvoiceFormReducer, {
   NewInvoiceFormState,
 } from './features/newInvoiceForm';
-import { settingsReducer } from './settings/reducer';
-import { SettingsState } from './settings/types';
+import settingsReducer, { SettingsState } from './features/settings';
 import { transferInvoiceReducer } from './transferInvoice/reducer';
 import { TransferInvoiceState } from './transferInvoice/types';
 

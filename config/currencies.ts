@@ -16,16 +16,17 @@ export const CURRENCIES: Record<
   },
 };
 
-export const CURRENCIES_ADDRESSES: Record<number, ChainCurrencies> = {
+export const CURRENCIES_ADDRESSES: Record<number, Partial<ChainCurrencies>> = {
   [chain.polygonMumbai.id]: {
     [CurrencyCode.DAI]: '0xd393b1e02da9831ff419e22ea105aae4c47e1253',
     [CurrencyCode.USDT]: '0x326C977E6efc84E512bB9C30f76E30c160eD06FB',
   },
+  [9000]: {},
 };
 
 export const CURRENCIES_CHAINLINK_ADDRESSES: Record<
   number,
-  { native: string; currencies: ChainCurrencies }
+  { native: string; currencies: ChainCurrencies } | undefined
 > = {
   [chain.polygonMumbai.id]: {
     native: '0xd0D5e3DB44DE05E9F294BB0a3bEEaF030DE24Ada',

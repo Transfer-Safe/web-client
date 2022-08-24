@@ -1,9 +1,9 @@
 import { useTheme } from '@mui/material';
 import { lightTheme, RainbowKitProvider } from '@rainbow-me/rainbowkit';
 import { RainbowKitProviderProps } from '@rainbow-me/rainbowkit/dist/components/RainbowKitProvider/RainbowKitProvider';
-import { chain } from 'wagmi';
 
 import { chains } from '../../config';
+import { useCurrentChain } from '../../hooks';
 
 type AppRainbowKitProviderProps = Omit<
   RainbowKitProviderProps,
@@ -12,6 +12,7 @@ type AppRainbowKitProviderProps = Omit<
 
 const AppRainbowKitProvider: React.FC<AppRainbowKitProviderProps> = (props) => {
   const theme = useTheme();
+  const currentChain = useCurrentChain();
 
   return (
     <RainbowKitProvider
@@ -21,7 +22,7 @@ const AppRainbowKitProvider: React.FC<AppRainbowKitProviderProps> = (props) => {
         borderRadius: 'small',
       })}
       // TODO: proper chain
-      initialChain={chain.polygonMumbai}
+      initialChain={currentChain}
       {...props}
     />
   );

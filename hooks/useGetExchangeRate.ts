@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { BigNumber } from 'ethers';
 import { useMemo } from 'react';
 import { useContractRead } from 'wagmi';
@@ -25,12 +26,16 @@ export const useGetExchangeRate = (
   const currentChain = useCurrentChain();
   const address = useMemo(() => {
     if (currencyCode) {
-      return CURRENCIES_CHAINLINK_ADDRESSES[currentChain.id].currencies[
+      return CURRENCIES_CHAINLINK_ADDRESSES[currentChain.id]?.currencies[
         currencyCode
       ] as string;
     }
-    return CURRENCIES_CHAINLINK_ADDRESSES[currentChain.id].native;
+    return CURRENCIES_CHAINLINK_ADDRESSES[currentChain.id]?.native;
   }, [currentChain.id, currencyCode]);
+
+  if (!address) {
+    return;
+  }
 
   const latestRoundData = useContractRead({
     addressOrName: address,

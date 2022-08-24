@@ -8,7 +8,7 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import { WagmiConfig } from 'wagmi';
 
-import { theme, wagmiClient } from '../config';
+import { theme, getWagmiClient } from '../config';
 import store from '../store';
 import createEmotionCache from '../utils/createEmotionCache';
 import AppRainbowKitProvider from '../components/AppRainbowKitProvider';
@@ -25,7 +25,7 @@ function MyApp({
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <Provider store={store}>
-          <WagmiConfig client={wagmiClient}>
+          <WagmiConfig client={getWagmiClient()}>
             <AppRainbowKitProvider>
               <Component {...pageProps} />
             </AppRainbowKitProvider>
