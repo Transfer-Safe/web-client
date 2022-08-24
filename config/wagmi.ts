@@ -3,13 +3,24 @@ import { chain, configureChains, createClient } from 'wagmi';
 import { alchemyProvider } from 'wagmi/providers/alchemy';
 import { sequenceWallet } from 'sequence-rainbowkit-wallet';
 
-const defaultProvider = alchemyProvider({
-  apiKey: process.env.ALCHEMY_APIKEY,
-});
+const failSaveAlchemyProvider = () => {
+  const p = alchemyProvider({
+    apiKey: process.env.ALCHEMY_APIKEY,
+  });
+  return (...args: Parameters<typeof p>) => {
+    const result = p(...args);
+    if (result) {
+      if (typeof window === 'undefined') {
+        result.webSocketProvider = undefined;
+      }
+    }
+    return result;
+  };
+};
 
 export const { chains, provider, webSocketProvider } = configureChains(
   [chain.polygonMumbai],
-  [defaultProvider],
+  [failSaveAlchemyProvider()],
 );
 
 const connectors = connectorsForWallets([
