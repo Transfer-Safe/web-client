@@ -12,7 +12,10 @@ export default async function handler(
   const body = req.body as AlchemyTransactionWebhookBody;
   const chainId = BigNumber.from(req.query.chainId).toNumber();
   body.event.activity.forEach((activity) => {
-    if (activity.category === 'external') {
+    if (
+      activity.category === 'external' ||
+      activity.typeTraceAddress.startsWith('CALL_')
+    ) {
       transactionIds.add(activity.hash);
     }
   });
