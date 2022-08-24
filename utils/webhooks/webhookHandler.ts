@@ -23,12 +23,25 @@ export const handleTransactionWebhook = async (
       event.address.toLocaleLowerCase() === contractAddress.toLocaleLowerCase(),
   );
 
-  const parsedLogs = logs.map((event) => {
-    return router.parseLog(event);
-  });
-  for (const event of parsedLogs) {
-    await handleEvent(event, chainId, txId);
-  }
+  const parsedLogs = logs
+    .map((event) => {
+      try {
+        return {
+          description: router.parseLog(event),
+          event,
+        };
+      } catch (err) {
+        return;
+      }
+    })
+    .filter(Boolean) as {
+    description: LogDescription;
+    event: typeof logs[0];
+  }[];
+
+  await Promise.all(
+    parsedLogs.map((event) => handleEvent(event.description, chainId, txId)),
+  );
 };
 
 const handleEvent = async (
@@ -36,6 +49,7 @@ const handleEvent = async (
   chainId: number,
   txId: string,
 ) => {
+  console.log('===> handleEvent', event.name, event);
   switch (event.name) {
     case 'InvoiceDeposited':
       return handleDeposit(

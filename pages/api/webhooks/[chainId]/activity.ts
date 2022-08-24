@@ -8,15 +8,22 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
+  const transactionIds = new Set<string>();
   const body = req.body as AlchemyTransactionWebhookBody;
   const chainId = BigNumber.from(req.query.chainId).toNumber();
+  body.event.activity.forEach((activity) => {
+    if (activity.category === 'external') {
+      transactionIds.add(activity.hash);
+    }
+  });
+
   try {
-    for await (const activity of body.event.activity) {
-      const transactionId = activity.hash;
+    for await (const transactionId of transactionIds) {
       await handleTransactionWebhook(transactionId, chainId);
     }
     res.status(200).send(undefined);
   } catch (err: any) {
+    console.error(err);
     res.status(500).json(err?.message);
   }
 }
