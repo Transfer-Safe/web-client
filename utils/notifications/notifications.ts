@@ -24,7 +24,7 @@ class Notifications {
     const invoiceName =
       formatNumber(invoice.amount) +
       '$ transfer request' +
-      (invoice.ref.length > 0 ? 'for ' + invoice.ref : '');
+      (invoice.ref.length > 0 ? ' for ' + invoice.ref : '');
     await this.sendEmail(
       email,
       `${invoiceName} deposited`,
