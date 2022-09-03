@@ -1,10 +1,8 @@
-import { Box, Button, Typography } from '@mui/material';
+import { Box, Button, Typography, useTheme } from '@mui/material';
 import { useMemo } from 'react';
 import { ReactNode } from 'react';
 
 import style from './InvoiceFormDetailsCard.module.scss';
-
-import { theme } from '../../../config';
 
 interface InvoiceFormDetailsCardProps {
   title: string;
@@ -23,6 +21,7 @@ const InvoiceFormDetailsCard: React.FC<InvoiceFormDetailsCardProps> = ({
   active,
   visible,
 }) => {
+  const theme = useTheme();
   const content = useMemo(() => {
     if (!children) {
       return (

@@ -10,7 +10,7 @@ import classNames from 'classnames';
 
 import style from './AppModal.module.scss';
 
-import { theme } from '../../config';
+import { generateTheme } from '../../config';
 
 type AppModalProps = DialogProps & {
   title: string;
@@ -42,7 +42,7 @@ const AppModal: React.FC<AppModalProps> = ({
           <IconButton
             onClick={onClose}
             size="small"
-            sx={{ padding: theme.spacing(0) }}
+            sx={{ padding: generateTheme(9000).spacing(0) }}
           >
             <CloseIcon />
           </IconButton>

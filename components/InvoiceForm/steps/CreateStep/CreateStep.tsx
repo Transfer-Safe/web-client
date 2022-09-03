@@ -1,4 +1,4 @@
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, useTheme } from '@mui/material';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import classNames from 'classnames';
 import { useSelector } from 'react-redux';
@@ -14,7 +14,6 @@ import { useAccount } from 'wagmi';
 
 import style from './CreateStep.module.scss';
 
-import { theme } from '../../../../config';
 import { useCreateInvoice, useCurrentChain } from '../../../../hooks';
 import { useConvertToUsd } from '../../../../hooks/useConvertToUsd';
 import { formatTransactionId } from '../../../../utils';
@@ -30,6 +29,7 @@ export const CreateStep: React.FC<CreateStepProps> = ({
   className,
   ...props
 }) => {
+  const theme = useTheme();
   const router = useRouter();
   const currentChain = useCurrentChain();
   const [isCreating, setIsCreating] = useState(false);

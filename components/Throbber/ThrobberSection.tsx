@@ -1,11 +1,9 @@
-import { Box, Typography, BoxProps } from '@mui/material';
+import { Box, Typography, BoxProps, useTheme } from '@mui/material';
 import classNames from 'classnames';
 import { ReactNode } from 'react';
 
 import Throbber from './Throbber';
 import style from './ThrobberSection.module.scss';
-
-import { theme } from '../../config';
 
 type ThrobberSectionProps = BoxProps & {
   title: string | ReactNode;
@@ -18,6 +16,7 @@ const ThrobberSection: React.FC<ThrobberSectionProps> = ({
   className,
   ...props
 }) => {
+  const theme = useTheme();
   return (
     <Box
       className={classNames(style.ThrobberSection, className)}

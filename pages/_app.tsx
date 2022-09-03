@@ -4,16 +4,24 @@ import '@rainbow-me/rainbowkit/styles.css';
 import { CacheProvider, EmotionCache } from '@emotion/react';
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import type { AppProps } from 'next/app';
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { Provider } from 'react-redux';
 import { WagmiConfig } from 'wagmi';
 
-import { theme, getWagmiClient } from '../config';
+import { getWagmiClient, generateTheme } from '../config';
 import store from '../store';
 import createEmotionCache from '../utils/createEmotionCache';
 import AppRainbowKitProvider from '../components/AppRainbowKitProvider';
+import { useCurrentChain } from '../hooks';
 
 const clientSideEmotionCache = createEmotionCache();
+
+const AppThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const chain = useCurrentChain();
+  return (
+    <ThemeProvider theme={generateTheme(chain.id)}>{children}</ThemeProvider>
+  );
+};
 
 function MyApp({
   Component,
@@ -22,16 +30,16 @@ function MyApp({
 }: AppProps & { emotionCache?: EmotionCache }) {
   return (
     <CacheProvider value={emotionCache}>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <Provider store={store}>
+      <CssBaseline />
+      <Provider store={store}>
+        <AppThemeProvider>
           <WagmiConfig client={getWagmiClient()}>
             <AppRainbowKitProvider>
               <Component {...pageProps} />
             </AppRainbowKitProvider>
           </WagmiConfig>
-        </Provider>
-      </ThemeProvider>
+        </AppThemeProvider>
+      </Provider>
     </CacheProvider>
   );
 }
