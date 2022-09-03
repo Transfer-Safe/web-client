@@ -1,5 +1,6 @@
 import { Box, Typography, useTheme } from '@mui/material';
-import { useCallback, useEffect } from 'react';
+import { constants, utils } from 'ethers';
+import { useCallback, useEffect, useMemo } from 'react';
 import { useDispatch } from 'react-redux';
 import { useAccount, useBalance } from 'wagmi';
 
@@ -26,7 +27,17 @@ export const BuyNativeCurrencyButton: React.FC<
   BuyNativeCurrencyButtonProps
 > = ({ invoiceId, ...props }) => {
   const chain = useCurrentChain();
-  const { data } = useGetInvoiceAmountInNativeCurrency(invoiceId);
+  const { data: rawData } = useGetInvoiceAmountInNativeCurrency(invoiceId);
+  const data = useMemo(() => {
+    if (!rawData) {
+      return;
+    }
+    // TODO: use api
+    if (rawData.eq(constants.Zero)) {
+      return utils.parseEther('0.001');
+    }
+    return rawData;
+  }, [rawData]);
   const account = useAccount();
   const balance = useBalance({
     addressOrName: account.address,

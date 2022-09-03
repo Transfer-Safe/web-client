@@ -40,16 +40,16 @@ export const handleTransactionWebhook = async (
   }[];
 
   await Promise.all(
-    parsedLogs.map((event) => handleEvent(event.description, chainId, txId)),
+    parsedLogs.map((event) => handleLogEvent(event.description, chainId, txId)),
   );
 };
 
-const handleEvent = async (
+export const handleLogEvent = async (
   event: LogDescription,
   chainId: number,
   txId: string,
 ) => {
-  console.log('===> handleEvent', event.name, event);
+  console.log('===> handleLogEvent', event.name, event);
   switch (event.name) {
     case 'InvoiceDeposited':
       return handleDeposit(

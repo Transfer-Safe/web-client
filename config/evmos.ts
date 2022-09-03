@@ -13,7 +13,7 @@ export const evmostTestChain: Chain = {
   blockExplorers: {
     default: {
       name: 'BlockScout',
-      url: 'https://evm.evmos.org',
+      url: 'https://evm.evmos.dev',
     },
   },
   nativeCurrency: {

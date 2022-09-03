@@ -11,6 +11,7 @@ export const handleDeposit = async (
 ) => {
   const [invoiceId] = event.args;
   const invoice = await loadInvoice(invoiceId, chainId);
+  console.log('===> invoice', invoice);
   if (invoice.receipientEmail.length < 1) {
     return;
   }
