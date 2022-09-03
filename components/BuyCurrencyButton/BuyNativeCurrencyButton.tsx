@@ -47,7 +47,6 @@ export const BuyNativeCurrencyButton: React.FC<
   }, [deposit, dispatch]);
 
   useEffect(() => {
-    console.log('===> Deposit status', deposit.status);
     switch (deposit.status) {
       case 'success':
         dispatch(successTransferInvoice());

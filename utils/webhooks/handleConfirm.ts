@@ -11,7 +11,6 @@ export const handleConfirm = async (
 ) => {
   const [invoiceStruct] = event.args;
   const invoice = await loadInvoice(invoiceStruct.id, chainId);
-  console.log('===> invoice', invoice);
   if (invoice.receipientEmail.length < 1) {
     return;
   }
@@ -19,6 +18,5 @@ export const handleConfirm = async (
     return;
   }
   const email = dencryptEmail(invoice.receipientEmail);
-  console.log('===> invoice', email);
   await notifications.invoiceConfirmed(email, chainId, invoice, txHash);
 };
