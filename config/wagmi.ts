@@ -1,5 +1,5 @@
 import { connectorsForWallets, wallet } from '@rainbow-me/rainbowkit';
-import { chain, configureChains, createClient } from 'wagmi';
+import { Chain, chain, configureChains, createClient } from 'wagmi';
 import { alchemyProvider } from 'wagmi/providers/alchemy';
 import { sequenceWallet } from 'sequence-rainbowkit-wallet';
 
@@ -20,27 +20,43 @@ const failSaveAlchemyProvider = () => {
   };
 };
 
-export const { chains, provider, webSocketProvider } = configureChains(
-  [chain.polygonMumbai, evmostTestChain],
-  [failSaveAlchemyProvider(), evmosProvider],
-);
+export const getWagmiConfig = (hostName?: string) => {
+  let enabledChains: Chain[] = [];
 
-const connectors = connectorsForWallets([
-  {
-    groupName: 'Recommended',
-    wallets: [
-      sequenceWallet({ chains }),
-      wallet.metaMask({ chains }),
-      wallet.rainbow({ chains }),
-      wallet.walletConnect({ chains }),
-    ],
-  },
-]);
+  switch (hostName) {
+    case 'evmos.transfersafe.net':
+      enabledChains = [evmostTestChain];
+      break;
+    default:
+      enabledChains = [chain.polygonMumbai, evmostTestChain];
+  }
 
-export const getWagmiClient = () =>
-  createClient({
+  const { chains, provider, webSocketProvider } = configureChains(
+    enabledChains,
+    [failSaveAlchemyProvider(), evmosProvider],
+  );
+
+  const connectors = connectorsForWallets([
+    {
+      groupName: 'Recommended',
+      wallets: [
+        sequenceWallet({ chains }),
+        wallet.metaMask({ chains }),
+        wallet.rainbow({ chains }),
+        wallet.walletConnect({ chains }),
+      ],
+    },
+  ]);
+
+  return { chains, provider, webSocketProvider, connectors };
+};
+
+export const getWagmiClient = (hostName: string) => {
+  const { provider, webSocketProvider, connectors } = getWagmiConfig(hostName);
+  return createClient({
     autoConnect: true,
     connectors: () => [...connectors()],
     provider,
     webSocketProvider,
   });
+};

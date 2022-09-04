@@ -1,9 +1,10 @@
-import { chains } from '../config';
+import { getWagmiConfig } from '../config';
 
 export const linkToTransaction = (
   txId: string,
   chainId: number,
 ): string | undefined => {
+  const { chains } = getWagmiConfig();
   const chain = chains.find((c) => c.id === chainId);
   if (!txId || !chain) {
     return;
@@ -15,6 +16,7 @@ export function linkToAddress(
   address: string,
   chainId: number,
 ): string | undefined {
+  const { chains } = getWagmiConfig();
   const chain = chains.find((c) => c.id === chainId);
   if (!address || !chain) {
     return;

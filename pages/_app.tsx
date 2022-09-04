@@ -32,13 +32,13 @@ function MyApp({
     <CacheProvider value={emotionCache}>
       <CssBaseline />
       <Provider store={store}>
-        <AppThemeProvider>
-          <WagmiConfig client={getWagmiClient()}>
+        <WagmiConfig client={getWagmiClient()}>
+          <AppThemeProvider>
             <AppRainbowKitProvider>
               <Component {...pageProps} />
             </AppRainbowKitProvider>
-          </WagmiConfig>
-        </AppThemeProvider>
+          </AppThemeProvider>
+        </WagmiConfig>
       </Provider>
     </CacheProvider>
   );
