@@ -3,7 +3,7 @@ import { Chain, chain, configureChains, createClient } from 'wagmi';
 import { alchemyProvider } from 'wagmi/providers/alchemy';
 import { sequenceWallet } from 'sequence-rainbowkit-wallet';
 
-import { evmosProvider, evmostTestChain } from './evmos';
+import { evmosProvider, evmostChain, evmostTestChain } from './evmos';
 
 const failSaveAlchemyProvider = () => {
   const p = alchemyProvider({
@@ -28,7 +28,7 @@ export const getWagmiConfig = (hostName?: string) => {
       enabledChains = [evmostTestChain];
       break;
     default:
-      enabledChains = [chain.polygonMumbai, evmostTestChain];
+      enabledChains = [chain.polygonMumbai, evmostChain, evmostTestChain];
   }
 
   const { chains, provider, webSocketProvider } = configureChains(

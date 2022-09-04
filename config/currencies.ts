@@ -22,6 +22,10 @@ export const CURRENCIES_ADDRESSES: Record<number, Partial<ChainCurrencies>> = {
     [CurrencyCode.USDT]: '0x326C977E6efc84E512bB9C30f76E30c160eD06FB',
   },
   [9000]: {},
+  [9001]: {
+    [CurrencyCode.DAI]: '0xd393b1e02da9831ff419e22ea105aae4c47e1253',
+    [CurrencyCode.USDT]: '0x326C977E6efc84E512bB9C30f76E30c160eD06FB',
+  },
 };
 
 export const CURRENCIES_CHAINLINK_ADDRESSES: Record<

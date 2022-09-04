@@ -1,11 +1,11 @@
 import { ethers } from 'ethers';
 
-import { evmosTestProvider } from './evmos';
+import { evmosProvider } from './evmos';
 
 export const getEthersProvider = (chainId: number) => {
   switch (chainId) {
     case 9000:
-      return evmosTestProvider;
+      return evmosProvider;
     default:
       return new ethers.providers.AlchemyProvider(
         ethers.providers.getNetwork(chainId),
