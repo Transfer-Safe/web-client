@@ -51,7 +51,7 @@ export const getWagmiConfig = (hostName?: string) => {
   return { chains, provider, webSocketProvider, connectors };
 };
 
-export const getWagmiClient = (hostName: string) => {
+export const getWagmiClient = (hostName?: string) => {
   const { provider, webSocketProvider, connectors } = getWagmiConfig(hostName);
   return createClient({
     autoConnect: true,
