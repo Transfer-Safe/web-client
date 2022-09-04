@@ -26,6 +26,7 @@ const InvoiceTransferPage: NextPage<InvoiceTransferPageProps> = ({
     [preloadedInvoiceJson],
   );
   const { data: freshInvoice } = useGetInvoice(invoiceId, { watch: true });
+
   const invoice = useMemo(
     () => freshInvoice || preloadedInvoice,
     [freshInvoice, preloadedInvoice],

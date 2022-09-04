@@ -8,6 +8,7 @@ const COLORS = {
 
 const chainColor = (chainId: number) => {
   switch (chainId) {
+    case 9001:
     case 9000:
       return COLORS.EVMOS;
     default:

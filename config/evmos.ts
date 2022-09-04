@@ -1,3 +1,4 @@
+import { providers } from 'ethers';
 import { Chain } from 'wagmi';
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc';
 
@@ -54,13 +55,17 @@ export const evmosProvider = jsonRpcProvider({
     if (chain.id === 9001) {
       return {
         http: 'https://eth.bd.evmos.org:8545',
-        webSocket: 'wss://eth.bd.evmos.org:8546',
+        // webSocket: 'wss://eth.bd.evmos.org:8546',
       };
     }
     return null;
   },
 });
 
-// export const evmosTestProvider = new providers.JsonRpcProvider({
-//   url: 'https://eth.bd.evmos.dev:8545',
-// });
+export const evmosTestEthersProvider = new providers.JsonRpcProvider({
+  url: 'https://eth.bd.evmos.dev:8545',
+});
+
+export const evmosEthersProvider = new providers.JsonRpcProvider({
+  url: 'https://eth.bd.evmos.org:8545',
+});

@@ -35,6 +35,7 @@ const Logo: React.FC<LogoProps> = ({ theme = 'dark', width = 200 }) => {
   const height = width / ORIGINAL_LOGO_PROPORTION;
   const logo = useMemo(() => {
     switch (currentChain.id) {
+      case 9001:
       case 9000:
         return LOGOS.EVMOS;
       default:
